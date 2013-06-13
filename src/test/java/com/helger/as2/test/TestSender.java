@@ -43,6 +43,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.as2lib.cert.ICertificateFactory;
+import com.helger.as2lib.exception.DispositionException;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.exception.WrappedException;
 import com.helger.as2lib.message.AS2Message;
@@ -54,7 +55,6 @@ import com.helger.as2lib.processor.sender.AS2SenderModule;
 import com.helger.as2lib.processor.storage.IProcessorStorageModule;
 import com.helger.as2lib.util.AS2Util;
 import com.helger.as2lib.util.CAS2Header;
-import com.helger.as2lib.util.DispositionException;
 import com.helger.as2lib.util.DispositionType;
 import com.helger.as2lib.util.IOUtil;
 import com.phloc.commons.io.streams.NonBlockingByteArrayOutputStream;
@@ -149,18 +149,18 @@ public class TestSender extends AS2SenderModule
       {
         new DispositionType (disposition).validate ();
       }
-      catch (final DispositionException de)
+      catch (final DispositionException ex)
       {
-        de.setText (msg.getMDN ().getText ());
+        ex.setText (msg.getMDN ().getText ());
 
-        if (de.getDisposition () != null && de.getDisposition ().isWarning ())
+        if (ex.getDisposition () != null && ex.getDisposition ().isWarning ())
         {
-          de.addSource (OpenAS2Exception.SOURCE_MESSAGE, msg);
-          de.terminate ();
+          ex.addSource (OpenAS2Exception.SOURCE_MESSAGE, msg);
+          ex.terminate ();
         }
         else
         {
-          throw de;
+          throw ex;
         }
       }
     }
@@ -168,9 +168,9 @@ public class TestSender extends AS2SenderModule
     {
       throw ex;
     }
-    catch (final Exception e)
+    catch (final Exception ex)
     {
-      final WrappedException we = new WrappedException (e);
+      final WrappedException we = new WrappedException (ex);
       we.addSource (OpenAS2Exception.SOURCE_MESSAGE, msg);
       throw we;
     }
