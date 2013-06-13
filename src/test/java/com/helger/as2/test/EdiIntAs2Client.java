@@ -53,8 +53,7 @@ import com.helger.as2lib.cert.PKCS12CertificateFactory;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.message.AS2Message;
 import com.helger.as2lib.message.IMessage;
-import com.helger.as2lib.partner.CAS2Partnership;
-import com.helger.as2lib.partner.CSecurePartnership;
+import com.helger.as2lib.partner.CPartnershipIDs;
 import com.helger.as2lib.partner.IPartnershipFactory;
 import com.helger.as2lib.partner.Partnership;
 import com.helger.as2lib.processor.sender.IProcessorSenderModule;
@@ -134,8 +133,8 @@ public class EdiIntAs2Client
     aMsg.setPartnership (aPartnership);
     aMsg.setMessageID (aMsg.generateMessageID ());
 
-    aMsg.setAttribute (CAS2Partnership.PA_AS2_URL, aPartnership.getAttribute (CAS2Partnership.PA_AS2_URL));
-    aMsg.setAttribute (CAS2Partnership.PID_AS2, aPartnership.getReceiverID (CAS2Partnership.PID_AS2));
+    aMsg.setAttribute (CPartnershipIDs.PA_AS2_URL, aPartnership.getAttribute (CPartnershipIDs.PA_AS2_URL));
+    aMsg.setAttribute (CPartnershipIDs.PID_AS2, aPartnership.getReceiverID (CPartnershipIDs.PID_AS2));
     aMsg.setAttribute (Partnership.PID_EMAIL, aPartnership.getSenderID (Partnership.PID_EMAIL));
 
     MimeBodyPart part;
@@ -185,23 +184,23 @@ public class EdiIntAs2Client
     final Partnership partnership = new Partnership ();
     partnership.setName (settings.partnershipName);
 
-    partnership.setAttribute (CAS2Partnership.PA_AS2_URL, settings.receiverAs2Url);
-    partnership.setReceiverID (CAS2Partnership.PID_AS2, settings.receiverAs2Id);
-    partnership.setReceiverID (CSecurePartnership.PID_X509_ALIAS, settings.receiverKeyAlias);
+    partnership.setAttribute (CPartnershipIDs.PA_AS2_URL, settings.receiverAs2Url);
+    partnership.setReceiverID (CPartnershipIDs.PID_AS2, settings.receiverAs2Id);
+    partnership.setReceiverID (CPartnershipIDs.PID_X509_ALIAS, settings.receiverKeyAlias);
 
-    partnership.setSenderID (CAS2Partnership.PID_AS2, settings.senderAs2Id);
-    partnership.setSenderID (CSecurePartnership.PID_X509_ALIAS, settings.senderKeyAlias);
+    partnership.setSenderID (CPartnershipIDs.PID_AS2, settings.senderAs2Id);
+    partnership.setSenderID (CPartnershipIDs.PID_X509_ALIAS, settings.senderKeyAlias);
     partnership.setSenderID (Partnership.PID_EMAIL, settings.senderEmail);
 
-    partnership.setAttribute (CAS2Partnership.PA_AS2_MDN_OPTIONS, settings.mdnOptions);
+    partnership.setAttribute (CPartnershipIDs.PA_AS2_MDN_OPTIONS, settings.mdnOptions);
 
-    partnership.setAttribute (CSecurePartnership.PA_ENCRYPT, settings.encrypt);
-    partnership.setAttribute (CSecurePartnership.PA_SIGN, settings.sign);
+    partnership.setAttribute (CPartnershipIDs.PA_ENCRYPT, settings.encrypt);
+    partnership.setAttribute (CPartnershipIDs.PA_SIGN, settings.sign);
     partnership.setAttribute (Partnership.PA_PROTOCOL, "as2");
     // partnership.setAttribute(AS2Partnership.PA_AS2_MDN_TO,"http://localhost:10080");
-    partnership.setAttribute (CAS2Partnership.PA_AS2_RECEIPT_OPTION, null);
+    partnership.setAttribute (CPartnershipIDs.PA_AS2_RECEIPT_OPTION, null);
 
-    partnership.setAttribute (CAS2Partnership.PA_MESSAGEID, settings.format);
+    partnership.setAttribute (CPartnershipIDs.PA_MESSAGEID, settings.format);
     return partnership;
   }
 }

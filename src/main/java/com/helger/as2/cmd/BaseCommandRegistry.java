@@ -35,22 +35,24 @@ package com.helger.as2.cmd;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.helger.as2lib.BaseComponent;
 
 public class BaseCommandRegistry extends BaseComponent implements ICommandRegistry
 {
   private List <ICommand> m_aCommands;
 
+  @Nonnull
   public List <ICommand> getCommands ()
   {
     if (m_aCommands == null)
-    {
       m_aCommands = new ArrayList <ICommand> ();
-    }
     return m_aCommands;
   }
 
-  public void setCommands (final List <ICommand> commands)
+  public void setCommands (@Nullable final List <ICommand> commands)
   {
     m_aCommands = commands;
   }

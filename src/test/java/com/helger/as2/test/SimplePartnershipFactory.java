@@ -42,15 +42,12 @@ import com.helger.as2lib.partner.AbstractPartnershipFactory;
  */
 public class SimplePartnershipFactory extends AbstractPartnershipFactory
 {
-  private Map <String, Map <String, String>> partners;
+  private Map <String, Map <String, String>> m_aPartners;
 
   public Map <String, Map <String, String>> getPartners ()
   {
-    if (partners == null)
-    {
-      partners = new HashMap <String, Map <String, String>> ();
-    }
-
-    return partners;
+    if (m_aPartners == null)
+      m_aPartners = new HashMap <String, Map <String, String>> ();
+    return m_aPartners;
   }
 }

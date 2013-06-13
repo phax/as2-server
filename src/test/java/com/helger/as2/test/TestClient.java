@@ -53,8 +53,7 @@ import com.helger.as2lib.message.AS2Message;
 import com.helger.as2lib.message.IMessage;
 import com.helger.as2lib.message.IMessageMDN;
 import com.helger.as2lib.params.InvalidParameterException;
-import com.helger.as2lib.partner.CAS2Partnership;
-import com.helger.as2lib.partner.CSecurePartnership;
+import com.helger.as2lib.partner.CPartnershipIDs;
 import com.helger.as2lib.partner.IPartnershipFactory;
 import com.helger.as2lib.partner.Partnership;
 import com.helger.as2lib.processor.sender.IProcessorSenderModule;
@@ -109,7 +108,7 @@ public class TestClient
     final String pidSenderEmail = "email";
     final String pidAs2 = "GWTESTFM2i";
     final String pidSenderAs2 = "Sender";
-    final String recieverKey = "rg_trusted";// "gwtestfm2i_trusted"; //
+    final String receiverKey = "rg_trusted";// "gwtestfm2i_trusted"; //
     final String senderKey = "rg";
     final String paAs2Url = "http://172.16.148.1:8080/as2/HttpReceiver";
 
@@ -117,33 +116,33 @@ public class TestClient
 
     final Partnership partnership = new Partnership ();
     partnership.setName ("partnership name");
-    partnership.setAttribute (CAS2Partnership.PA_AS2_URL, paAs2Url);
-    partnership.setReceiverID (CAS2Partnership.PID_AS2, pidAs2);
-    partnership.setReceiverID (CSecurePartnership.PID_X509_ALIAS, recieverKey);
-    partnership.setSenderID (CAS2Partnership.PID_AS2, pidSenderAs2);
-    partnership.setSenderID (CSecurePartnership.PID_X509_ALIAS, senderKey);
+    partnership.setAttribute (CPartnershipIDs.PA_AS2_URL, paAs2Url);
+    partnership.setReceiverID (CPartnershipIDs.PID_AS2, pidAs2);
+    partnership.setReceiverID (CPartnershipIDs.PID_X509_ALIAS, receiverKey);
+    partnership.setSenderID (CPartnershipIDs.PID_AS2, pidSenderAs2);
+    partnership.setSenderID (CPartnershipIDs.PID_X509_ALIAS, senderKey);
 
     partnership.setSenderID (Partnership.PID_EMAIL, pidSenderEmail);
 
     // partnership.setAttribute(AS2Partnership.PA_AS2_MDN_TO,"http://localhost:10080");
-    partnership.setAttribute (CAS2Partnership.PA_AS2_MDN_OPTIONS,
+    partnership.setAttribute (CPartnershipIDs.PA_AS2_MDN_OPTIONS,
                               "signed-receipt-protocol=optional, pkcs7-signature; signed-receipt-micalg=optional, sha1");
 
-    partnership.setAttribute (CSecurePartnership.PA_ENCRYPT, "3des");
-    partnership.setAttribute (CSecurePartnership.PA_SIGN, "sha1");
+    partnership.setAttribute (CPartnershipIDs.PA_ENCRYPT, "3des");
+    partnership.setAttribute (CPartnershipIDs.PA_SIGN, "sha1");
     partnership.setAttribute (Partnership.PA_PROTOCOL, "as2");
 
-    partnership.setAttribute (CAS2Partnership.PA_AS2_RECEIPT_OPTION, null);
+    partnership.setAttribute (CPartnershipIDs.PA_AS2_RECEIPT_OPTION, null);
 
-    s_aLogger.info ("ALIAS: " + partnership.getSenderID (CSecurePartnership.PID_X509_ALIAS));
+    s_aLogger.info ("ALIAS: " + partnership.getSenderID (CPartnershipIDs.PID_X509_ALIAS));
 
     final IMessage msg = new AS2Message ();
     msg.setContentType ("application/xml");
     msg.setSubject ("some subject");
 
-    msg.setAttribute (CAS2Partnership.PA_AS2_URL, paAs2Url);
+    msg.setAttribute (CPartnershipIDs.PA_AS2_URL, paAs2Url);
 
-    msg.setAttribute (CAS2Partnership.PID_AS2, pidAs2);
+    msg.setAttribute (CPartnershipIDs.PID_AS2, pidAs2);
     msg.setAttribute (Partnership.PID_EMAIL, "email");
     try
     {
@@ -206,7 +205,7 @@ public class TestClient
     s_aLogger.info ("is requesting  MDN?: " + msg.isRequestingMDN ());
     s_aLogger.info ("is async MDN?: " + msg.isRequestingAsynchMDN ());
     s_aLogger.info ("is rule to recieve MDN active?: " +
-                    msg.getPartnership ().getAttribute (CAS2Partnership.PA_AS2_RECEIPT_OPTION));
+                    msg.getPartnership ().getAttribute (CPartnershipIDs.PA_AS2_RECEIPT_OPTION));
 
     try
     {
@@ -259,14 +258,14 @@ public class TestClient
     {
       InvalidParameterException.checkValue (msg, "ContentType", msg.getContentType ());
       InvalidParameterException.checkValue (msg,
-                                            "Attribute: " + CAS2Partnership.PA_AS2_URL,
-                                            partnership.getAttribute (CAS2Partnership.PA_AS2_URL));
+                                            "Attribute: " + CPartnershipIDs.PA_AS2_URL,
+                                            partnership.getAttribute (CPartnershipIDs.PA_AS2_URL));
       InvalidParameterException.checkValue (msg,
-                                            "Receiver: " + CAS2Partnership.PID_AS2,
-                                            partnership.getReceiverID (CAS2Partnership.PID_AS2));
+                                            "Receiver: " + CPartnershipIDs.PID_AS2,
+                                            partnership.getReceiverID (CPartnershipIDs.PID_AS2));
       InvalidParameterException.checkValue (msg,
-                                            "Sender: " + CAS2Partnership.PID_AS2,
-                                            partnership.getSenderID (CAS2Partnership.PID_AS2));
+                                            "Sender: " + CPartnershipIDs.PID_AS2,
+                                            partnership.getSenderID (CPartnershipIDs.PID_AS2));
       InvalidParameterException.checkValue (msg, "Subject", msg.getSubject ());
       InvalidParameterException.checkValue (msg,
                                             "Sender: " + Partnership.PID_EMAIL,
@@ -293,22 +292,22 @@ public class TestClient
     conn.setRequestProperty ("Mime-Version", "1.0");
     conn.setRequestProperty ("Content-type", msg.getContentType ());
     conn.setRequestProperty (CAS2Header.AS2_VERSION, "1.1");
-    conn.setRequestProperty ("Recipient-Address", partnership.getAttribute (CAS2Partnership.PA_AS2_URL));
-    conn.setRequestProperty (CAS2Header.AS2_TO, partnership.getReceiverID (CAS2Partnership.PID_AS2));
-    conn.setRequestProperty (CAS2Header.AS2_FROM, partnership.getSenderID (CAS2Partnership.PID_AS2));
+    conn.setRequestProperty ("Recipient-Address", partnership.getAttribute (CPartnershipIDs.PA_AS2_URL));
+    conn.setRequestProperty (CAS2Header.AS2_TO, partnership.getReceiverID (CPartnershipIDs.PID_AS2));
+    conn.setRequestProperty (CAS2Header.AS2_FROM, partnership.getSenderID (CPartnershipIDs.PID_AS2));
     conn.setRequestProperty ("Subject", msg.getSubject ());
     conn.setRequestProperty ("From", partnership.getSenderID (Partnership.PID_EMAIL));
 
-    final String dispTo = partnership.getAttribute (CAS2Partnership.PA_AS2_MDN_TO);
+    final String dispTo = partnership.getAttribute (CPartnershipIDs.PA_AS2_MDN_TO);
     if (dispTo != null)
       conn.setRequestProperty ("Disposition-Notification-To", dispTo);
 
-    final String dispOptions = partnership.getAttribute (CAS2Partnership.PA_AS2_MDN_OPTIONS);
+    final String dispOptions = partnership.getAttribute (CPartnershipIDs.PA_AS2_MDN_OPTIONS);
     if (dispOptions != null)
       conn.setRequestProperty ("Disposition-Notification-Options", dispOptions);
 
     // Asynch MDN 2007-03-12
-    final String receiptOption = partnership.getAttribute (CAS2Partnership.PA_AS2_RECEIPT_OPTION);
+    final String receiptOption = partnership.getAttribute (CPartnershipIDs.PA_AS2_RECEIPT_OPTION);
     if (receiptOption != null)
       conn.setRequestProperty ("Receipt-delivery-option", receiptOption);
 

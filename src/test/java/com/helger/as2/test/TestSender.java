@@ -48,8 +48,7 @@ import com.helger.as2lib.exception.WrappedException;
 import com.helger.as2lib.message.AS2Message;
 import com.helger.as2lib.message.AS2MessageMDN;
 import com.helger.as2lib.message.IMessageMDN;
-import com.helger.as2lib.partner.CAS2Partnership;
-import com.helger.as2lib.partner.CSecurePartnership;
+import com.helger.as2lib.partner.CPartnershipIDs;
 import com.helger.as2lib.partner.Partnership;
 import com.helger.as2lib.processor.sender.AS2SenderModule;
 import com.helger.as2lib.processor.storage.IProcessorStorageModule;
@@ -99,8 +98,8 @@ public class TestSender extends AS2SenderModule
       msg.getMDN ().setData (part);
 
       // get the MDN partnership info
-      mdn.getPartnership ().setSenderID (CAS2Partnership.PID_AS2, mdn.getHeader (CAS2Header.AS2_FROM));
-      mdn.getPartnership ().setReceiverID (CAS2Partnership.PID_AS2, mdn.getHeader (CAS2Header.AS2_TO));
+      mdn.getPartnership ().setSenderID (CPartnershipIDs.PID_AS2, mdn.getHeader (CAS2Header.AS2_FROM));
+      mdn.getPartnership ().setReceiverID (CPartnershipIDs.PID_AS2, mdn.getHeader (CAS2Header.AS2_TO));
       if (false)
         getSession ().getPartnershipFactory ().updatePartnership (mdn, false);
 
@@ -111,7 +110,7 @@ public class TestSender extends AS2SenderModule
         // //.getSenderID(SecurePartnership.PID_X509_ALIAS));
         // X509Certificate senderCert = cFx.getCertificate(mdn,
         // Partnership.PTYPE_SENDER);
-        final String certAlias = msg.getPartnership ().getReceiverID (CSecurePartnership.PID_X509_ALIAS);
+        final String certAlias = msg.getPartnership ().getReceiverID (CPartnershipIDs.PID_X509_ALIAS);
         s_aLogger.info ("CERT ALIAS: " + certAlias);
       }
       final X509Certificate senderCert = cFx.getCertificate (msg, Partnership.PTYPE_RECEIVER);

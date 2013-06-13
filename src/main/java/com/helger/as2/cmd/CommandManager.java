@@ -35,6 +35,8 @@ package com.helger.as2.cmd;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import com.helger.as2.cmd.processor.AbstractCommandProcessor;
 
 /**
@@ -48,6 +50,7 @@ public class CommandManager
 
   private List <AbstractCommandProcessor> m_aProcessors;
 
+  @Nonnull
   public static CommandManager getCmdManager ()
   {
     if (s_aDefaultManager == null)
@@ -55,9 +58,9 @@ public class CommandManager
     return s_aDefaultManager;
   }
 
-  public void setProcessors (final List <AbstractCommandProcessor> listeners)
+  public void setProcessors (final List <AbstractCommandProcessor> aProcessors)
   {
-    m_aProcessors = listeners;
+    m_aProcessors = aProcessors;
   }
 
   public List <AbstractCommandProcessor> getProcessors ()
