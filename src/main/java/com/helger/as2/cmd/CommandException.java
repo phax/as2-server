@@ -36,8 +36,8 @@ import com.helger.as2lib.exception.OpenAS2Exception;
 
 public class CommandException extends OpenAS2Exception
 {
-  public CommandException (final String msg)
+  public CommandException (final String sMsg)
   {
-    super (msg);
+    super (sMsg);
   }
 }

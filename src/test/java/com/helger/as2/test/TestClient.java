@@ -287,7 +287,7 @@ public class TestClient
     conn.setRequestProperty ("Connection", "close, TE");
     conn.setRequestProperty ("User-Agent", "OpenAS2 AS2Sender");
 
-    conn.setRequestProperty ("Date", DateUtil.formatDate ("EEE, dd MMM yyyy HH:mm:ss Z"));
+    conn.setRequestProperty ("Date", DateUtil.getFormattedDateNow ("EEE, dd MMM yyyy HH:mm:ss Z"));
     conn.setRequestProperty ("Message-ID", msg.getMessageID ());
     // make sure this is the encoding used in the msg, run TBF1
     conn.setRequestProperty ("Mime-Version", "1.0");
