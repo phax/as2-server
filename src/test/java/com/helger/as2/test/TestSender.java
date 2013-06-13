@@ -90,7 +90,7 @@ public class TestSender extends AS2SenderModule
       // Retrieve the message content
       final long nContentLength = StringParser.parseLong (mdn.getHeader ("Content-Length"), -1);
       if (nContentLength >= 0)
-        IOUtil.copy (connIn, mdnStream, nContentLength);
+        StreamUtils.copyInputStreamToOutputStreamWithLimit (connIn, mdnStream, nContentLength);
       else
         StreamUtils.copyInputStreamToOutputStream (connIn, mdnStream);
 
@@ -113,7 +113,7 @@ public class TestSender extends AS2SenderModule
         final String certAlias = msg.getPartnership ().getReceiverID (CPartnershipIDs.PID_X509_ALIAS);
         s_aLogger.info ("CERT ALIAS: " + certAlias);
       }
-      final X509Certificate senderCert = cFx.getCertificate (msg, Partnership.PTYPE_RECEIVER);
+      final X509Certificate senderCert = cFx.getCertificate (msg, Partnership.PARTNERSHIP_TYPE_RECEIVER);
 
       AS2Util.parseMDN (msg, senderCert);
 
