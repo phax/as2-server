@@ -34,11 +34,11 @@ package com.helger.as2.cmd;
 
 import java.util.Map;
 
-import com.helger.as2lib.BaseComponent;
+import com.helger.as2lib.AbstractBaseComponent;
 import com.helger.as2lib.ISession;
 import com.helger.as2lib.exception.OpenAS2Exception;
 
-public abstract class AbstractCommand extends BaseComponent implements ICommand
+public abstract class AbstractCommand extends AbstractBaseComponent implements ICommand
 {
   public static final String PARAM_NAME = "name";
   public static final String PARAM_DESCRIPTION = "description";

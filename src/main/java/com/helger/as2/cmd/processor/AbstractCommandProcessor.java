@@ -37,6 +37,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import com.helger.as2.cmd.ICommand;
 import com.helger.as2.cmd.ICommandRegistry;
 import com.helger.as2lib.IDynamicComponent;
@@ -46,6 +48,13 @@ import com.helger.as2lib.exception.OpenAS2Exception;
 public abstract class AbstractCommandProcessor extends Thread implements ICommandProcessor, IDynamicComponent
 {
   public Map <String, String> getParameters ()
+  {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Nullable
+  public String getParameterNotRequired (@Nullable final String sKey)
   {
     // TODO Auto-generated method stub
     return null;

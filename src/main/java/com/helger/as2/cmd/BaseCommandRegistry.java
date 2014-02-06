@@ -38,9 +38,9 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.helger.as2lib.BaseComponent;
+import com.helger.as2lib.AbstractBaseComponent;
 
-public class BaseCommandRegistry extends BaseComponent implements ICommandRegistry
+public class BaseCommandRegistry extends AbstractBaseComponent implements ICommandRegistry
 {
   private List <ICommand> m_aCommands;
 
