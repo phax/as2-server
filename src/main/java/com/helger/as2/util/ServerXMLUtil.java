@@ -32,7 +32,6 @@
  */
 package com.helger.as2.util;
 
-import java.util.Iterator;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
@@ -42,6 +41,7 @@ import com.helger.as2lib.IDynamicComponent;
 import com.helger.as2lib.ISession;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.exception.WrappedException;
+import com.helger.as2lib.util.StringMap;
 import com.helger.as2lib.util.XMLUtil;
 import com.phloc.commons.microdom.IMicroElement;
 
@@ -64,7 +64,7 @@ public final class ServerXMLUtil
         throw new OpenAS2Exception ("Class " + className + " must implement " + IDynamicComponent.class.getName ());
       final IDynamicComponent obj = (IDynamicComponent) objClass.newInstance ();
 
-      final Map <String, String> parameters = XMLUtil.getAttrsWithLowercaseName (aElement);
+      final StringMap parameters = XMLUtil.getAttrsWithLowercaseName (aElement);
       if (session instanceof XMLSession)
         updateDirectories (((XMLSession) session).getBaseDirectory (), parameters);
       obj.initDynamicComponent (session, parameters);
@@ -77,25 +77,16 @@ public final class ServerXMLUtil
     }
   }
 
-  public static void updateDirectories (final String baseDirectory, final Map <String, String> attributes) throws OpenAS2Exception
+  public static void updateDirectories (final String baseDirectory, final StringMap attributes) throws OpenAS2Exception
   {
-    final Iterator <Map.Entry <String, String>> attrIt = attributes.entrySet ().iterator ();
-    while (attrIt.hasNext ())
+    for (final Map.Entry <String, String> attrEntry : attributes)
     {
-      final Map.Entry <String, String> attrEntry = attrIt.next ();
-      String value = attrEntry.getValue ();
-
+      final String value = attrEntry.getValue ();
       if (value.startsWith ("%home%"))
       {
-        if (baseDirectory != null)
-        {
-          value = baseDirectory + value.substring (6);
-          attributes.put (attrEntry.getKey (), value);
-        }
-        else
-        {
+        if (baseDirectory == null)
           throw new OpenAS2Exception ("Base directory isn't set");
-        }
+        attributes.setAttribute (attrEntry.getKey (), baseDirectory + value.substring (6));
       }
     }
   }

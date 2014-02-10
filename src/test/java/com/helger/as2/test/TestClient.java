@@ -34,8 +34,6 @@ package com.helger.as2.test;
 
 import java.net.HttpURLConnection;
 import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.mail.Header;
 import javax.mail.internet.MimeBodyPart;
@@ -59,6 +57,7 @@ import com.helger.as2lib.partner.Partnership;
 import com.helger.as2lib.processor.sender.IProcessorSenderModule;
 import com.helger.as2lib.util.CAS2Header;
 import com.helger.as2lib.util.DateUtil;
+import com.helger.as2lib.util.StringMap;
 import com.phloc.commons.io.resource.ClassPathResource;
 
 /**
@@ -182,9 +181,9 @@ public class TestClient
 
       // /Users/oleo/samples/parfum.spb.ru/as2/test/test.p12
 
-      final Map <String, String> map = new HashMap <String, String> ();
-      map.put (PKCS12CertificateFactory.PARAM_FILENAME, filename);
-      map.put (PKCS12CertificateFactory.PARAM_PASSWORD, password);
+      final StringMap map = new StringMap ();
+      map.setAttribute (PKCS12CertificateFactory.PARAM_FILENAME, filename);
+      map.setAttribute (PKCS12CertificateFactory.PARAM_PASSWORD, password);
 
       cf.initDynamicComponent (session, map);
 

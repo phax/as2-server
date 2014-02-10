@@ -34,12 +34,12 @@ package com.helger.as2.cmd;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.util.Map;
 
 import com.helger.as2.util.ServerXMLUtil;
 import com.helger.as2lib.ISession;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.exception.WrappedException;
+import com.helger.as2lib.util.IStringMap;
 import com.helger.as2lib.util.XMLUtil;
 import com.phloc.commons.microdom.IMicroDocument;
 import com.phloc.commons.microdom.IMicroElement;
@@ -50,7 +50,7 @@ public class XMLCommandRegistry extends BaseCommandRegistry
   public static final String PARAM_FILENAME = "filename";
 
   @Override
-  public void initDynamicComponent (final ISession session, final Map <String, String> parameters) throws OpenAS2Exception
+  public void initDynamicComponent (final ISession session, final IStringMap parameters) throws OpenAS2Exception
   {
     super.initDynamicComponent (session, parameters);
 

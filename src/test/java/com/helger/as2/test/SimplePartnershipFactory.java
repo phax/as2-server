@@ -36,18 +36,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.helger.as2lib.partner.AbstractPartnershipFactory;
+import com.helger.as2lib.util.StringMap;
 
 /**
  * oleo Date: May 12, 2010 Time: 2:18:36 PM
  */
 public class SimplePartnershipFactory extends AbstractPartnershipFactory
 {
-  private Map <String, Map <String, String>> m_aPartners;
+  private Map <String, StringMap> m_aPartners;
 
-  public Map <String, Map <String, String>> getPartners ()
+  public Map <String, StringMap> getPartners ()
   {
     if (m_aPartners == null)
-      m_aPartners = new HashMap <String, Map <String, String>> ();
+      m_aPartners = new HashMap <String, StringMap> ();
     return m_aPartners;
   }
 }

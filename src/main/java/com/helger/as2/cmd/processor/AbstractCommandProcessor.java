@@ -33,9 +33,7 @@
 package com.helger.as2.cmd.processor;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Nullable;
 
@@ -44,19 +42,19 @@ import com.helger.as2.cmd.ICommandRegistry;
 import com.helger.as2lib.IDynamicComponent;
 import com.helger.as2lib.ISession;
 import com.helger.as2lib.exception.OpenAS2Exception;
+import com.helger.as2lib.util.IStringMap;
+import com.helger.as2lib.util.StringMap;
 
-public abstract class AbstractCommandProcessor extends Thread implements ICommandProcessor, IDynamicComponent
+public abstract class AbstractCommandProcessor extends StringMap implements ICommandProcessor, IDynamicComponent, Runnable
 {
-  public Map <String, String> getParameters ()
-  {
-    // TODO Auto-generated method stub
-    return null;
-  }
+  private List <ICommand> commands;
+  private boolean terminated = false;
 
-  @Nullable
-  public String getParameterNotRequired (@Nullable final String sKey)
+  public AbstractCommandProcessor ()
+  {}
+
+  public String getName ()
   {
-    // TODO Auto-generated method stub
     return null;
   }
 
@@ -66,20 +64,11 @@ public abstract class AbstractCommandProcessor extends Thread implements IComman
     return null;
   }
 
-  public void initDynamicComponent (final ISession session, final Map <String, String> parameters) throws OpenAS2Exception
+  public void initDynamicComponent (final ISession session, final IStringMap parameters) throws OpenAS2Exception
   {}
 
   public void init () throws OpenAS2Exception
   {}
-
-  private List <ICommand> commands;
-  private boolean terminated;
-
-  public AbstractCommandProcessor ()
-  {
-    super ();
-    terminated = false;
-  }
 
   public void setCommands (final List <ICommand> list)
   {
@@ -89,25 +78,17 @@ public abstract class AbstractCommandProcessor extends Thread implements IComman
   public List <ICommand> getCommands ()
   {
     if (commands == null)
-    {
       commands = new ArrayList <ICommand> ();
-    }
-
     return commands;
   }
 
+  @Nullable
   public ICommand getCommand (final String name)
   {
-    ICommand currentCmd;
-    final Iterator <ICommand> commandIt = getCommands ().iterator ();
-    while (commandIt.hasNext ())
-    {
-      currentCmd = commandIt.next ();
-      if (currentCmd.getName ().equals (name))
-      {
-        return currentCmd;
-      }
-    }
+    if (commands != null)
+      for (final ICommand currentCmd : commands)
+        if (currentCmd.getName ().equals (name))
+          return currentCmd;
     return null;
   }
 
@@ -124,11 +105,8 @@ public abstract class AbstractCommandProcessor extends Thread implements IComman
   public void addCommands (final ICommandRegistry reg)
   {
     final List <ICommand> regCmds = reg.getCommands ();
-
-    if (regCmds.size () > 0)
-    {
+    if (!regCmds.isEmpty ())
       getCommands ().addAll (regCmds);
-    }
   }
 
   public void terminate ()

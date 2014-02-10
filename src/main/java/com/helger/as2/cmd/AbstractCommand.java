@@ -32,11 +32,10 @@
  */
 package com.helger.as2.cmd;
 
-import java.util.Map;
-
 import com.helger.as2lib.AbstractBaseComponent;
 import com.helger.as2lib.ISession;
 import com.helger.as2lib.exception.OpenAS2Exception;
+import com.helger.as2lib.util.IStringMap;
 
 public abstract class AbstractCommand extends AbstractBaseComponent implements ICommand
 {
@@ -45,7 +44,7 @@ public abstract class AbstractCommand extends AbstractBaseComponent implements I
   public static final String PARAM_USAGE = "usage";
 
   @Override
-  public void initDynamicComponent (final ISession session, final Map <String, String> parameters) throws OpenAS2Exception
+  public void initDynamicComponent (final ISession session, final IStringMap parameters) throws OpenAS2Exception
   {
     super.initDynamicComponent (session, parameters);
     if (getName () == null)
@@ -58,18 +57,18 @@ public abstract class AbstractCommand extends AbstractBaseComponent implements I
 
   public String getDescription ()
   {
-    return getParameterNotRequired (PARAM_DESCRIPTION);
+    return getAttributeAsString (PARAM_DESCRIPTION);
   }
 
   @Override
   public String getName ()
   {
-    return getParameterNotRequired (PARAM_NAME);
+    return getAttributeAsString (PARAM_NAME);
   }
 
   public String getUsage ()
   {
-    return getParameterNotRequired (PARAM_USAGE);
+    return getAttributeAsString (PARAM_USAGE);
   }
 
   public abstract String getDefaultName ();
@@ -82,16 +81,16 @@ public abstract class AbstractCommand extends AbstractBaseComponent implements I
 
   public void setDescription (final String desc)
   {
-    setParameter (PARAM_DESCRIPTION, desc);
+    setAttribute (PARAM_DESCRIPTION, desc);
   }
 
   public void setName (final String name)
   {
-    setParameter (PARAM_NAME, name);
+    setAttribute (PARAM_NAME, name);
   }
 
   public void setUsage (final String usage)
   {
-    setParameter (PARAM_USAGE, usage);
+    setAttribute (PARAM_USAGE, usage);
   }
 }

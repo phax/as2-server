@@ -35,10 +35,10 @@ package com.helger.as2.cmd;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import com.helger.as2lib.ISession;
 import com.helger.as2lib.exception.OpenAS2Exception;
+import com.helger.as2lib.util.IStringMap;
 import com.phloc.commons.collections.ArrayHelper;
 
 public class MultiCommand extends AbstractCommand
@@ -46,7 +46,7 @@ public class MultiCommand extends AbstractCommand
   private List <ICommand> m_aCmds;
 
   @Override
-  public void initDynamicComponent (final ISession session, final Map <String, String> parameters) throws OpenAS2Exception
+  public void initDynamicComponent (final ISession session, final IStringMap parameters) throws OpenAS2Exception
   {
     super.initDynamicComponent (session, parameters);
     getParameterRequired (PARAM_NAME);

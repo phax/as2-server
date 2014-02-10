@@ -97,7 +97,7 @@ public class DeletePartnerCommand extends AbstractAliasedPartnershipsCommand
       while (partnerships.hasNext () && partnershipFound == false)
       {
         final Partnership part = partnerships.next ();
-        partnershipFound = part.getReceiverIDs ().containsValue (name) || part.getSenderIDs ().containsValue (name);
+        partnershipFound = part.containsReceiverID (name) || part.containsSenderID (name);
       }
 
       if (partnershipFound)

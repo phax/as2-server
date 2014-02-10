@@ -39,7 +39,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.net.ssl.SSLServerSocket;
 import javax.net.ssl.SSLServerSocketFactory;
@@ -52,6 +51,7 @@ import com.helger.as2.cmd.ICommand;
 import com.helger.as2.util.CommandTokenizer;
 import com.helger.as2lib.ISession;
 import com.helger.as2lib.exception.OpenAS2Exception;
+import com.helger.as2lib.util.IStringMap;
 import com.phloc.commons.io.streams.StreamUtils;
 import com.phloc.commons.string.StringHelper;
 
@@ -78,9 +78,9 @@ public class SocketCommandProcessor extends AbstractCommandProcessor
   {}
 
   @Override
-  public void initDynamicComponent (final ISession session, final Map <String, String> parameters) throws OpenAS2Exception
+  public void initDynamicComponent (final ISession session, final IStringMap parameters) throws OpenAS2Exception
   {
-    final String p = parameters.get ("portid");
+    final String p = parameters.getAttributeAsString ("portid");
     try
     {
       final int port = Integer.parseInt (p);
@@ -101,11 +101,11 @@ public class SocketCommandProcessor extends AbstractCommandProcessor
       e.printStackTrace ();
       throw new OpenAS2Exception ("error converting portid parameter '" + p + "': " + e);
     }
-    m_sUserID = parameters.get ("userid");
+    m_sUserID = parameters.getAttributeAsString ("userid");
     if (StringHelper.hasNoText (m_sUserID))
       throw new OpenAS2Exception ("missing userid parameter");
 
-    m_sPassword = parameters.get ("password");
+    m_sPassword = parameters.getAttributeAsString ("password");
     if (StringHelper.hasNoText (m_sPassword))
       throw new OpenAS2Exception ("missing password parameter");
 

@@ -33,11 +33,11 @@
 package com.helger.as2.app.partner;
 
 import java.util.Iterator;
-import java.util.Map;
 
 import com.helger.as2.cmd.CommandResult;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.partner.IPartnershipFactory;
+import com.helger.as2lib.util.IStringMap;
 
 /**
  * view the partner entries in the partnership store
@@ -83,7 +83,7 @@ public class ViewPartnerCommand extends AbstractAliasedPartnershipsCommand
         final String partName = parts.next ().toString ();
         if (partName.equals (name))
         {
-          final Map <String, String> partDefs = partFx.getPartners ().get (name);
+          final IStringMap partDefs = partFx.getPartners ().get (name);
           final String out = name + "\n" + partDefs.toString ();
           return new CommandResult (CommandResult.TYPE_OK, out);
         }

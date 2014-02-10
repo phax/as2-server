@@ -35,8 +35,6 @@ package com.helger.as2.test;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.annotation.Nonnull;
 import javax.mail.MessagingException;
@@ -57,6 +55,7 @@ import com.helger.as2lib.partner.CPartnershipIDs;
 import com.helger.as2lib.partner.IPartnershipFactory;
 import com.helger.as2lib.partner.Partnership;
 import com.helger.as2lib.processor.sender.IProcessorSenderModule;
+import com.helger.as2lib.util.StringMap;
 
 public class EdiIntAs2Client
 {
@@ -79,9 +78,9 @@ public class EdiIntAs2Client
 
       final Session aSession = new Session ();
       {
-        final Map <String, String> aParams = new HashMap <String, String> ();
-        aParams.put (PKCS12CertificateFactory.PARAM_FILENAME, settings.p12FilePath);
-        aParams.put (PKCS12CertificateFactory.PARAM_PASSWORD, settings.p12FilePassword);
+        final StringMap aParams = new StringMap ();
+        aParams.setAttribute (PKCS12CertificateFactory.PARAM_FILENAME, settings.p12FilePath);
+        aParams.setAttribute (PKCS12CertificateFactory.PARAM_PASSWORD, settings.p12FilePassword);
 
         final ServerPKCS12CertificateFactory aCertFactory = new ServerPKCS12CertificateFactory ();
         aCertFactory.initDynamicComponent (aSession, aParams);

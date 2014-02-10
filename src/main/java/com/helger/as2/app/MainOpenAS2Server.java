@@ -43,6 +43,7 @@ import com.helger.as2.cmd.ICommandRegistry;
 import com.helger.as2.cmd.processor.AbstractCommandProcessor;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.util.CInfo;
+import com.phloc.commons.lang.CGStringHelper;
 
 /**
  * original author unknown in this release added ability to have multiple
@@ -103,7 +104,7 @@ public class MainOpenAS2Server
         s_aLogger.info ("Loading Command Processor..." + cmd.getClass ().getName () + "");
         cmd.init ();
         cmd.addCommands (reg);
-        cmd.start ();
+        new Thread (cmd, CGStringHelper.getClassLocalName (cmd)).start ();
       }
 
       // Start waiting for termination

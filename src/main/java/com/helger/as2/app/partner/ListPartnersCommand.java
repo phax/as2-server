@@ -38,6 +38,7 @@ import java.util.Map;
 import com.helger.as2.cmd.CommandResult;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.partner.IPartnershipFactory;
+import com.helger.as2lib.util.StringMap;
 
 /**
  * list partner entries in partnership store
@@ -71,7 +72,7 @@ public class ListPartnersCommand extends AbstractAliasedPartnershipsCommand
     synchronized (partFx)
     {
 
-      final Map <String, Map <String, String>> partners = partFx.getPartners ();
+      final Map <String, StringMap> partners = partFx.getPartners ();
       final Iterator <String> partIt = partners.keySet ().iterator ();
 
       final CommandResult cmdRes = new CommandResult (CommandResult.TYPE_OK);
