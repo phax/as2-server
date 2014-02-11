@@ -290,10 +290,10 @@ public class TestClient
     // make sure this is the encoding used in the msg, run TBF1
     conn.setRequestProperty ("Mime-Version", "1.0");
     conn.setRequestProperty ("Content-type", msg.getContentType ());
-    conn.setRequestProperty (CAS2Header.AS2_VERSION, "1.1");
+    conn.setRequestProperty (CAS2Header.HEADER_AS2_VERSION, "1.1");
     conn.setRequestProperty ("Recipient-Address", partnership.getAttribute (CPartnershipIDs.PA_AS2_URL));
-    conn.setRequestProperty (CAS2Header.AS2_TO, partnership.getReceiverID (CPartnershipIDs.PID_AS2));
-    conn.setRequestProperty (CAS2Header.AS2_FROM, partnership.getSenderID (CPartnershipIDs.PID_AS2));
+    conn.setRequestProperty (CAS2Header.HEADER_AS2_TO, partnership.getReceiverID (CPartnershipIDs.PID_AS2));
+    conn.setRequestProperty (CAS2Header.HEADER_AS2_FROM, partnership.getSenderID (CPartnershipIDs.PID_AS2));
     conn.setRequestProperty ("Subject", msg.getSubject ());
     conn.setRequestProperty ("From", partnership.getSenderID (Partnership.PID_EMAIL));
 

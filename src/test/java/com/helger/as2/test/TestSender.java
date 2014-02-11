@@ -97,8 +97,8 @@ public class TestSender extends AS2SenderModule
       msg.getMDN ().setData (part);
 
       // get the MDN partnership info
-      mdn.getPartnership ().setSenderID (CPartnershipIDs.PID_AS2, mdn.getHeader (CAS2Header.AS2_FROM));
-      mdn.getPartnership ().setReceiverID (CPartnershipIDs.PID_AS2, mdn.getHeader (CAS2Header.AS2_TO));
+      mdn.getPartnership ().setSenderID (CPartnershipIDs.PID_AS2, mdn.getHeader (CAS2Header.HEADER_AS2_FROM));
+      mdn.getPartnership ().setReceiverID (CPartnershipIDs.PID_AS2, mdn.getHeader (CAS2Header.HEADER_AS2_TO));
       if (false)
         getSession ().getPartnershipFactory ().updatePartnership (mdn, false);
 
