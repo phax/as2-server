@@ -168,7 +168,7 @@ public class SocketCommandProcessor extends AbstractCommandProcessor
               params.add (cmdTkn.nextToken ());
             }
 
-            ICommand cmd = getCommand (commandName);
+            final ICommand cmd = getCommand (commandName);
 
             if (cmd != null)
             {
@@ -187,13 +187,9 @@ public class SocketCommandProcessor extends AbstractCommandProcessor
             else
             {
               m_aWriter.write (StreamCommandProcessor.COMMAND_NOT_FOUND + "> " + commandName + "\r\n");
-              final List <ICommand> l = getCommands ();
               m_aWriter.write ("List of commands:" + "\r\n");
-              for (int i = 0; i < l.size (); i++)
-              {
-                cmd = l.get (i);
-                m_aWriter.write (cmd.getName () + "\r\n");
-              }
+              for (final ICommand aCurCmd : getAllCommands ())
+                m_aWriter.write (aCurCmd.getName () + "\r\n");
             }
           }
         }

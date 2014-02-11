@@ -96,7 +96,7 @@ public class XMLPartnershipFactory extends AbstractPartnershipFactory implements
       if (m_aFileMonitor != null)
         m_aFileMonitor.stop ();
 
-      final int interval = getParameterInt (PARAM_INTERVAL);
+      final int interval = getParameterIntRequired (PARAM_INTERVAL);
       final File file = new File (getFilename ());
       m_aFileMonitor = new FileMonitor (file, interval);
       m_aFileMonitor.addListener (this);

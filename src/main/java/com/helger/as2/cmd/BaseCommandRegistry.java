@@ -36,24 +36,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
-import com.helger.as2lib.AbstractBaseComponent;
+import com.helger.as2lib.AbstractDynamicComponent;
+import com.phloc.commons.annotations.ReturnsMutableCopy;
+import com.phloc.commons.collections.ContainerHelper;
 
-public class BaseCommandRegistry extends AbstractBaseComponent implements ICommandRegistry
+public class BaseCommandRegistry extends AbstractDynamicComponent implements ICommandRegistry
 {
-  private List <ICommand> m_aCommands;
+  private final List <ICommand> m_aCommands = new ArrayList <ICommand> ();
 
-  @Nonnull
-  public List <ICommand> getCommands ()
+  public void clearCommands ()
   {
-    if (m_aCommands == null)
-      m_aCommands = new ArrayList <ICommand> ();
-    return m_aCommands;
+    m_aCommands.clear ();
   }
 
-  public void setCommands (@Nullable final List <ICommand> commands)
+  @Nonnull
+  @ReturnsMutableCopy
+  public List <ICommand> getAllCommands ()
   {
-    m_aCommands = commands;
+    return ContainerHelper.newList (m_aCommands);
+  }
+
+  public void addCommand (final ICommand aCmd)
+  {
+    m_aCommands.add (aCmd);
   }
 }

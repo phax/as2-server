@@ -32,12 +32,12 @@
  */
 package com.helger.as2.cmd;
 
-import com.helger.as2lib.AbstractBaseComponent;
+import com.helger.as2lib.AbstractDynamicComponent;
 import com.helger.as2lib.ISession;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.util.IStringMap;
 
-public abstract class AbstractCommand extends AbstractBaseComponent implements ICommand
+public abstract class AbstractCommand extends AbstractDynamicComponent implements ICommand
 {
   public static final String PARAM_NAME = "name";
   public static final String PARAM_DESCRIPTION = "description";

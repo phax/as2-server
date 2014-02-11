@@ -62,7 +62,7 @@ public class XMLCommandRegistry extends BaseCommandRegistry
     final IMicroDocument document = MicroReader.readMicroXML (in);
     final IMicroElement root = document.getDocumentElement ();
 
-    getCommands ().clear ();
+    clearCommands ();
 
     for (final IMicroElement rootNode : root.getAllChildElements ())
     {
@@ -101,7 +101,7 @@ public class XMLCommandRegistry extends BaseCommandRegistry
     }
     else
     {
-      getCommands ().add (cmd);
+      addCommand (cmd);
     }
   }
 
@@ -116,7 +116,7 @@ public class XMLCommandRegistry extends BaseCommandRegistry
     }
     else
     {
-      getCommands ().add (cmd);
+      addCommand (cmd);
     }
 
     for (final IMicroElement childNode : node.getAllChildElements ())

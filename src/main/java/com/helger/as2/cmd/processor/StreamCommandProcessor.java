@@ -48,6 +48,7 @@ import com.helger.as2.cmd.ICommand;
 import com.helger.as2.util.CommandTokenizer;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.exception.WrappedException;
+import com.phloc.commons.concurrent.ThreadUtils;
 import com.phloc.commons.string.StringHelper;
 
 /**
@@ -127,7 +128,7 @@ public class StreamCommandProcessor extends AbstractCommandProcessor
               params.add (strTkn.nextToken ());
             }
 
-            ICommand cmd = getCommand (commandName);
+            final ICommand cmd = getCommand (commandName);
 
             if (cmd != null)
             {
@@ -146,14 +147,10 @@ public class StreamCommandProcessor extends AbstractCommandProcessor
             else
             {
               writeLine (COMMAND_NOT_FOUND + "> " + commandName);
-              final List <ICommand> l = getCommands ();
               writeLine ("List of commands:");
               writeLine (EXIT_COMMAND);
-              for (int i = 0; i < l.size (); i++)
-              {
-                cmd = l.get (i);
-                writeLine (cmd.getName ());
-              }
+              for (final ICommand aCurCmd : getAllCommands ())
+                writeLine (aCurCmd.getName ());
             }
           }
         }
@@ -162,14 +159,8 @@ public class StreamCommandProcessor extends AbstractCommandProcessor
       }
       else
       {
-        try
-        {
-          Thread.sleep (100);
-        }
-        catch (final InterruptedException e)
-        {}
+        ThreadUtils.sleep (100);
       }
-
     }
     catch (final IOException ioe)
     {

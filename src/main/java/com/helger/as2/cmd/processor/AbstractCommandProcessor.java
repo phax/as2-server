@@ -35,6 +35,7 @@ package com.helger.as2.cmd.processor;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.helger.as2.cmd.ICommand;
@@ -44,10 +45,12 @@ import com.helger.as2lib.ISession;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.util.IStringMap;
 import com.helger.as2lib.util.StringMap;
+import com.phloc.commons.annotations.ReturnsMutableCopy;
+import com.phloc.commons.collections.ContainerHelper;
 
 public abstract class AbstractCommandProcessor extends StringMap implements ICommandProcessor, IDynamicComponent, Runnable
 {
-  private List <ICommand> commands;
+  private final List <ICommand> commands = new ArrayList <ICommand> ();
   private boolean terminated = false;
 
   public AbstractCommandProcessor ()
@@ -70,25 +73,19 @@ public abstract class AbstractCommandProcessor extends StringMap implements ICom
   public void init () throws OpenAS2Exception
   {}
 
-  public void setCommands (final List <ICommand> list)
+  @Nonnull
+  @ReturnsMutableCopy
+  public List <ICommand> getAllCommands ()
   {
-    commands = list;
-  }
-
-  public List <ICommand> getCommands ()
-  {
-    if (commands == null)
-      commands = new ArrayList <ICommand> ();
-    return commands;
+    return ContainerHelper.newList (commands);
   }
 
   @Nullable
   public ICommand getCommand (final String name)
   {
-    if (commands != null)
-      for (final ICommand currentCmd : commands)
-        if (currentCmd.getName ().equals (name))
-          return currentCmd;
+    for (final ICommand currentCmd : commands)
+      if (currentCmd.getName ().equals (name))
+        return currentCmd;
     return null;
   }
 
@@ -104,9 +101,7 @@ public abstract class AbstractCommandProcessor extends StringMap implements ICom
 
   public void addCommands (final ICommandRegistry reg)
   {
-    final List <ICommand> regCmds = reg.getCommands ();
-    if (!regCmds.isEmpty ())
-      getCommands ().addAll (regCmds);
+    commands.addAll (reg.getAllCommands ());
   }
 
   public void terminate ()

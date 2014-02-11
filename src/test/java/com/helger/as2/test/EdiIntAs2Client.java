@@ -126,7 +126,6 @@ public class EdiIntAs2Client
                                                                                                 OpenAS2Exception
   {
     final AS2Message aMsg = new AS2Message ();
-
     aMsg.setContentType (aRequest.contentType);
     aMsg.setSubject (aRequest.subject);
     aMsg.setPartnership (aPartnership);

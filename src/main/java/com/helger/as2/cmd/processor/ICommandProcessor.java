@@ -34,13 +34,18 @@ package com.helger.as2.cmd.processor;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import com.helger.as2.cmd.ICommand;
 import com.helger.as2.cmd.ICommandRegistry;
 import com.helger.as2lib.exception.OpenAS2Exception;
+import com.phloc.commons.annotations.ReturnsMutableCopy;
 
 public interface ICommandProcessor
 {
-  List <ICommand> getCommands ();
+  @Nonnull
+  @ReturnsMutableCopy
+  List <ICommand> getAllCommands ();
 
   boolean isTerminated ();
 

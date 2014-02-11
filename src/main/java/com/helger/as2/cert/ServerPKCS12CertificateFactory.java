@@ -78,7 +78,7 @@ public class ServerPKCS12CertificateFactory extends PKCS12CertificateFactory imp
       if (m_aFileMonitor != null)
         m_aFileMonitor.stop ();
 
-      final int nInterval = getParameterInt (PARAM_INTERVAL);
+      final int nInterval = getParameterIntRequired (PARAM_INTERVAL);
       final File file = new File (getFilename ());
       m_aFileMonitor = new FileMonitor (file, nInterval);
       m_aFileMonitor.addListener (this);

@@ -34,9 +34,14 @@ package com.helger.as2.cmd;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import com.helger.as2lib.IDynamicComponent;
+import com.phloc.commons.annotations.ReturnsMutableCopy;
 
 public interface ICommandRegistry extends IDynamicComponent
 {
-  List <ICommand> getCommands ();
+  @Nonnull
+  @ReturnsMutableCopy
+  List <ICommand> getAllCommands ();
 }
