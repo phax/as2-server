@@ -43,6 +43,7 @@ import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.exception.WrappedException;
 import com.helger.as2lib.util.StringMap;
 import com.helger.as2lib.util.XMLUtil;
+import com.phloc.commons.lang.GenericReflection;
 import com.phloc.commons.microdom.IMicroElement;
 
 public final class ServerXMLUtil
@@ -62,7 +63,7 @@ public final class ServerXMLUtil
       final Class <?> objClass = Class.forName (className);
       if (!IDynamicComponent.class.isAssignableFrom (objClass))
         throw new OpenAS2Exception ("Class " + className + " must implement " + IDynamicComponent.class.getName ());
-      final IDynamicComponent obj = (IDynamicComponent) objClass.newInstance ();
+      final IDynamicComponent obj = (IDynamicComponent) GenericReflection.newInstance (objClass);
 
       final StringMap parameters = XMLUtil.getAttrsWithLowercaseName (aElement);
       if (session instanceof XMLSession)
