@@ -46,21 +46,24 @@ import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.util.IStringMap;
 import com.helger.as2lib.util.StringMap;
 import com.phloc.commons.annotations.ReturnsMutableCopy;
+import com.phloc.commons.annotations.UnsupportedOperation;
 import com.phloc.commons.collections.ContainerHelper;
 
 public abstract class AbstractCommandProcessor extends StringMap implements ICommandProcessor, IDynamicComponent, Runnable
 {
-  private final List <ICommand> commands = new ArrayList <ICommand> ();
-  private boolean terminated = false;
+  private final List <ICommand> m_aCommands = new ArrayList <ICommand> ();
+  private boolean m_bTerminated = false;
 
   public AbstractCommandProcessor ()
   {}
 
+  @Nullable
   public String getName ()
   {
     return null;
   }
 
+  @Nullable
   public ISession getSession ()
   {
     // TODO Auto-generated method stub
@@ -77,13 +80,13 @@ public abstract class AbstractCommandProcessor extends StringMap implements ICom
   @ReturnsMutableCopy
   public List <ICommand> getAllCommands ()
   {
-    return ContainerHelper.newList (commands);
+    return ContainerHelper.newList (m_aCommands);
   }
 
   @Nullable
   public ICommand getCommand (final String name)
   {
-    for (final ICommand currentCmd : commands)
+    for (final ICommand currentCmd : m_aCommands)
       if (currentCmd.getName ().equals (name))
         return currentCmd;
     return null;
@@ -91,21 +94,22 @@ public abstract class AbstractCommandProcessor extends StringMap implements ICom
 
   public boolean isTerminated ()
   {
-    return terminated;
+    return m_bTerminated;
   }
 
+  @UnsupportedOperation
   public void processCommand () throws OpenAS2Exception
   {
     throw new OpenAS2Exception ("super class method call, not initialized correctly");
   }
 
-  public void addCommands (final ICommandRegistry reg)
+  public void addCommands (@Nonnull final ICommandRegistry reg)
   {
-    commands.addAll (reg.getAllCommands ());
+    m_aCommands.addAll (reg.getAllCommands ());
   }
 
   public void terminate ()
   {
-    terminated = true;
+    m_bTerminated = true;
   }
 }

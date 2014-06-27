@@ -40,6 +40,7 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.net.ssl.SSLServerSocket;
 import javax.net.ssl.SSLServerSocketFactory;
 import javax.net.ssl.SSLSocket;
@@ -78,18 +79,17 @@ public class SocketCommandProcessor extends AbstractCommandProcessor
   {}
 
   @Override
-  public void initDynamicComponent (final ISession session, final IStringMap parameters) throws OpenAS2Exception
+  public void initDynamicComponent (final ISession aSession, @Nonnull final IStringMap aParameters) throws OpenAS2Exception
   {
-    final String p = parameters.getAttributeAsString ("portid");
+    final String p = aParameters.getAttributeAsString ("portid");
     try
     {
-      final int port = Integer.parseInt (p);
+      final int nPort = Integer.parseInt (p);
 
-      final SSLServerSocketFactory sslserversocketfactory = (SSLServerSocketFactory) SSLServerSocketFactory.getDefault ();
-      m_aSSLServerSocket = (SSLServerSocket) sslserversocketfactory.createServerSocket (port);
+      final SSLServerSocketFactory aSSLServerSocketFactory = (SSLServerSocketFactory) SSLServerSocketFactory.getDefault ();
+      m_aSSLServerSocket = (SSLServerSocket) aSSLServerSocketFactory.createServerSocket (nPort);
       final String [] enabledCipherSuites = { "SSL_DH_anon_WITH_RC4_128_MD5" };
       m_aSSLServerSocket.setEnabledCipherSuites (enabledCipherSuites);
-
     }
     catch (final IOException e)
     {
@@ -101,11 +101,11 @@ public class SocketCommandProcessor extends AbstractCommandProcessor
       e.printStackTrace ();
       throw new OpenAS2Exception ("error converting portid parameter '" + p + "': " + e);
     }
-    m_sUserID = parameters.getAttributeAsString ("userid");
+    m_sUserID = aParameters.getAttributeAsString ("userid");
     if (StringHelper.hasNoText (m_sUserID))
       throw new OpenAS2Exception ("missing userid parameter");
 
-    m_sPassword = parameters.getAttributeAsString ("password");
+    m_sPassword = aParameters.getAttributeAsString ("password");
     if (StringHelper.hasNoText (m_sPassword))
       throw new OpenAS2Exception ("missing password parameter");
 

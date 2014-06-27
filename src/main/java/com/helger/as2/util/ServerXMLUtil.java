@@ -52,29 +52,29 @@ public final class ServerXMLUtil
   {}
 
   @Nonnull
-  public static IDynamicComponent createComponent (final IMicroElement aElement, final ISession session) throws OpenAS2Exception
+  public static IDynamicComponent createComponent (@Nonnull final IMicroElement aElement, final ISession session) throws OpenAS2Exception
   {
-    final String className = aElement.getAttribute ("classname");
-    if (className == null)
+    final String sClassName = aElement.getAttribute ("classname");
+    if (sClassName == null)
       throw new OpenAS2Exception ("Missing classname");
 
     try
     {
-      final Class <?> objClass = Class.forName (className);
-      if (!IDynamicComponent.class.isAssignableFrom (objClass))
-        throw new OpenAS2Exception ("Class " + className + " must implement " + IDynamicComponent.class.getName ());
-      final IDynamicComponent obj = (IDynamicComponent) GenericReflection.newInstance (objClass);
+      final Class <?> aObjClass = Class.forName (sClassName);
+      if (!IDynamicComponent.class.isAssignableFrom (aObjClass))
+        throw new OpenAS2Exception ("Class " + sClassName + " must implement " + IDynamicComponent.class.getName ());
+      final IDynamicComponent aObj = (IDynamicComponent) GenericReflection.newInstance (aObjClass);
 
-      final StringMap parameters = XMLUtil.getAttrsWithLowercaseName (aElement);
+      final StringMap aParameters = XMLUtil.getAttrsWithLowercaseName (aElement);
       if (session instanceof XMLSession)
-        updateDirectories (((XMLSession) session).getBaseDirectory (), parameters);
-      obj.initDynamicComponent (session, parameters);
+        updateDirectories (((XMLSession) session).getBaseDirectory (), aParameters);
+      aObj.initDynamicComponent (session, aParameters);
 
-      return obj;
+      return aObj;
     }
     catch (final Exception e)
     {
-      throw new WrappedException ("Error creating component: " + className, e);
+      throw new WrappedException ("Error creating component: " + sClassName, e);
     }
   }
 

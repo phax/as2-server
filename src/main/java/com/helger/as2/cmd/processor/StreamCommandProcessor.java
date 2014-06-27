@@ -39,6 +39,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -106,47 +107,43 @@ public class StreamCommandProcessor extends AbstractCommandProcessor
     try
     {
 
-      final String str = readLine ();
-      if (str != null)
+      final String sLine = readLine ();
+      if (sLine != null)
       {
-        final CommandTokenizer strTkn = new CommandTokenizer (str);
-
-        if (strTkn.hasMoreTokens ())
+        final CommandTokenizer aTokenizer = new CommandTokenizer (sLine);
+        if (aTokenizer.hasMoreTokens ())
         {
-          final String commandName = strTkn.nextToken ().toLowerCase ();
+          final String sCommandName = aTokenizer.nextToken ().toLowerCase (Locale.US);
 
-          if (commandName.equals (EXIT_COMMAND))
+          if (sCommandName.equals (EXIT_COMMAND))
           {
             terminate ();
           }
           else
           {
-            final List <String> params = new ArrayList <String> ();
-
-            while (strTkn.hasMoreTokens ())
+            final List <String> aParams = new ArrayList <String> ();
+            while (aTokenizer.hasMoreTokens ())
             {
-              params.add (strTkn.nextToken ());
+              aParams.add (aTokenizer.nextToken ());
             }
 
-            final ICommand cmd = getCommand (commandName);
-
-            if (cmd != null)
+            final ICommand aCommand = getCommand (sCommandName);
+            if (aCommand != null)
             {
-              final CommandResult result = cmd.execute (params.toArray ());
-
-              if (result.getType () == CommandResult.TYPE_OK)
+              final CommandResult aResult = aCommand.execute (aParams.toArray ());
+              if (aResult.getType () == CommandResult.TYPE_OK)
               {
-                writeLine (result.toString ());
+                writeLine (aResult.toString ());
               }
               else
               {
                 writeLine (COMMAND_ERROR);
-                writeLine (result.getResult ());
+                writeLine (aResult.getResult ());
               }
             }
             else
             {
-              writeLine (COMMAND_NOT_FOUND + "> " + commandName);
+              writeLine (COMMAND_NOT_FOUND + "> " + sCommandName);
               writeLine ("List of commands:");
               writeLine (EXIT_COMMAND);
               for (final ICommand aCurCmd : getAllCommands ())
@@ -162,32 +159,31 @@ public class StreamCommandProcessor extends AbstractCommandProcessor
         ThreadUtils.sleep (100);
       }
     }
-    catch (final IOException ioe)
+    catch (final IOException ex)
     {
-      throw new WrappedException (ioe);
+      throw new WrappedException (ex);
     }
   }
 
   @Nullable
   public String readLine () throws IOException
   {
-    final BufferedReader rd = getReader ();
+    final BufferedReader aReader = getReader ();
 
-    return StringHelper.trim (rd.readLine ());
+    return StringHelper.trim (aReader.readLine ());
   }
 
   public void write (final String text) throws IOException
   {
-    final BufferedWriter wr = getWriter ();
-    wr.write (text);
-    wr.flush ();
+    final BufferedWriter aWriter = getWriter ();
+    aWriter.write (text);
+    aWriter.flush ();
   }
 
   public void writeLine (final String line) throws IOException
   {
-    final BufferedWriter wr = getWriter ();
-    wr.write (line + "\r\n");
-    wr.flush ();
+    final BufferedWriter aWriter = getWriter ();
+    aWriter.write (line + "\r\n");
+    aWriter.flush ();
   }
-
 }

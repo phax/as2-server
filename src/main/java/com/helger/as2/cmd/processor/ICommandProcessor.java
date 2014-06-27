@@ -49,7 +49,7 @@ public interface ICommandProcessor
 
   boolean isTerminated ();
 
-  void addCommands (ICommandRegistry reg);
+  void addCommands (@Nonnull ICommandRegistry reg);
 
   void init () throws OpenAS2Exception;
 

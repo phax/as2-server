@@ -34,8 +34,8 @@ package com.helger.as2.cmd.processor;
 
 import java.io.CharArrayWriter;
 import java.io.IOException;
-import java.io.StringReader;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -44,6 +44,8 @@ import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
+
+import com.phloc.commons.io.streams.NonBlockingStringReader;
 
 /**
  * used to parse commands from the socket command processor message format
@@ -84,8 +86,8 @@ public class SocketCommandParser extends DefaultHandler
 
     if (inLine != null)
     {
-      final StringReader sr = new StringReader (inLine);
-      m_aParser.parse (new InputSource (sr), this);
+      final NonBlockingStringReader aReader = new NonBlockingStringReader (inLine);
+      m_aParser.parse (new InputSource (aReader), this);
     }
   }
 
@@ -100,18 +102,21 @@ public class SocketCommandParser extends DefaultHandler
    *        int
    */
   @Override
-  public void characters (final char ch[], final int start, final int length)
+  public void characters (final char [] ch, final int start, final int length)
   {
     m_aContents.write (ch, start, length);
   }
 
   @Override
-  public void startElement (final String uri, final String localName, final String qName, final Attributes attributes) throws SAXException
+  public void startElement (final String sURI,
+                            final String sLocalName,
+                            final String sQName,
+                            final Attributes aAttributes) throws SAXException
   {
-    if (qName.equals ("command"))
+    if (sQName.equals ("command"))
     {
-      m_sUserID = attributes.getValue ("id");
-      m_sPassword = attributes.getValue ("password");
+      m_sUserID = aAttributes.getValue ("id");
+      m_sPassword = aAttributes.getValue ("password");
     }
   }
 
@@ -131,14 +136,13 @@ public class SocketCommandParser extends DefaultHandler
   }
 
   @Override
-  public void endElement (final String uri, final String localName, final String qName) throws SAXException
+  public void endElement (final String sURI, final String sLocalName, @Nonnull final String sQName) throws SAXException
   {
-    if (qName.equals ("command"))
+    if (sQName.equals ("command"))
     {
       m_sCommandText = m_aContents.toString ();
     }
     else
       m_aContents.flush ();
   }
-
 }
