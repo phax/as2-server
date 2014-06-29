@@ -135,7 +135,6 @@ public class XMLPartnershipFactory extends AbstractPartnershipFactory implements
     switch (eventID)
     {
       case IFileMonitorListener.EVENT_MODIFIED:
-
         try
         {
           refresh ();
@@ -177,28 +176,24 @@ public class XMLPartnershipFactory extends AbstractPartnershipFactory implements
     final IMicroDocument document = MicroReader.readMicroXML (in);
     final IMicroElement root = document.getDocumentElement ();
 
-    final Map <String, StringMap> newPartners = new HashMap <String, StringMap> ();
-    final List <Partnership> newPartnerships = new ArrayList <Partnership> ();
+    final Map <String, StringMap> aNewPartners = new HashMap <String, StringMap> ();
+    final List <Partnership> aNewPartnerships = new ArrayList <Partnership> ();
 
-    for (final IMicroElement rootNode : root.getAllChildElements ())
+    for (final IMicroElement eRootNode : root.getAllChildElements ())
     {
-      final String nodeName = rootNode.getTagName ();
+      final String sNodeName = eRootNode.getTagName ();
 
-      if (nodeName.equals ("partner"))
-      {
-        loadPartner (newPartners, rootNode);
-      }
+      if (sNodeName.equals ("partner"))
+        loadPartner (aNewPartners, eRootNode);
       else
-        if (nodeName.equals ("partnership"))
-        {
-          loadPartnership (newPartners, newPartnerships, rootNode);
-        }
+        if (sNodeName.equals ("partnership"))
+          loadPartnership (aNewPartners, aNewPartnerships, eRootNode);
     }
 
     synchronized (this)
     {
-      setPartners (newPartners);
-      setPartnerships (newPartnerships);
+      setPartners (aNewPartners);
+      setPartnerships (aNewPartnerships);
     }
   }
 
