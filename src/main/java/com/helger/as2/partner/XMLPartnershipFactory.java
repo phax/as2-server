@@ -40,6 +40,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,6 +56,7 @@ import com.helger.as2lib.partner.Partnership;
 import com.helger.as2lib.util.IStringMap;
 import com.helger.as2lib.util.StringMap;
 import com.helger.as2lib.util.XMLUtil;
+import com.phloc.commons.annotations.Nonempty;
 import com.phloc.commons.microdom.IMicroDocument;
 import com.phloc.commons.microdom.IMicroElement;
 import com.phloc.commons.microdom.impl.MicroDocument;
@@ -188,6 +191,8 @@ public class XMLPartnershipFactory extends AbstractPartnershipFactory implements
       else
         if (sNodeName.equals ("partnership"))
           loadPartnership (aNewPartners, aNewPartnerships, eRootNode);
+        else
+          s_aLogger.warn ("Invalid element '" + sNodeName + "' in XML partnership file");
     }
 
     synchronized (this)
@@ -203,51 +208,49 @@ public class XMLPartnershipFactory extends AbstractPartnershipFactory implements
     partnership.addAttributes (nodes);
   }
 
-  public void loadPartner (final Map <String, StringMap> partners, final IMicroElement node) throws OpenAS2Exception
+  public void loadPartner (@Nonnull final Map <String, StringMap> aPartners, @Nonnull final IMicroElement aElement) throws OpenAS2Exception
   {
-    final StringMap newPartner = XMLUtil.getAttrsWithLowercaseNameWithRequired (node, "name");
-    final String name = newPartner.getAttributeAsString ("name");
-    if (partners.containsKey (name))
-      throw new OpenAS2Exception ("Partner is defined more than once: " + name);
+    final StringMap aNewPartner = XMLUtil.getAttrsWithLowercaseNameWithRequired (aElement, "name");
+    final String sName = aNewPartner.getAttributeAsString ("name");
+    if (aPartners.containsKey (sName))
+      throw new OpenAS2Exception ("Partner is defined more than once: '" + sName + "'");
 
-    partners.put (name, newPartner);
+    aPartners.put (sName, aNewPartner);
   }
 
   protected void loadPartnerIDs (final Map <String, StringMap> partners,
                                  final String partnershipName,
-                                 final IMicroElement partnershipNode,
-                                 final String partnerType,
+                                 @Nonnull final IMicroElement aElement,
+                                 @Nonnull @Nonempty final String sPartnerType,
                                  final StringMap idMap) throws OpenAS2Exception
   {
-    final IMicroElement partnerNode = partnershipNode.getFirstChildElement (partnerType);
-
-    if (partnerNode == null)
-    {
+    final IMicroElement aPartnerNode = aElement.getFirstChildElement (sPartnerType);
+    if (aPartnerNode == null)
       throw new OpenAS2Exception ("Partnership " + partnershipName + " is missing sender");
-    }
 
-    final IStringMap partnerAttr = XMLUtil.getAttrsWithLowercaseName (partnerNode);
+    final IStringMap aPartnerAttr = XMLUtil.getAttrsWithLowercaseName (aPartnerNode);
 
     // check for a partner name, and look up in partners list if one is found
-    final String partnerName = partnerAttr.getAttributeAsString ("name");
-    if (partnerName != null)
+    final String sPartnerName = aPartnerAttr.getAttributeAsString ("name");
+    if (sPartnerName != null)
     {
-      final IStringMap partner = partners.get (partnerName);
-      if (partner == null)
+      final IStringMap aPartner = partners.get (sPartnerName);
+      if (aPartner == null)
       {
         throw new OpenAS2Exception ("Partnership " +
                                     partnershipName +
                                     " has an undefined " +
-                                    partnerType +
-                                    ": " +
-                                    partnerName);
+                                    sPartnerType +
+                                    ": '" +
+                                    sPartnerName +
+                                    "'");
       }
 
-      idMap.setAttributes (partner.getAllAttributes ());
+      idMap.setAttributes (aPartner.getAllAttributes ());
     }
 
     // copy all other attributes to the partner id map
-    idMap.setAttributes (partnerAttr.getAllAttributes ());
+    idMap.setAttributes (aPartnerAttr.getAllAttributes ());
   }
 
   public void loadPartnership (final Map <String, StringMap> partners,
@@ -265,8 +268,8 @@ public class XMLPartnershipFactory extends AbstractPartnershipFactory implements
     partnership.setName (name);
 
     // load the sender and receiver information
-    loadPartnerIDs (partners, name, node, "sender", partnership.getSenderIDs ());
-    loadPartnerIDs (partners, name, node, "receiver", partnership.getReceiverIDs ());
+    loadPartnerIDs (partners, name, node, "sender", partnership.getSenderIDsDirect ());
+    loadPartnerIDs (partners, name, node, "receiver", partnership.getReceiverIDsDirect ());
 
     // read in the partnership attributes
     loadAttributes (node, partnership);

@@ -37,6 +37,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import javax.annotation.Nonnull;
+
 import com.helger.as2.cmd.CommandManager;
 import com.helger.as2.cmd.ICommandRegistry;
 import com.helger.as2.cmd.ICommandRegistryFactory;
@@ -102,63 +104,51 @@ public class XMLSession extends Session implements ICommandRegistryFactory
     return commandRegistry;
   }
 
-  protected void load (final InputStream in) throws OpenAS2Exception
+  protected void load (@Nonnull final InputStream aIS) throws OpenAS2Exception
   {
-    final IMicroDocument document = MicroReader.readMicroXML (in);
-    final IMicroElement root = document.getDocumentElement ();
+    final IMicroDocument aDoc = MicroReader.readMicroXML (aIS);
+    final IMicroElement eRoot = aDoc.getDocumentElement ();
 
-    for (final IMicroElement rootNode : root.getAllChildElements ())
+    for (final IMicroElement eRootChild : eRoot.getAllChildElements ())
     {
-      final String nodeName = rootNode.getTagName ();
+      final String sNodeName = eRootChild.getTagName ();
 
-      if (nodeName.equals (EL_CERTIFICATES))
-      {
-        loadCertificates (rootNode);
-      }
+      if (sNodeName.equals (EL_CERTIFICATES))
+        loadCertificates (eRootChild);
       else
-        if (nodeName.equals (EL_PROCESSOR))
-        {
-          loadProcessor (rootNode);
-        }
+        if (sNodeName.equals (EL_PROCESSOR))
+          loadProcessor (eRootChild);
         else
-          if (nodeName.equals (EL_CMDPROCESSOR))
-          {
-            loadCommandProcessors (rootNode);
-          }
+          if (sNodeName.equals (EL_CMDPROCESSOR))
+            loadCommandProcessors (eRootChild);
           else
-            if (nodeName.equals (EL_PARTNERSHIPS))
-            {
-              loadPartnerships (rootNode);
-            }
+            if (sNodeName.equals (EL_PARTNERSHIPS))
+              loadPartnerships (eRootChild);
             else
-              if (nodeName.equals (EL_COMMANDS))
-              {
-                loadCommands (rootNode);
-              }
+              if (sNodeName.equals (EL_COMMANDS))
+                loadCommands (eRootChild);
               else
-              {
-                throw new OpenAS2Exception ("Undefined tag: " + nodeName);
-              }
+                throw new OpenAS2Exception ("Undefined tag: " + sNodeName);
     }
   }
 
-  protected void loadCertificates (final IMicroElement rootNode) throws OpenAS2Exception
+  protected void loadCertificates (final IMicroElement aElement) throws OpenAS2Exception
   {
-    final ICertificateFactory certFx = (ICertificateFactory) ServerXMLUtil.createComponent (rootNode, this);
+    final ICertificateFactory certFx = (ICertificateFactory) ServerXMLUtil.createComponent (aElement, this);
     setComponent (ICertificateFactory.COMPID_CERTIFICATE_FACTORY, certFx);
   }
 
-  protected void loadCommands (final IMicroElement rootNode) throws OpenAS2Exception
+  protected void loadCommands (final IMicroElement aElement) throws OpenAS2Exception
   {
-    final ICommandRegistry cmdReg = (ICommandRegistry) ServerXMLUtil.createComponent (rootNode, this);
+    final ICommandRegistry cmdReg = (ICommandRegistry) ServerXMLUtil.createComponent (aElement, this);
     setCommandRegistry (cmdReg);
   }
 
-  protected void loadCommandProcessors (final IMicroElement rootNode) throws OpenAS2Exception
+  protected void loadCommandProcessors (final IMicroElement aElement) throws OpenAS2Exception
   {
     cmdManager = CommandManager.getCmdManager ();
 
-    for (final IMicroElement processor : rootNode.getAllChildElements ("commandProcessor"))
+    for (final IMicroElement processor : aElement.getAllChildElements ("commandProcessor"))
       loadCommandProcessor (cmdManager, processor);
   }
 
@@ -167,11 +157,11 @@ public class XMLSession extends Session implements ICommandRegistryFactory
     return cmdManager;
   }
 
-  protected void loadCommandProcessor (final CommandManager manager, final IMicroElement cmdPrcessorNode) throws OpenAS2Exception
+  protected void loadCommandProcessor (@Nonnull final CommandManager aMgr, final IMicroElement aElement) throws OpenAS2Exception
   {
-    final AbstractCommandProcessor cmdProcesor = (AbstractCommandProcessor) ServerXMLUtil.createComponent (cmdPrcessorNode,
-                                                                                                     this);
-    manager.addProcessor (cmdProcesor);
+    final AbstractCommandProcessor cmdProcesor = (AbstractCommandProcessor) ServerXMLUtil.createComponent (aElement,
+                                                                                                           this);
+    aMgr.addProcessor (cmdProcesor);
   }
 
   protected void loadPartnerships (final IMicroElement rootNode) throws OpenAS2Exception
