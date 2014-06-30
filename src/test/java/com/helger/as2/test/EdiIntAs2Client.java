@@ -122,8 +122,8 @@ public class EdiIntAs2Client
   }
 
   private static IMessage _buildMessage (final Partnership aPartnership, final Request aRequest) throws MessagingException,
-                                                                                                FileNotFoundException,
-                                                                                                OpenAS2Exception
+  FileNotFoundException,
+  OpenAS2Exception
   {
     final AS2Message aMsg = new AS2Message ();
     aMsg.setContentType (aRequest.contentType);
@@ -179,8 +179,7 @@ public class EdiIntAs2Client
   @Nonnull
   private static Partnership _buildPartnership (final ConnectionSettings settings)
   {
-    final Partnership partnership = new Partnership ();
-    partnership.setName (settings.partnershipName);
+    final Partnership partnership = new Partnership (settings.partnershipName);
 
     partnership.setAttribute (CPartnershipIDs.PA_AS2_URL, settings.receiverAs2Url);
     partnership.setReceiverID (CPartnershipIDs.PID_AS2, settings.receiverAs2Id);

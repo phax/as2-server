@@ -32,7 +32,6 @@
  */
 package com.helger.as2.app.partner;
 
-
 import com.helger.as2.cmd.CommandResult;
 import com.helger.as2.partner.XMLPartnershipFactory;
 import com.helger.as2lib.exception.OpenAS2Exception;
@@ -116,7 +115,7 @@ public class AddPartnershipCommand extends AbstractAliasedPartnershipsCommand
 
       }
 
-      ((XMLPartnershipFactory) partFx).loadPartnership (partFx.getPartners (), partFx.getPartnerships (), root);
+      ((XMLPartnershipFactory) partFx).loadPartnership (root, partFx.getPartners (), partFx.getPartnerships ());
 
       return new CommandResult (CommandResult.TYPE_OK);
     }

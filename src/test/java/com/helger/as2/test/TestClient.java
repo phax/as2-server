@@ -113,8 +113,7 @@ public class TestClient
 
     final TestSender service = new TestSender ();
 
-    final Partnership partnership = new Partnership ();
-    partnership.setName ("partnership name");
+    final Partnership partnership = new Partnership ("partnership name");
     partnership.setAttribute (CPartnershipIDs.PA_AS2_URL, paAs2Url);
     partnership.setReceiverID (CPartnershipIDs.PID_AS2, pidAs2);
     partnership.setReceiverID (CPartnershipIDs.PID_X509_ALIAS, receiverKey);
@@ -125,7 +124,7 @@ public class TestClient
 
     // partnership.setAttribute(AS2Partnership.PA_AS2_MDN_TO,"http://localhost:10080");
     partnership.setAttribute (CPartnershipIDs.PA_AS2_MDN_OPTIONS,
-                              "signed-receipt-protocol=optional, pkcs7-signature; signed-receipt-micalg=optional, sha1");
+        "signed-receipt-protocol=optional, pkcs7-signature; signed-receipt-micalg=optional, sha1");
 
     partnership.setAttribute (CPartnershipIDs.PA_ENCRYPT, "3des");
     partnership.setAttribute (CPartnershipIDs.PA_SIGN, "sha1");
@@ -204,7 +203,7 @@ public class TestClient
     s_aLogger.info ("is requesting  MDN?: " + msg.isRequestingMDN ());
     s_aLogger.info ("is async MDN?: " + msg.isRequestingAsynchMDN ());
     s_aLogger.info ("is rule to recieve MDN active?: " +
-                    msg.getPartnership ().getAttribute (CPartnershipIDs.PA_AS2_RECEIPT_OPTION));
+        msg.getPartnership ().getAttribute (CPartnershipIDs.PA_AS2_RECEIPT_OPTION));
 
     try
     {

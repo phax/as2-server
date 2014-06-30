@@ -56,7 +56,6 @@ import com.helger.as2lib.partner.Partnership;
 import com.helger.as2lib.util.IStringMap;
 import com.helger.as2lib.util.StringMap;
 import com.helger.as2lib.util.XMLUtil;
-import com.phloc.commons.annotations.Nonempty;
 import com.phloc.commons.microdom.IMicroDocument;
 import com.phloc.commons.microdom.IMicroElement;
 import com.phloc.commons.microdom.impl.MicroDocument;
@@ -67,7 +66,7 @@ import com.phloc.commons.string.StringHelper;
 /**
  * original author unknown this release added logic to store partnerships and
  * provide methods for partner/partnership command line processor
- * 
+ *
  * @author joseph mcverry
  */
 public class XMLPartnershipFactory extends AbstractPartnershipFactory implements IRefreshablePartnershipFactory, IFileMonitorListener
@@ -123,13 +122,11 @@ public class XMLPartnershipFactory extends AbstractPartnershipFactory implements
     m_aPartners = map;
   }
 
+  @Nonnull
   public Map <String, StringMap> getPartners ()
   {
     if (m_aPartners == null)
-    {
       m_aPartners = new HashMap <String, StringMap> ();
-    }
-
     return m_aPartners;
   }
 
@@ -187,10 +184,10 @@ public class XMLPartnershipFactory extends AbstractPartnershipFactory implements
       final String sNodeName = eRootNode.getTagName ();
 
       if (sNodeName.equals ("partner"))
-        loadPartner (aNewPartners, eRootNode);
+        loadPartner (eRootNode, aNewPartners);
       else
         if (sNodeName.equals ("partnership"))
-          loadPartnership (aNewPartners, aNewPartnerships, eRootNode);
+          loadPartnership (eRootNode, aNewPartners, aNewPartnerships);
         else
           s_aLogger.warn ("Invalid element '" + sNodeName + "' in XML partnership file");
     }
@@ -205,10 +202,10 @@ public class XMLPartnershipFactory extends AbstractPartnershipFactory implements
   protected void loadAttributes (final IMicroElement node, final Partnership partnership) throws OpenAS2Exception
   {
     final IStringMap nodes = XMLUtil.mapAttributeNodes (node, "attribute", "name", "value");
-    partnership.addAttributes (nodes);
+    partnership.addAllAttributes (nodes);
   }
 
-  public void loadPartner (@Nonnull final Map <String, StringMap> aPartners, @Nonnull final IMicroElement aElement) throws OpenAS2Exception
+  public void loadPartner (@Nonnull final IMicroElement aElement, @Nonnull final Map <String, StringMap> aPartners) throws OpenAS2Exception
   {
     final StringMap aNewPartner = XMLUtil.getAttrsWithLowercaseNameWithRequired (aElement, "name");
     final String sName = aNewPartner.getAttributeAsString ("name");
@@ -218,15 +215,15 @@ public class XMLPartnershipFactory extends AbstractPartnershipFactory implements
     aPartners.put (sName, aNewPartner);
   }
 
-  protected void loadPartnerIDs (final Map <String, StringMap> partners,
-                                 final String partnershipName,
-                                 @Nonnull final IMicroElement aElement,
-                                 @Nonnull @Nonempty final String sPartnerType,
-                                 final StringMap idMap) throws OpenAS2Exception
+  protected void loadPartnerIDs (@Nonnull final IMicroElement aElement,
+                                 @Nonnull final Map <String, StringMap> aAllPartners,
+                                 @Nonnull final Partnership aPartnership,
+                                 final boolean bIsSender) throws OpenAS2Exception
   {
+    final String sPartnerType = bIsSender ? "sender" : "receiver";
     final IMicroElement aPartnerNode = aElement.getFirstChildElement (sPartnerType);
     if (aPartnerNode == null)
-      throw new OpenAS2Exception ("Partnership " + partnershipName + " is missing sender");
+      throw new OpenAS2Exception ("Partnership '" + aPartnership.getName () + "' is missing sender");
 
     final IStringMap aPartnerAttr = XMLUtil.getAttrsWithLowercaseName (aPartnerNode);
 
@@ -234,65 +231,69 @@ public class XMLPartnershipFactory extends AbstractPartnershipFactory implements
     final String sPartnerName = aPartnerAttr.getAttributeAsString ("name");
     if (sPartnerName != null)
     {
-      final IStringMap aPartner = partners.get (sPartnerName);
+      final IStringMap aPartner = aAllPartners.get (sPartnerName);
       if (aPartner == null)
       {
-        throw new OpenAS2Exception ("Partnership " +
-                                    partnershipName +
-                                    " has an undefined " +
-                                    sPartnerType +
-                                    ": '" +
-                                    sPartnerName +
-                                    "'");
+        throw new OpenAS2Exception ("Partnership '" +
+            aPartnership.getName () +
+            "' has an undefined " +
+            sPartnerType +
+            ": '" +
+            sPartnerName +
+            "'");
       }
 
-      idMap.addAttributes (aPartner.getAllAttributes ());
+      if (bIsSender)
+        aPartnership.addSenderIDs (aPartner.getAllAttributes ());
+      else
+        aPartnership.addReceiverIDs (aPartner.getAllAttributes ());
     }
 
     // copy all other attributes to the partner id map
-    idMap.addAttributes (aPartnerAttr.getAllAttributes ());
+    if (bIsSender)
+      aPartnership.addSenderIDs (aPartnerAttr.getAllAttributes ());
+    else
+      aPartnership.addReceiverIDs (aPartnerAttr.getAllAttributes ());
   }
 
-  public void loadPartnership (final Map <String, StringMap> partners,
-                               final List <Partnership> partnerships,
-                               final IMicroElement node) throws OpenAS2Exception
+  public void loadPartnership (@Nonnull final IMicroElement aElement,
+                               @Nonnull final Map <String, StringMap> aAllPartners,
+                               @Nonnull final List <Partnership> aAllPartnerships) throws OpenAS2Exception
   {
-    final Partnership partnership = new Partnership ();
+    final IStringMap aPartnershipAttrs = XMLUtil.getAttrsWithLowercaseNameWithRequired (aElement, "name");
+    final String sPartnershipName = aPartnershipAttrs.getAttributeAsString ("name");
 
-    final IStringMap psAttributes = XMLUtil.getAttrsWithLowercaseNameWithRequired (node, "name");
-    final String name = psAttributes.getAttributeAsString ("name");
+    if (getPartnership (aAllPartnerships, sPartnershipName) != null)
+      throw new OpenAS2Exception ("Partnership is defined more than once: " + sPartnershipName);
 
-    if (getPartnership (partnerships, name) != null)
-      throw new OpenAS2Exception ("Partnership is defined more than once: " + name);
-
-    partnership.setName (name);
+    final Partnership aPartnership = new Partnership (sPartnershipName);
 
     // load the sender and receiver information
-    loadPartnerIDs (partners, name, node, "sender", partnership.getSenderIDsDirect ());
-    loadPartnerIDs (partners, name, node, "receiver", partnership.getReceiverIDsDirect ());
+    loadPartnerIDs (aElement, aAllPartners, aPartnership, true);
+    loadPartnerIDs (aElement, aAllPartners, aPartnership, false);
 
     // read in the partnership attributes
-    loadAttributes (node, partnership);
+    loadAttributes (aElement, aPartnership);
 
     // add the partnership to the list of available partnerships
-    partnerships.add (partnership);
+    aAllPartnerships.add (aPartnership);
   }
 
   public void storePartnership () throws OpenAS2Exception
   {
-    final String fn = getFilename ();
+    final String sFilename = getFilename ();
 
     long nIndex = 0;
     File f;
     do
     {
-      f = new File (fn + '.' + StringHelper.getLeadingZero (nIndex, 7));
+      f = new File (sFilename + '.' + StringHelper.getLeadingZero (nIndex, 7));
       nIndex++;
     } while (f.exists ());
 
-    s_aLogger.info ("backing up " + fn + " to " + f.getName ());
+    s_aLogger.info ("backing up " + sFilename + " to " + f.getName ());
 
-    final File fr = new File (fn);
+    final File fr = new File (sFilename);
     fr.renameTo (f);
 
     final IMicroDocument aDoc = new MicroDocument ();
@@ -315,12 +316,12 @@ public class XMLPartnershipFactory extends AbstractPartnershipFactory implements
       final IMicroElement eReceiver = ePartnership.appendElement ("receiver");
       eReceiver.setAttribute ("name", partnership.getReceiverID ("name"));
 
-      for (final Map.Entry <String, String> aAttr : partnership.getAttributes ())
+      for (final Map.Entry <String, String> aAttr : partnership.getAllAttributes ())
         ePartnership.appendElement ("attribute")
-                    .setAttribute ("name", aAttr.getKey ())
-                    .setAttribute ("value", aAttr.getValue ());
+        .setAttribute ("name", aAttr.getKey ())
+        .setAttribute ("value", aAttr.getValue ());
     }
-    if (MicroWriter.writeToFile (aDoc, new File (fn)).isFailure ())
-      throw new WrappedException ("Failed to write to file " + fn);
+    if (MicroWriter.writeToFile (aDoc, new File (sFilename)).isFailure ())
+      throw new WrappedException ("Failed to write to file " + sFilename);
   }
 }

@@ -109,8 +109,8 @@ public class ImportCertCommand extends AbstractAliasedCertCommand
   }
 
   protected CommandResult importCert (final IAliasedCertificateFactory certFx, final String alias, final String filename) throws IOException,
-                                                                                                                        CertificateException,
-                                                                                                                        OpenAS2Exception
+                                                                                                                         CertificateException,
+                                                                                                                         OpenAS2Exception
   {
     final FileInputStream fis = new FileInputStream (filename);
     final BufferedInputStream bis = new BufferedInputStream (fis);
