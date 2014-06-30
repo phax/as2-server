@@ -235,12 +235,12 @@ public class XMLPartnershipFactory extends AbstractPartnershipFactory implements
       if (aPartner == null)
       {
         throw new OpenAS2Exception ("Partnership '" +
-            aPartnership.getName () +
-            "' has an undefined " +
-            sPartnerType +
-            ": '" +
-            sPartnerName +
-            "'");
+                                    aPartnership.getName () +
+                                    "' has an undefined " +
+                                    sPartnerType +
+                                    ": '" +
+                                    sPartnerName +
+                                    "'");
       }
 
       if (bIsSender)
@@ -318,8 +318,8 @@ public class XMLPartnershipFactory extends AbstractPartnershipFactory implements
 
       for (final Map.Entry <String, String> aAttr : partnership.getAllAttributes ())
         ePartnership.appendElement ("attribute")
-        .setAttribute ("name", aAttr.getKey ())
-        .setAttribute ("value", aAttr.getValue ());
+                    .setAttribute ("name", aAttr.getKey ())
+                    .setAttribute ("value", aAttr.getValue ());
     }
     if (MicroWriter.writeToFile (aDoc, new File (sFilename)).isFailure ())
       throw new WrappedException ("Failed to write to file " + sFilename);
