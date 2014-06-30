@@ -246,11 +246,11 @@ public class XMLPartnershipFactory extends AbstractPartnershipFactory implements
                                     "'");
       }
 
-      idMap.setAttributes (aPartner.getAllAttributes ());
+      idMap.addAttributes (aPartner.getAllAttributes ());
     }
 
     // copy all other attributes to the partner id map
-    idMap.setAttributes (aPartnerAttr.getAllAttributes ());
+    idMap.addAttributes (aPartnerAttr.getAllAttributes ());
   }
 
   public void loadPartnership (final Map <String, StringMap> partners,
