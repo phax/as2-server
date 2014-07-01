@@ -57,7 +57,7 @@ import com.phloc.commons.microdom.serialize.MicroReader;
 
 /**
  * original author unknown in this release added command registry methods
- * 
+ *
  * @author joseph mcverry
  */
 public class XMLSession extends Session implements ICommandRegistryFactory
@@ -182,7 +182,7 @@ public class XMLSession extends Session implements ICommandRegistryFactory
   protected void loadProcessorModule (final IProcessor proc, final IMicroElement moduleNode) throws OpenAS2Exception
   {
     final IProcessorModule procmod = (IProcessorModule) ServerXMLUtil.createComponent (moduleNode, this);
-    proc.getModules ().add (procmod);
+    proc.addModule (procmod);
   }
 
   public String getBaseDirectory ()
