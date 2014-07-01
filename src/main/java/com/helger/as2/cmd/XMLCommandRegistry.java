@@ -35,6 +35,9 @@ package com.helger.as2.cmd;
 import java.io.FileInputStream;
 import java.io.InputStream;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.helger.as2.util.ServerXMLUtil;
 import com.helger.as2lib.ISession;
 import com.helger.as2lib.exception.OpenAS2Exception;
@@ -50,7 +53,7 @@ public class XMLCommandRegistry extends BaseCommandRegistry
   public static final String PARAM_FILENAME = "filename";
 
   @Override
-  public void initDynamicComponent (final ISession session, final IStringMap parameters) throws OpenAS2Exception
+  public void initDynamicComponent (@Nonnull final ISession session, @Nullable final IStringMap parameters) throws OpenAS2Exception
   {
     super.initDynamicComponent (session, parameters);
 

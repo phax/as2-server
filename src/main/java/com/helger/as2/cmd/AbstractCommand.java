@@ -32,6 +32,9 @@
  */
 package com.helger.as2.cmd;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.helger.as2lib.AbstractDynamicComponent;
 import com.helger.as2lib.ISession;
 import com.helger.as2lib.exception.OpenAS2Exception;
@@ -44,7 +47,7 @@ public abstract class AbstractCommand extends AbstractDynamicComponent implement
   public static final String PARAM_USAGE = "usage";
 
   @Override
-  public void initDynamicComponent (final ISession session, final IStringMap parameters) throws OpenAS2Exception
+  public void initDynamicComponent (@Nonnull final ISession session, @Nullable final IStringMap parameters) throws OpenAS2Exception
   {
     super.initDynamicComponent (session, parameters);
     if (getName () == null)

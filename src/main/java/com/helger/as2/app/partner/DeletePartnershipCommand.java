@@ -32,8 +32,6 @@
  */
 package com.helger.as2.app.partner;
 
-import java.util.Iterator;
-
 import com.helger.as2.cmd.CommandResult;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.partner.IPartnershipFactory;
@@ -41,7 +39,7 @@ import com.helger.as2lib.partner.Partnership;
 
 /**
  * removes a partnership entry in partnership store
- * 
+ *
  * @author joseph mcverry
  */
 public class DeletePartnershipCommand extends AbstractAliasedPartnershipsCommand
@@ -76,17 +74,12 @@ public class DeletePartnershipCommand extends AbstractAliasedPartnershipsCommand
     {
 
       final String name = params[0].toString ();
-      final Iterator <Partnership> parts = partFx.getPartnerships ().iterator ();
-
-      while (parts.hasNext ())
-      {
-        final Partnership part = parts.next ();
+      for (final Partnership part : partFx.getAllPartnerships ())
         if (part.getName ().equals (name))
         {
-          partFx.getPartnerships ().remove (part);
+          partFx.removePartnership (part);
           return new CommandResult (CommandResult.TYPE_OK, "deleted " + name);
         }
-      }
 
       return new CommandResult (CommandResult.TYPE_ERROR, "Unknown partnership name");
     }

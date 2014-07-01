@@ -41,6 +41,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -150,7 +151,7 @@ public class XMLPartnershipFactory extends AbstractPartnershipFactory implements
   }
 
   @Override
-  public void initDynamicComponent (final ISession session, final IStringMap parameters) throws OpenAS2Exception
+  public void initDynamicComponent (@Nonnull final ISession session, @Nullable final IStringMap parameters) throws OpenAS2Exception
   {
     super.initDynamicComponent (session, parameters);
 
@@ -187,7 +188,10 @@ public class XMLPartnershipFactory extends AbstractPartnershipFactory implements
         loadPartner (eRootNode, aNewPartners);
       else
         if (sNodeName.equals ("partnership"))
-          loadPartnership (eRootNode, aNewPartners, aNewPartnerships);
+        {
+          final Partnership aPartnership = loadPartnership (eRootNode, aNewPartners, aNewPartnerships);
+          aNewPartnerships.add (aPartnership);
+        }
         else
           s_aLogger.warn ("Invalid element '" + sNodeName + "' in XML partnership file");
     }
@@ -256,14 +260,15 @@ public class XMLPartnershipFactory extends AbstractPartnershipFactory implements
       aPartnership.addReceiverIDs (aPartnerAttr.getAllAttributes ());
   }
 
-  public void loadPartnership (@Nonnull final IMicroElement aElement,
-                               @Nonnull final Map <String, StringMap> aAllPartners,
-                               @Nonnull final List <Partnership> aAllPartnerships) throws OpenAS2Exception
+  @Nonnull
+  public Partnership loadPartnership (@Nonnull final IMicroElement aElement,
+                                      @Nonnull final Map <String, StringMap> aAllPartners,
+                                      @Nonnull final List <Partnership> aAllPartnerships) throws OpenAS2Exception
   {
     final IStringMap aPartnershipAttrs = XMLUtil.getAttrsWithLowercaseNameWithRequired (aElement, "name");
     final String sPartnershipName = aPartnershipAttrs.getAttributeAsString ("name");
 
-    if (getPartnership (aAllPartnerships, sPartnershipName) != null)
+    if (getPartnershipOfName (aAllPartnerships, sPartnershipName) != null)
       throw new OpenAS2Exception ("Partnership is defined more than once: " + sPartnershipName);
 
     final Partnership aPartnership = new Partnership (sPartnershipName);
@@ -275,8 +280,7 @@ public class XMLPartnershipFactory extends AbstractPartnershipFactory implements
     // read in the partnership attributes
     loadAttributes (aElement, aPartnership);
 
-    // add the partnership to the list of available partnerships
-    aAllPartnerships.add (aPartnership);
+    return aPartnership;
   }
 
   public void storePartnership () throws OpenAS2Exception
@@ -305,7 +309,7 @@ public class XMLPartnershipFactory extends AbstractPartnershipFactory implements
         ePartner.setAttribute (aAttr.getKey (), aAttr.getValue ());
     }
 
-    for (final Partnership partnership : getPartnerships ())
+    for (final Partnership partnership : getAllPartnerships ())
     {
       final IMicroElement ePartnership = ePartnerships.appendElement ("partnership");
       ePartnership.setAttribute ("name", partnership.getName ());

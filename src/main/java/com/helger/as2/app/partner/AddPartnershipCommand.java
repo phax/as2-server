@@ -36,13 +36,14 @@ import com.helger.as2.cmd.CommandResult;
 import com.helger.as2.partner.XMLPartnershipFactory;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.partner.IPartnershipFactory;
+import com.helger.as2lib.partner.Partnership;
 import com.phloc.commons.microdom.IMicroDocument;
 import com.phloc.commons.microdom.IMicroElement;
 import com.phloc.commons.microdom.impl.MicroDocument;
 
 /**
  * adds a new partnership entry in partneship store
- * 
+ *
  * @author joseph mcverry
  */
 public class AddPartnershipCommand extends AbstractAliasedPartnershipsCommand
@@ -115,7 +116,11 @@ public class AddPartnershipCommand extends AbstractAliasedPartnershipsCommand
 
       }
 
-      ((XMLPartnershipFactory) partFx).loadPartnership (root, partFx.getPartners (), partFx.getPartnerships ());
+      final Partnership aPartnership = ((XMLPartnershipFactory) partFx).loadPartnership (root,
+                                                                                         partFx.getPartners (),
+                                                                                         partFx.getAllPartnerships ());
+      // add the partnership to the list of available partnerships
+      partFx.addPartnership (aPartnership);
 
       return new CommandResult (CommandResult.TYPE_OK);
     }
