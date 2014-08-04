@@ -32,8 +32,6 @@
  */
 package com.helger.as2.app.partner;
 
-import java.util.Iterator;
-
 import com.helger.as2.cmd.CommandResult;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.partner.IPartnershipFactory;
@@ -41,7 +39,7 @@ import com.helger.as2lib.partner.Partnership;
 
 /**
  * view the partnership in the partnership stores
- * 
+ *
  * @author Don Hillsberry
  */
 public class ViewPartnershipCommand extends AbstractAliasedPartnershipsCommand
@@ -72,22 +70,13 @@ public class ViewPartnershipCommand extends AbstractAliasedPartnershipsCommand
       return new CommandResult (CommandResult.TYPE_INVALID_PARAM_COUNT, getUsage ());
     }
 
+    final String name = params[0].toString ();
     synchronized (partFx)
     {
-
-      final String name = params[0].toString ();
-
-      final Iterator <Partnership> parts = partFx.getPartnerships ().iterator ();
-
-      while (parts.hasNext ())
-      {
-        final Partnership part = parts.next ();
+      for (final Partnership part : partFx.getAllPartnerships ())
         if (part.getName ().equals (name))
           return new CommandResult (CommandResult.TYPE_OK, part.toString ());
-      }
-
-      return new CommandResult (CommandResult.TYPE_ERROR, "Unknown partnership name");
     }
-
+    return new CommandResult (CommandResult.TYPE_ERROR, "Unknown partnership name");
   }
 }

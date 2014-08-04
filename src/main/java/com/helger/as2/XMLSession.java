@@ -57,7 +57,7 @@ import com.phloc.commons.microdom.serialize.MicroReader;
 
 /**
  * original author unknown in this release added command registry methods
- * 
+ *
  * @author joseph mcverry
  */
 public class XMLSession extends Session implements ICommandRegistryFactory
@@ -135,7 +135,7 @@ public class XMLSession extends Session implements ICommandRegistryFactory
   protected void loadCertificates (final IMicroElement aElement) throws OpenAS2Exception
   {
     final ICertificateFactory certFx = (ICertificateFactory) ServerXMLUtil.createComponent (aElement, this);
-    setComponent (ICertificateFactory.COMPID_CERTIFICATE_FACTORY, certFx);
+    addComponent (ICertificateFactory.COMPID_CERTIFICATE_FACTORY, certFx);
   }
 
   protected void loadCommands (final IMicroElement aElement) throws OpenAS2Exception
@@ -167,13 +167,13 @@ public class XMLSession extends Session implements ICommandRegistryFactory
   protected void loadPartnerships (final IMicroElement rootNode) throws OpenAS2Exception
   {
     final IPartnershipFactory partnerFx = (IPartnershipFactory) ServerXMLUtil.createComponent (rootNode, this);
-    setComponent (IPartnershipFactory.COMPID_PARTNERSHIP_FACTORY, partnerFx);
+    addComponent (IPartnershipFactory.COMPID_PARTNERSHIP_FACTORY, partnerFx);
   }
 
   protected void loadProcessor (final IMicroElement rootNode) throws OpenAS2Exception
   {
     final IProcessor proc = (IProcessor) ServerXMLUtil.createComponent (rootNode, this);
-    setComponent (IProcessor.COMPID_PROCESSOR, proc);
+    addComponent (IProcessor.COMPID_PROCESSOR, proc);
 
     for (final IMicroElement module : rootNode.getAllChildElements ("module"))
       loadProcessorModule (proc, module);
@@ -182,7 +182,7 @@ public class XMLSession extends Session implements ICommandRegistryFactory
   protected void loadProcessorModule (final IProcessor proc, final IMicroElement moduleNode) throws OpenAS2Exception
   {
     final IProcessorModule procmod = (IProcessorModule) ServerXMLUtil.createComponent (moduleNode, this);
-    proc.getModules ().add (procmod);
+    proc.addModule (procmod);
   }
 
   public String getBaseDirectory ()

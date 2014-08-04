@@ -124,7 +124,7 @@ public class TestClient
 
     // partnership.setAttribute(AS2Partnership.PA_AS2_MDN_TO,"http://localhost:10080");
     partnership.setAttribute (CPartnershipIDs.PA_AS2_MDN_OPTIONS,
-        "signed-receipt-protocol=optional, pkcs7-signature; signed-receipt-micalg=optional, sha1");
+                              "signed-receipt-protocol=optional, pkcs7-signature; signed-receipt-micalg=optional, sha1");
 
     partnership.setAttribute (CPartnershipIDs.PA_ENCRYPT, "3des");
     partnership.setAttribute (CPartnershipIDs.PA_SIGN, "sha1");
@@ -190,9 +190,9 @@ public class TestClient
 
       // logger.info(cf.getCertificates());
 
-      session.setComponent (ICertificateFactory.COMPID_CERTIFICATE_FACTORY, cf);
+      session.addComponent (ICertificateFactory.COMPID_CERTIFICATE_FACTORY, cf);
       final IDynamicComponent pf = new SimplePartnershipFactory ();
-      session.setComponent (IPartnershipFactory.COMPID_PARTNERSHIP_FACTORY, pf);
+      session.addComponent (IPartnershipFactory.COMPID_PARTNERSHIP_FACTORY, pf);
       service.initDynamicComponent (session, null);
     }
     catch (final OpenAS2Exception e)
@@ -203,7 +203,7 @@ public class TestClient
     s_aLogger.info ("is requesting  MDN?: " + msg.isRequestingMDN ());
     s_aLogger.info ("is async MDN?: " + msg.isRequestingAsynchMDN ());
     s_aLogger.info ("is rule to recieve MDN active?: " +
-        msg.getPartnership ().getAttribute (CPartnershipIDs.PA_AS2_RECEIPT_OPTION));
+                    msg.getPartnership ().getAttribute (CPartnershipIDs.PA_AS2_RECEIPT_OPTION));
 
     try
     {
@@ -218,10 +218,8 @@ public class TestClient
       final StringBuilder sb = new StringBuilder ("MDN headers:\n");
       while (list.hasMoreElements ())
       {
-
         final Header h = (Header) list.nextElement ();
         sb.append (h.getName ()).append (" = ").append (h.getValue ()).append ('\n');
-
       }
 
       // logger.info(sb);
@@ -281,38 +279,38 @@ public class TestClient
   {
     final Partnership partnership = msg.getPartnership ();
 
-    conn.setRequestProperty ("Connection", "close, TE");
-    conn.setRequestProperty ("User-Agent", "OpenAS2 AS2Sender");
+    conn.setRequestProperty (CAS2Header.HEADER_CONNECTION, CAS2Header.DEFAULT_CONNECTION);
+    conn.setRequestProperty (CAS2Header.HEADER_USER_AGENT, CAS2Header.DEFAULT_USER_AGENT);
 
-    conn.setRequestProperty ("Date", DateUtil.getFormattedDateNow ("EEE, dd MMM yyyy HH:mm:ss Z"));
-    conn.setRequestProperty ("Message-ID", msg.getMessageID ());
+    conn.setRequestProperty (CAS2Header.HEADER_DATE, DateUtil.getFormattedDateNow (CAS2Header.DEFAULT_DATE_FORMAT));
+    conn.setRequestProperty (CAS2Header.HEADER_MESSAGE_ID, msg.getMessageID ());
     // make sure this is the encoding used in the msg, run TBF1
-    conn.setRequestProperty ("Mime-Version", "1.0");
-    conn.setRequestProperty ("Content-type", msg.getContentType ());
-    conn.setRequestProperty (CAS2Header.HEADER_AS2_VERSION, "1.1");
-    conn.setRequestProperty ("Recipient-Address", partnership.getAttribute (CPartnershipIDs.PA_AS2_URL));
+    conn.setRequestProperty (CAS2Header.HEADER_MIME_VERSION, CAS2Header.DEFAULT_MIME_VERSION);
+    conn.setRequestProperty (CAS2Header.HEADER_CONTENT_TYPE, msg.getContentType ());
+    conn.setRequestProperty (CAS2Header.HEADER_AS2_VERSION, CAS2Header.DEFAULT_AS2_VERSION);
+    conn.setRequestProperty (CAS2Header.HEADER_RECIPIENT_ADDRESS, partnership.getAttribute (CPartnershipIDs.PA_AS2_URL));
     conn.setRequestProperty (CAS2Header.HEADER_AS2_TO, partnership.getReceiverID (CPartnershipIDs.PID_AS2));
     conn.setRequestProperty (CAS2Header.HEADER_AS2_FROM, partnership.getSenderID (CPartnershipIDs.PID_AS2));
-    conn.setRequestProperty ("Subject", msg.getSubject ());
-    conn.setRequestProperty ("From", partnership.getSenderID (Partnership.PID_EMAIL));
+    conn.setRequestProperty (CAS2Header.HEADER_SUBJECT, msg.getSubject ());
+    conn.setRequestProperty (CAS2Header.HEADER_FROM, partnership.getSenderID (Partnership.PID_EMAIL));
 
     final String dispTo = partnership.getAttribute (CPartnershipIDs.PA_AS2_MDN_TO);
     if (dispTo != null)
-      conn.setRequestProperty ("Disposition-Notification-To", dispTo);
+      conn.setRequestProperty (CAS2Header.HEADER_DISPOSITION_NOTIFICATION_TO, dispTo);
 
     final String dispOptions = partnership.getAttribute (CPartnershipIDs.PA_AS2_MDN_OPTIONS);
     if (dispOptions != null)
-      conn.setRequestProperty ("Disposition-Notification-Options", dispOptions);
+      conn.setRequestProperty (CAS2Header.HEADER_DISPOSITION_NOTIFICATION_OPTIONS, dispOptions);
 
     // Asynch MDN 2007-03-12
     final String receiptOption = partnership.getAttribute (CPartnershipIDs.PA_AS2_RECEIPT_OPTION);
     if (receiptOption != null)
-      conn.setRequestProperty ("Receipt-delivery-option", receiptOption);
+      conn.setRequestProperty (CAS2Header.HEADER_RECEIPT_DELIVERY_OPTION, receiptOption);
 
     // As of 2007-06-01
     final String contentDisp = msg.getContentDisposition ();
     if (contentDisp != null)
-      conn.setRequestProperty ("Content-Disposition", contentDisp);
+      conn.setRequestProperty (CAS2Header.HEADER_CONTENT_DISPOSITION, contentDisp);
   }
 
   /*

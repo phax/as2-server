@@ -70,7 +70,7 @@ public abstract class AbstractCommandProcessor extends StringMap implements ICom
     return null;
   }
 
-  public void initDynamicComponent (final ISession session, final IStringMap parameters) throws OpenAS2Exception
+  public void initDynamicComponent (@Nonnull final ISession session, @Nullable final IStringMap parameters) throws OpenAS2Exception
   {}
 
   public void init () throws OpenAS2Exception

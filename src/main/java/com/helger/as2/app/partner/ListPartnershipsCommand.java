@@ -32,9 +32,6 @@
  */
 package com.helger.as2.app.partner;
 
-import java.util.Iterator;
-import java.util.List;
-
 import com.helger.as2.cmd.CommandResult;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.partner.IPartnershipFactory;
@@ -42,7 +39,7 @@ import com.helger.as2lib.partner.Partnership;
 
 /**
  * list partnerships in partnership store by names
- * 
+ *
  * @author joseph mcverry
  */
 public class ListPartnershipsCommand extends AbstractAliasedPartnershipsCommand
@@ -68,26 +65,17 @@ public class ListPartnershipsCommand extends AbstractAliasedPartnershipsCommand
   @Override
   public CommandResult execute (final IPartnershipFactory partFx, final Object [] params) throws OpenAS2Exception
   {
+    final CommandResult cmdRes = new CommandResult (CommandResult.TYPE_OK);
+
     synchronized (partFx)
     {
-
-      final List <Partnership> parts = partFx.getPartnerships ();
-      final Iterator <Partnership> partIt = parts.iterator ();
-
-      final CommandResult cmdRes = new CommandResult (CommandResult.TYPE_OK);
-
-      while (partIt.hasNext ())
-      {
-        final Partnership part = partIt.next ();
+      for (final Partnership part : partFx.getAllPartnerships ())
         cmdRes.getResults ().add (part.getName ());
-      }
-
-      if (cmdRes.getResults ().size () == 0)
-      {
-        cmdRes.getResults ().add ("No partnerships available");
-      }
-
-      return cmdRes;
     }
+
+    if (cmdRes.getResults ().isEmpty ())
+      cmdRes.getResults ().add ("No partnerships available");
+
+    return cmdRes;
   }
 }

@@ -41,6 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.net.ssl.SSLServerSocket;
 import javax.net.ssl.SSLServerSocketFactory;
 import javax.net.ssl.SSLSocket;
@@ -53,6 +54,7 @@ import com.helger.as2.util.CommandTokenizer;
 import com.helger.as2lib.ISession;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.util.IStringMap;
+import com.helger.as2lib.util.StringMap;
 import com.phloc.commons.io.streams.StreamUtils;
 import com.phloc.commons.string.StringHelper;
 
@@ -62,7 +64,7 @@ import com.phloc.commons.string.StringHelper;
  * the actual command </command> when inited the valid userid and password is
  * passed, then as each command is processed the processCommand method verifies
  * the two fields correctness
- * 
+ *
  * @author joseph mcverry
  */
 public class SocketCommandProcessor extends AbstractCommandProcessor
@@ -79,8 +81,9 @@ public class SocketCommandProcessor extends AbstractCommandProcessor
   {}
 
   @Override
-  public void initDynamicComponent (final ISession aSession, @Nonnull final IStringMap aParameters) throws OpenAS2Exception
+  public void initDynamicComponent (@Nonnull final ISession aSession, @Nullable final IStringMap aParams) throws OpenAS2Exception
   {
+    final StringMap aParameters = aParams == null ? new StringMap () : new StringMap (aParams);
     final String p = aParameters.getAttributeAsString ("portid");
     try
     {

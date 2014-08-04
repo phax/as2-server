@@ -36,6 +36,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.helger.as2lib.ISession;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.util.IStringMap;
@@ -46,7 +49,7 @@ public class MultiCommand extends AbstractCommand
   private List <ICommand> m_aCmds;
 
   @Override
-  public void initDynamicComponent (final ISession session, final IStringMap parameters) throws OpenAS2Exception
+  public void initDynamicComponent (@Nonnull final ISession session, @Nullable final IStringMap parameters) throws OpenAS2Exception
   {
     super.initDynamicComponent (session, parameters);
     getParameterRequired (PARAM_NAME);
@@ -55,7 +58,8 @@ public class MultiCommand extends AbstractCommand
       setUsage (getName () + " <command> <parameters>");
   }
 
-  public ICommand getCommand (final String name)
+  @Nullable
+  public ICommand getCommand (@Nonnull final String name)
   {
     final String sLCName = name.toLowerCase (Locale.US);
     for (final ICommand cmd : getCommands ())
@@ -64,6 +68,7 @@ public class MultiCommand extends AbstractCommand
     return null;
   }
 
+  @Nonnull
   public List <ICommand> getCommands ()
   {
     if (m_aCmds == null)

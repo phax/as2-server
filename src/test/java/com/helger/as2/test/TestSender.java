@@ -87,7 +87,7 @@ public class TestSender extends AS2SenderModule
       final NonBlockingByteArrayOutputStream mdnStream = new NonBlockingByteArrayOutputStream ();
 
       // Retrieve the message content
-      final long nContentLength = StringParser.parseLong (mdn.getHeader ("Content-Length"), -1);
+      final long nContentLength = StringParser.parseLong (mdn.getHeader (CAS2Header.HEADER_CONTENT_LENGTH), -1);
       if (nContentLength >= 0)
         StreamUtils.copyInputStreamToOutputStreamWithLimit (connIn, mdnStream, nContentLength);
       else

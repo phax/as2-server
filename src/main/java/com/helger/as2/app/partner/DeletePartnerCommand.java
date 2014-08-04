@@ -32,8 +32,6 @@
  */
 package com.helger.as2.app.partner;
 
-import java.util.Iterator;
-
 import com.helger.as2.cmd.CommandResult;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.partner.IPartnershipFactory;
@@ -41,7 +39,7 @@ import com.helger.as2lib.partner.Partnership;
 
 /**
  * removes a partner entry in partnership store
- * 
+ *
  * @author joseph mcverry
  */
 public class DeletePartnerCommand extends AbstractAliasedPartnershipsCommand
@@ -76,37 +74,30 @@ public class DeletePartnerCommand extends AbstractAliasedPartnershipsCommand
     {
 
       final String name = params[0].toString ();
-      final Iterator <String> parts = partFx.getPartners ().keySet ().iterator ();
 
       boolean found = false;
-
-      while (parts.hasNext ())
-      {
-        final String partName = parts.next ();
+      for (final String partName : partFx.getPartners ().keySet ())
         if (partName.equals (name))
         {
           found = true;
+          break;
         }
-      }
 
-      if (found == false)
+      if (!found)
         return new CommandResult (CommandResult.TYPE_ERROR, "Unknown partner name");
 
-      final Iterator <Partnership> partnerships = partFx.getPartnerships ().iterator ();
       boolean partnershipFound = false;
-      while (partnerships.hasNext () && partnershipFound == false)
-      {
-        final Partnership part = partnerships.next ();
-        partnershipFound = part.containsReceiverID (name) || part.containsSenderID (name);
-      }
+      for (final Partnership aPartnership : partFx.getAllPartnerships ())
+        if (aPartnership.containsReceiverID (name) || aPartnership.containsSenderID (name))
+        {
+          partnershipFound = true;
+          break;
+        }
 
       if (partnershipFound)
-      {
         return new CommandResult (CommandResult.TYPE_ERROR, "Can not delete partner; it is tied to some partnerships");
-      }
 
       partFx.getPartners ().remove (name);
-
       return new CommandResult (CommandResult.TYPE_OK);
     }
   }

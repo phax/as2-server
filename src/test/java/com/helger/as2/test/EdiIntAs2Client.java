@@ -84,11 +84,11 @@ public class EdiIntAs2Client
 
         final ServerPKCS12CertificateFactory aCertFactory = new ServerPKCS12CertificateFactory ();
         aCertFactory.initDynamicComponent (aSession, aParams);
-        aSession.setComponent (ICertificateFactory.COMPID_CERTIFICATE_FACTORY, aCertFactory);
+        aSession.addComponent (ICertificateFactory.COMPID_CERTIFICATE_FACTORY, aCertFactory);
       }
 
       final IDynamicComponent pf = new SimplePartnershipFactory ();
-      aSession.setComponent (IPartnershipFactory.COMPID_PARTNERSHIP_FACTORY, pf);
+      aSession.addComponent (IPartnershipFactory.COMPID_PARTNERSHIP_FACTORY, pf);
 
       final TestSender aSender = new TestSender ();
       aSender.initDynamicComponent (aSession, null);
