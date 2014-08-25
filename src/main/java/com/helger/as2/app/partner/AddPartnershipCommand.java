@@ -37,9 +37,9 @@ import com.helger.as2.partner.XMLPartnershipFactory;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.partner.IPartnershipFactory;
 import com.helger.as2lib.partner.Partnership;
-import com.phloc.commons.microdom.IMicroDocument;
-import com.phloc.commons.microdom.IMicroElement;
-import com.phloc.commons.microdom.impl.MicroDocument;
+import com.helger.commons.microdom.IMicroDocument;
+import com.helger.commons.microdom.IMicroElement;
+import com.helger.commons.microdom.impl.MicroDocument;
 
 /**
  * adds a new partnership entry in partneship store

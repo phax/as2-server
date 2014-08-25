@@ -36,7 +36,7 @@ import java.util.regex.Matcher;
 
 import javax.annotation.Nonnull;
 
-import com.phloc.commons.regex.RegExHelper;
+import com.helger.commons.regex.RegExHelper;
 
 /**
  * @author joseph mcverry

@@ -45,9 +45,9 @@ import com.helger.as2lib.ISession;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.util.IStringMap;
 import com.helger.as2lib.util.StringMap;
-import com.phloc.commons.annotations.ReturnsMutableCopy;
-import com.phloc.commons.annotations.UnsupportedOperation;
-import com.phloc.commons.collections.ContainerHelper;
+import com.helger.commons.annotations.ReturnsMutableCopy;
+import com.helger.commons.annotations.UnsupportedOperation;
+import com.helger.commons.collections.ContainerHelper;
 
 public abstract class AbstractCommandProcessor extends StringMap implements ICommandProcessor, IDynamicComponent, Runnable
 {

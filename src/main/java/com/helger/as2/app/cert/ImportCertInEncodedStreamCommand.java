@@ -42,7 +42,7 @@ import com.helger.as2.util.ByteCoder;
 import com.helger.as2lib.cert.IAliasedCertificateFactory;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.exception.WrappedException;
-import com.phloc.commons.io.streams.NonBlockingByteArrayInputStream;
+import com.helger.commons.io.streams.NonBlockingByteArrayInputStream;
 
 public class ImportCertInEncodedStreamCommand extends AbstractAliasedCertCommand
 {

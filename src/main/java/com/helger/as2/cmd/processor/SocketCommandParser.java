@@ -45,7 +45,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import com.phloc.commons.io.streams.NonBlockingStringReader;
+import com.helger.commons.io.streams.NonBlockingStringReader;
 
 /**
  * used to parse commands from the socket command processor message format

@@ -57,12 +57,12 @@ import com.helger.as2lib.partner.Partnership;
 import com.helger.as2lib.util.IStringMap;
 import com.helger.as2lib.util.StringMap;
 import com.helger.as2lib.util.XMLUtil;
-import com.phloc.commons.microdom.IMicroDocument;
-import com.phloc.commons.microdom.IMicroElement;
-import com.phloc.commons.microdom.impl.MicroDocument;
-import com.phloc.commons.microdom.serialize.MicroReader;
-import com.phloc.commons.microdom.serialize.MicroWriter;
-import com.phloc.commons.string.StringHelper;
+import com.helger.commons.microdom.IMicroDocument;
+import com.helger.commons.microdom.IMicroElement;
+import com.helger.commons.microdom.impl.MicroDocument;
+import com.helger.commons.microdom.serialize.MicroReader;
+import com.helger.commons.microdom.serialize.MicroWriter;
+import com.helger.commons.string.StringHelper;
 
 /**
  * original author unknown this release added logic to store partnerships and

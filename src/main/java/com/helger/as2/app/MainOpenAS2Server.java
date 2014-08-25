@@ -43,7 +43,7 @@ import com.helger.as2.cmd.ICommandRegistry;
 import com.helger.as2.cmd.processor.AbstractCommandProcessor;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.util.CInfo;
-import com.phloc.commons.lang.CGStringHelper;
+import com.helger.commons.lang.CGStringHelper;
 
 /**
  * original author unknown in this release added ability to have multiple

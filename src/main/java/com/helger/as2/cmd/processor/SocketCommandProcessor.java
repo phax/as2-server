@@ -55,8 +55,8 @@ import com.helger.as2lib.ISession;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.util.IStringMap;
 import com.helger.as2lib.util.StringMap;
-import com.phloc.commons.io.streams.StreamUtils;
-import com.phloc.commons.string.StringHelper;
+import com.helger.commons.io.streams.StreamUtils;
+import com.helger.commons.string.StringHelper;
 
 /**
  * actual socket command processor takes commands from socket/port and passes

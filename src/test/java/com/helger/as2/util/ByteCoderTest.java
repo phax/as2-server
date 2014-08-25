@@ -34,8 +34,6 @@ package com.helger.as2.util;
 
 import org.junit.Test;
 
-import com.helger.as2.util.ByteCoder;
-
 /**
  * @author joseph mcverry
  */

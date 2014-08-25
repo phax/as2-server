@@ -43,8 +43,8 @@ import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.exception.WrappedException;
 import com.helger.as2lib.util.StringMap;
 import com.helger.as2lib.util.XMLUtil;
-import com.phloc.commons.lang.GenericReflection;
-import com.phloc.commons.microdom.IMicroElement;
+import com.helger.commons.lang.GenericReflection;
+import com.helger.commons.microdom.IMicroElement;
 
 public final class ServerXMLUtil
 {

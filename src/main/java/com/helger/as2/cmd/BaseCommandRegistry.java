@@ -38,8 +38,8 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import com.helger.as2lib.AbstractDynamicComponent;
-import com.phloc.commons.annotations.ReturnsMutableCopy;
-import com.phloc.commons.collections.ContainerHelper;
+import com.helger.commons.annotations.ReturnsMutableCopy;
+import com.helger.commons.collections.ContainerHelper;
 
 public class BaseCommandRegistry extends AbstractDynamicComponent implements ICommandRegistry
 {

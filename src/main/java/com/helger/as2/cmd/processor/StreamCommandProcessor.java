@@ -49,8 +49,8 @@ import com.helger.as2.cmd.ICommand;
 import com.helger.as2.util.CommandTokenizer;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.exception.WrappedException;
-import com.phloc.commons.concurrent.ThreadUtils;
-import com.phloc.commons.string.StringHelper;
+import com.helger.commons.concurrent.ThreadUtils;
+import com.helger.commons.string.StringHelper;
 
 /**
  * original author unknown in this release made the process a thread so it can

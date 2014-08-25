@@ -58,7 +58,7 @@ import com.helger.as2lib.processor.sender.IProcessorSenderModule;
 import com.helger.as2lib.util.CAS2Header;
 import com.helger.as2lib.util.DateUtil;
 import com.helger.as2lib.util.StringMap;
-import com.phloc.commons.io.resource.ClassPathResource;
+import com.helger.commons.io.resource.ClassPathResource;
 
 /**
  * oleo Date: May 4, 2010 Time: 6:56:31 PM

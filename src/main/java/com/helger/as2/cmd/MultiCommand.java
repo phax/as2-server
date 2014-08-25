@@ -42,7 +42,7 @@ import javax.annotation.Nullable;
 import com.helger.as2lib.ISession;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.util.IStringMap;
-import com.phloc.commons.collections.ArrayHelper;
+import com.helger.commons.collections.ArrayHelper;
 
 public class MultiCommand extends AbstractCommand
 {
