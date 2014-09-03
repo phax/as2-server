@@ -36,7 +36,7 @@ import com.helger.as2lib.exception.WrappedException;
 
 /**
  * emulates StringTokenizer
- * 
+ *
  * @author joseph mcverry
  */
 public class CommandTokenizer
@@ -47,8 +47,9 @@ public class CommandTokenizer
 
   /**
    * constructor
-   * 
+   *
    * @param inString
+   *        in string
    */
   public CommandTokenizer (final String inString)
   {
@@ -58,9 +59,10 @@ public class CommandTokenizer
 
   /**
    * any more tokens in String
-   * 
+   *
    * @return true if there are any more tokens
    * @throws WrappedException
+   *         in case another exception occurs
    */
   public boolean hasMoreTokens () throws WrappedException
   {
@@ -74,7 +76,7 @@ public class CommandTokenizer
 
       return false;
     }
-    catch (final Exception e)
+    catch (final RuntimeException e)
     {
       throw new WrappedException (e);
     }
@@ -82,9 +84,10 @@ public class CommandTokenizer
 
   /**
    * returns the next token, this handles spaces and quotes
-   * 
+   *
    * @return a string
    * @throws WrappedException
+   *         In case a RuntimeException occurs
    */
   public String nextToken () throws WrappedException
   {
@@ -116,7 +119,7 @@ public class CommandTokenizer
 
       return sb.toString ();
     }
-    catch (final Exception e)
+    catch (final RuntimeException e)
     {
       throw new WrappedException (e);
     }

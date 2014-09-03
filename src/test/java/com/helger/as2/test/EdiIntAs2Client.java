@@ -56,6 +56,7 @@ import com.helger.as2lib.partner.IPartnershipFactory;
 import com.helger.as2lib.partner.Partnership;
 import com.helger.as2lib.processor.sender.IProcessorSenderModule;
 import com.helger.as2lib.util.StringMap;
+import com.helger.commons.annotations.UnsupportedOperation;
 
 public class EdiIntAs2Client
 {
@@ -122,8 +123,8 @@ public class EdiIntAs2Client
   }
 
   private static IMessage _buildMessage (final Partnership aPartnership, final Request aRequest) throws MessagingException,
-  FileNotFoundException,
-  OpenAS2Exception
+                                                                                                FileNotFoundException,
+                                                                                                OpenAS2Exception
   {
     final AS2Message aMsg = new AS2Message ();
     aMsg.setContentType (aRequest.contentType);
@@ -154,9 +155,12 @@ public class EdiIntAs2Client
 
   /**
    * @param settings
+   *        Settings
    * @param request
+   *        Request
    * @return UnsupportedOperationException
    */
+  @UnsupportedOperation
   public Response sendAsync (final ConnectionSettings settings, final Request request)
   {
     throw new UnsupportedOperationException ();
@@ -166,9 +170,12 @@ public class EdiIntAs2Client
 
   /**
    * @param settings
+   *        Settings
    * @param stream
+   *        Input stream
    * @return UnsupportedOperationException
    */
+  @UnsupportedOperation
   public Response processAsyncReply (final ConnectionSettings settings, final InputStream stream)
   {
     throw new UnsupportedOperationException ();

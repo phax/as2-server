@@ -96,10 +96,10 @@ public class TestClient
 
   /**
    * @param args
+   *        Main args
    */
   public static void main2 (final String [] args)
   {
-
     // Received-content-MIC
     // original-message-id
 
