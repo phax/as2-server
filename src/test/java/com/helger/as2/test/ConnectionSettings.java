@@ -33,7 +33,7 @@
 package com.helger.as2.test;
 
 /**
- * oleo Date: May 12, 2010 Time: 5:16:57 PM
+ * @author oleo Date: May 12, 2010 Time: 5:16:57 PM
  */
 public final class ConnectionSettings
 {
@@ -52,7 +52,4 @@ public final class ConnectionSettings
   public String p12FilePassword;
 
   public String format = "Test-$date.ddMMyyyyHHmmssZ$-$rand.1234$@$msg.sender.as2_id$_$msg.receiver.as2_id$";
-
-  public ConnectionSettings ()
-  {}
 }

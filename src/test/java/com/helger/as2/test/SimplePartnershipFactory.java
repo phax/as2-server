@@ -39,7 +39,7 @@ import com.helger.as2lib.partner.AbstractPartnershipFactory;
 import com.helger.as2lib.util.StringMap;
 
 /**
- * oleo Date: May 12, 2010 Time: 2:18:36 PM
+ * @author oleo Date: May 12, 2010 Time: 2:18:36 PM
  */
 public class SimplePartnershipFactory extends AbstractPartnershipFactory
 {

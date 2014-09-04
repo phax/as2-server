@@ -122,9 +122,10 @@ public class EdiIntAs2Client
     return response;
   }
 
-  private static IMessage _buildMessage (final Partnership aPartnership, final Request aRequest) throws MessagingException,
-                                                                                                FileNotFoundException,
-                                                                                                OpenAS2Exception
+  @Nonnull
+  private static IMessage _buildMessage (@Nonnull final Partnership aPartnership, @Nonnull final Request aRequest) throws MessagingException,
+                                                                                                                  FileNotFoundException,
+                                                                                                                  OpenAS2Exception
   {
     final AS2Message aMsg = new AS2Message ();
     aMsg.setContentType (aRequest.contentType);
@@ -136,6 +137,7 @@ public class EdiIntAs2Client
     aMsg.setAttribute (CPartnershipIDs.PID_AS2, aPartnership.getReceiverID (CPartnershipIDs.PID_AS2));
     aMsg.setAttribute (Partnership.PID_EMAIL, aPartnership.getSenderID (Partnership.PID_EMAIL));
 
+    // Build message content
     MimeBodyPart part;
     if (aRequest.stream != null)
       part = new MimeBodyPart (aRequest.stream);
@@ -147,7 +149,6 @@ public class EdiIntAs2Client
         part = new MimeBodyPart ();
         part.setText (aRequest.text);
       }
-
     aMsg.setData (part);
 
     return aMsg;

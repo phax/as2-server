@@ -35,14 +35,19 @@ package com.helger.as2.test;
 import java.io.InputStream;
 
 /**
- * oleo Date: May 12, 2010 Time: 5:48:26 PM
+ * AS2 test request
+ *
+ * @author oleo Date: May 12, 2010 Time: 5:48:26 PM
  */
 public class Request
 {
-  public final String contentType = "application/xml";
+  // Content type
+  public String contentType = "application/xml";
   public String subject = "subject";
   // TODO change it: use different constructors, class or enum as type
+  // Set either text or filename or stream
+  // Precedence: stream before filename before text
   public String text = "payload";
-  public final String filename = null;
-  public final InputStream stream = null;
+  public String filename;
+  public InputStream stream;
 }

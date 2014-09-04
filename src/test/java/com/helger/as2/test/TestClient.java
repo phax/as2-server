@@ -61,7 +61,7 @@ import com.helger.as2lib.util.StringMap;
 import com.helger.commons.io.resource.ClassPathResource;
 
 /**
- * oleo Date: May 4, 2010 Time: 6:56:31 PM
+ * @author oleo Date: May 4, 2010 Time: 6:56:31 PM
  */
 public class TestClient
 {
