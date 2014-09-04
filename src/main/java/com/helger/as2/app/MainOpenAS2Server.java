@@ -48,7 +48,7 @@ import com.helger.commons.lang.CGStringHelper;
 /**
  * original author unknown in this release added ability to have multiple
  * command processors
- * 
+ *
  * @author joseph mcverry
  */
 public class MainOpenAS2Server
@@ -81,7 +81,7 @@ public class MainOpenAS2Server
       {
         s_aLogger.info ("Usage:");
         s_aLogger.info ("java " + getClass ().getName () + " <configuration file>");
-        throw new Exception ("Missing configuration file");
+        throw new Exception ("Missing configuration file name on the commandline. You may specify src/main/resources/config/config.xml");
       }
       // create a command processor
 
