@@ -89,7 +89,7 @@ public class TestClient
 
     final Request request = new Request ();
     request.subject = "Test message";
-    request.text = "Some info to you";
+    request.filename = "src/test/resources/dummy.txt";
 
     EdiIntAs2Client.sendSync (settings, request);
   }

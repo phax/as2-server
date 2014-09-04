@@ -57,6 +57,7 @@ import com.helger.as2lib.partner.Partnership;
 import com.helger.as2lib.processor.sender.IProcessorSenderModule;
 import com.helger.as2lib.util.StringMap;
 import com.helger.commons.annotations.UnsupportedOperation;
+import com.helger.commons.io.streams.StreamUtils;
 
 public class EdiIntAs2Client
 {
@@ -138,15 +139,18 @@ public class EdiIntAs2Client
     aMsg.setAttribute (Partnership.PID_EMAIL, aPartnership.getSenderID (Partnership.PID_EMAIL));
 
     // Build message content
-    MimeBodyPart part;
+    final MimeBodyPart part = new MimeBodyPart ();
     if (aRequest.stream != null)
-      part = new MimeBodyPart (aRequest.stream);
+    {
+      part.setContent (StreamUtils.getAllBytes (aRequest.stream), aRequest.contentType);
+    }
     else
       if (aRequest.filename != null)
-        part = new MimeBodyPart (new FileInputStream (aRequest.filename));
+      {
+        part.setContent (StreamUtils.getAllBytes (new FileInputStream (aRequest.filename)), aRequest.contentType);
+      }
       else
       {
-        part = new MimeBodyPart ();
         part.setText (aRequest.text);
       }
     aMsg.setData (part);
