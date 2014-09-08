@@ -47,8 +47,10 @@ import javax.annotation.Nullable;
 import com.helger.as2.cmd.CommandResult;
 import com.helger.as2.cmd.ICommand;
 import com.helger.as2.util.CommandTokenizer;
+import com.helger.as2lib.ISession;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.exception.WrappedException;
+import com.helger.as2lib.util.IStringMap;
 import com.helger.commons.concurrent.ThreadUtils;
 import com.helger.commons.string.StringHelper;
 
@@ -57,7 +59,7 @@ import com.helger.commons.string.StringHelper;
  * be shared with other command processors like the SocketCommandProcessor
  * created innerclass CommandTokenizer so it could handle quotes and spaces
  * within quotes
- * 
+ *
  * @author joseph mcverry
  */
 public class StreamCommandProcessor extends AbstractCommandProcessor
@@ -65,15 +67,18 @@ public class StreamCommandProcessor extends AbstractCommandProcessor
   public static final String COMMAND_NOT_FOUND = "Error: command not found";
   public static final String COMMAND_ERROR = "Error executing command";
   public static final String EXIT_COMMAND = "exit";
-  public static final String PROMPT = "#>";
-  private BufferedReader reader = null;
-  private BufferedWriter writer = null;
+  public static final String PROMPT = "AS2>";
+  private final BufferedReader reader;
+  private final BufferedWriter writer;
 
   public StreamCommandProcessor ()
   {
     reader = new BufferedReader (new InputStreamReader (System.in));
     writer = new BufferedWriter (new OutputStreamWriter (System.out));
   }
+
+  public void initDynamicComponent (@Nonnull final ISession session, @Nullable final IStringMap parameters) throws OpenAS2Exception
+  {}
 
   @Nonnull
   public BufferedReader getReader ()
@@ -106,7 +111,6 @@ public class StreamCommandProcessor extends AbstractCommandProcessor
   {
     try
     {
-
       final String sLine = readLine ();
       if (sLine != null)
       {
@@ -146,8 +150,8 @@ public class StreamCommandProcessor extends AbstractCommandProcessor
               writeLine (COMMAND_NOT_FOUND + "> " + sCommandName);
               writeLine ("List of commands:");
               writeLine (EXIT_COMMAND);
-              for (final ICommand aCurCmd : getAllCommands ())
-                writeLine (aCurCmd.getName ());
+              for (final String sCurCmd : getAllCommands ().keySet ())
+                writeLine (sCurCmd);
             }
           }
         }

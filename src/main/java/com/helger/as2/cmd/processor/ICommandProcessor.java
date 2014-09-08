@@ -32,7 +32,7 @@
  */
 package com.helger.as2.cmd.processor;
 
-import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Nonnull;
 
@@ -45,7 +45,7 @@ public interface ICommandProcessor
 {
   @Nonnull
   @ReturnsMutableCopy
-  List <ICommand> getAllCommands ();
+  Map <String, ICommand> getAllCommands ();
 
   boolean isTerminated ();
 

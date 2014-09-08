@@ -32,8 +32,8 @@
  */
 package com.helger.as2.cmd.processor;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -43,16 +43,16 @@ import com.helger.as2.cmd.ICommandRegistry;
 import com.helger.as2lib.IDynamicComponent;
 import com.helger.as2lib.ISession;
 import com.helger.as2lib.exception.OpenAS2Exception;
-import com.helger.as2lib.util.IStringMap;
 import com.helger.as2lib.util.StringMap;
+import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotations.ReturnsMutableCopy;
 import com.helger.commons.annotations.UnsupportedOperation;
 import com.helger.commons.collections.ContainerHelper;
 
 public abstract class AbstractCommandProcessor extends StringMap implements ICommandProcessor, IDynamicComponent, Runnable
 {
-  private final List <ICommand> m_aCommands = new ArrayList <ICommand> ();
-  private boolean m_bTerminated = false;
+  private final Map <String, ICommand> m_aCommands = new LinkedHashMap <String, ICommand> ();
+  private volatile boolean m_bTerminated = false;
 
   public AbstractCommandProcessor ()
   {}
@@ -63,33 +63,26 @@ public abstract class AbstractCommandProcessor extends StringMap implements ICom
     return null;
   }
 
-  @Nullable
+  @UnsupportedOperation
   public ISession getSession ()
   {
-    // TODO Auto-generated method stub
-    return null;
+    throw new UnsupportedOperationException ("No session available!");
   }
-
-  public void initDynamicComponent (@Nonnull final ISession session, @Nullable final IStringMap parameters) throws OpenAS2Exception
-  {}
 
   public void init () throws OpenAS2Exception
   {}
 
   @Nonnull
   @ReturnsMutableCopy
-  public List <ICommand> getAllCommands ()
+  public Map <String, ICommand> getAllCommands ()
   {
-    return ContainerHelper.newList (m_aCommands);
+    return ContainerHelper.newOrderedMap (m_aCommands);
   }
 
   @Nullable
   public ICommand getCommand (final String name)
   {
-    for (final ICommand currentCmd : m_aCommands)
-      if (currentCmd.getName ().equals (name))
-        return currentCmd;
-    return null;
+    return m_aCommands.get (name);
   }
 
   public boolean isTerminated ()
@@ -103,9 +96,10 @@ public abstract class AbstractCommandProcessor extends StringMap implements ICom
     throw new OpenAS2Exception ("super class method call, not initialized correctly");
   }
 
-  public void addCommands (@Nonnull final ICommandRegistry reg)
+  public void addCommands (@Nonnull final ICommandRegistry aCommandRegistry)
   {
-    m_aCommands.addAll (reg.getAllCommands ());
+    ValueEnforcer.notNull (aCommandRegistry, "CommandRegistry");
+    m_aCommands.putAll (aCommandRegistry.getAllCommands ());
   }
 
   public void terminate ()

@@ -191,8 +191,8 @@ public class SocketCommandProcessor extends AbstractCommandProcessor
             {
               m_aWriter.write (StreamCommandProcessor.COMMAND_NOT_FOUND + "> " + commandName + "\r\n");
               m_aWriter.write ("List of commands:" + "\r\n");
-              for (final ICommand aCurCmd : getAllCommands ())
-                m_aWriter.write (aCurCmd.getName () + "\r\n");
+              for (final String sCurCmd : getAllCommands ().keySet ())
+                m_aWriter.write (sCurCmd + "\r\n");
             }
           }
         }

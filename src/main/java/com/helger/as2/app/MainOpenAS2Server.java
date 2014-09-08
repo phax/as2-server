@@ -57,13 +57,12 @@ public class MainOpenAS2Server
 
   public static void main (final String [] args)
   {
-    final MainOpenAS2Server server = new MainOpenAS2Server ();
-    server.start (args);
+    new MainOpenAS2Server ().start (args);
   }
 
-  public void start (final String [] args)
+  public void start (final String [] aArgs)
   {
-    XMLSession session = null;
+    XMLSession aXMLSession = null;
     try
     {
       s_aLogger.info (CInfo.NAME_VERSION + " - starting Server...");
@@ -72,10 +71,10 @@ public class MainOpenAS2Server
       // this is used by all other objects to access global configs and
       // functionality
       s_aLogger.info ("Loading configuration...");
-
-      if (args.length > 0)
+      if (aArgs.length > 0)
       {
-        session = new XMLSession (args[0]);
+        // Load config file
+        aXMLSession = new XMLSession (aArgs[0]);
       }
       else
       {
@@ -83,34 +82,29 @@ public class MainOpenAS2Server
         s_aLogger.info ("java " + getClass ().getName () + " <configuration file>");
         throw new Exception ("Missing configuration file name on the commandline. You may specify src/main/resources/config/config.xml");
       }
-      // create a command processor
-
-      // get a registry of Command objects, and add Commands for the Session
-      s_aLogger.info ("Registering Session to Command Processor...");
-
-      final ICommandRegistry reg = session.getCommandRegistry ();
 
       // start the active processor modules
       s_aLogger.info ("Starting Active Modules...");
-      session.getProcessor ().startActiveModules ();
+      aXMLSession.getProcessor ().startActiveModules ();
+
+      final ICommandRegistry aCommandRegistry = aXMLSession.getCommandRegistry ();
+      final CommandManager aCommandMgr = aXMLSession.getCommandManager ();
+      final List <AbstractCommandProcessor> aCommandProcessors = aCommandMgr.getProcessors ();
+      for (final AbstractCommandProcessor cmd : aCommandProcessors)
+      {
+        s_aLogger.info ("Loading Command Processor " + cmd.getClass ().getName () + "");
+        cmd.init ();
+        cmd.addCommands (aCommandRegistry);
+        new Thread (cmd, CGStringHelper.getClassLocalName (cmd)).start ();
+      }
 
       // enter the command processing loop
       s_aLogger.info ("OpenAS2 Started");
 
-      final CommandManager cmdMgr = session.getCommandManager ();
-      final List <AbstractCommandProcessor> processors = cmdMgr.getProcessors ();
-      for (final AbstractCommandProcessor cmd : processors)
-      {
-        s_aLogger.info ("Loading Command Processor..." + cmd.getClass ().getName () + "");
-        cmd.init ();
-        cmd.addCommands (reg);
-        new Thread (cmd, CGStringHelper.getClassLocalName (cmd)).start ();
-      }
-
       // Start waiting for termination
       breakOut: while (true)
       {
-        for (final AbstractCommandProcessor cmd : processors)
+        for (final AbstractCommandProcessor cmd : aCommandProcessors)
         {
           if (cmd.isTerminated ())
             break breakOut;
@@ -125,11 +119,11 @@ public class MainOpenAS2Server
     }
     finally
     {
-      if (session != null)
+      if (aXMLSession != null)
       {
         try
         {
-          session.getProcessor ().stopActiveModules ();
+          aXMLSession.getProcessor ().stopActiveModules ();
         }
         catch (final OpenAS2Exception same)
         {

@@ -32,7 +32,7 @@
  */
 package com.helger.as2.cmd;
 
-import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Nonnull;
 
@@ -43,5 +43,5 @@ public interface ICommandRegistry extends IDynamicComponent
 {
   @Nonnull
   @ReturnsMutableCopy
-  List <ICommand> getAllCommands ();
+  Map <String, ICommand> getAllCommands ();
 }

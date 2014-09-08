@@ -32,18 +32,26 @@
  */
 package com.helger.as2.cmd;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import javax.annotation.Nonnull;
 
 import com.helger.as2lib.AbstractDynamicComponent;
+import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotations.ReturnsMutableCopy;
 import com.helger.commons.collections.ContainerHelper;
 
 public class BaseCommandRegistry extends AbstractDynamicComponent implements ICommandRegistry
 {
-  private final List <ICommand> m_aCommands = new ArrayList <ICommand> ();
+  private final Map <String, ICommand> m_aCommands = new LinkedHashMap <String, ICommand> ();
+
+  public void addCommand (@Nonnull final ICommand aCommand)
+  {
+    ValueEnforcer.notNull (aCommand, "Command");
+    final String sCommandName = aCommand.getName ();
+    m_aCommands.put (sCommandName, aCommand);
+  }
 
   public void clearCommands ()
   {
@@ -52,13 +60,8 @@ public class BaseCommandRegistry extends AbstractDynamicComponent implements ICo
 
   @Nonnull
   @ReturnsMutableCopy
-  public List <ICommand> getAllCommands ()
+  public Map <String, ICommand> getAllCommands ()
   {
-    return ContainerHelper.newList (m_aCommands);
-  }
-
-  public void addCommand (final ICommand aCmd)
-  {
-    m_aCommands.add (aCmd);
+    return ContainerHelper.newOrderedMap (m_aCommands);
   }
 }

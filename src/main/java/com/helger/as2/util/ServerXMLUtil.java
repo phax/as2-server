@@ -52,7 +52,8 @@ public final class ServerXMLUtil
   {}
 
   @Nonnull
-  public static IDynamicComponent createComponent (@Nonnull final IMicroElement aElement, final ISession session) throws OpenAS2Exception
+  public static IDynamicComponent createComponent (@Nonnull final IMicroElement aElement,
+                                                   @Nonnull final ISession aSession) throws OpenAS2Exception
   {
     final String sClassName = aElement.getAttribute ("classname");
     if (sClassName == null)
@@ -60,15 +61,15 @@ public final class ServerXMLUtil
 
     try
     {
-      final Class <?> aObjClass = Class.forName (sClassName);
-      if (!IDynamicComponent.class.isAssignableFrom (aObjClass))
-        throw new OpenAS2Exception ("Class " + sClassName + " must implement " + IDynamicComponent.class.getName ());
-      final IDynamicComponent aObj = (IDynamicComponent) GenericReflection.newInstance (aObjClass);
+      final IDynamicComponent aObj = GenericReflection.newInstance (sClassName, IDynamicComponent.class);
 
       final StringMap aParameters = XMLUtil.getAttrsWithLowercaseName (aElement);
-      if (session instanceof XMLSession)
-        updateDirectories (((XMLSession) session).getBaseDirectory (), aParameters);
-      aObj.initDynamicComponent (session, aParameters);
+      if (aSession instanceof XMLSession)
+      {
+        // Replace %home% with session base directory
+        updateDirectories (((XMLSession) aSession).getBaseDirectory (), aParameters);
+      }
+      aObj.initDynamicComponent (aSession, aParameters);
 
       return aObj;
     }

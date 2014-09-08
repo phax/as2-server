@@ -40,19 +40,16 @@ import com.helger.as2lib.exception.OpenAS2Exception;
 
 public abstract class AbstractAliasedCertCommand extends AbstractCommand
 {
-
   @Override
-  public CommandResult execute (final Object [] params)
+  public final CommandResult execute (final Object [] params)
   {
-
     try
     {
       final ICertificateFactory certFx = getSession ().getCertificateFactory ();
 
       if (certFx instanceof IAliasedCertificateFactory)
-      {
         return execute ((IAliasedCertificateFactory) certFx, params);
-      }
+
       return new CommandResult (CommandResult.TYPE_COMMAND_NOT_SUPPORTED, "Not supported by current certificate store");
     }
     catch (final OpenAS2Exception oae)
@@ -64,5 +61,4 @@ public abstract class AbstractAliasedCertCommand extends AbstractCommand
   }
 
   protected abstract CommandResult execute (IAliasedCertificateFactory certFx, Object [] params) throws OpenAS2Exception;
-
 }
