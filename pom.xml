@@ -11,6 +11,8 @@
   <packaging>bundle</packaging>
   <name>as2-server</name>
   <description>Open AS2 fork - server part</description>
+  <url>https://github.com/phax/as2-server</url>
+  <inceptionYear>2013</inceptionYear>
   
   <licenses>
     <license>
@@ -21,7 +23,7 @@
   </licenses>
  
   <scm>
-    <url>https://github.com/phax/as2-server</url>
+    <url>http://github.com/phax/as2-server</url>
     <connection>scm:git:git@github.com:phax/as2-server.git</connection>
     <developerConnection>scm:git:git@github.com:phax/as2-server.git</developerConnection>
     <tag>HEAD</tag>
