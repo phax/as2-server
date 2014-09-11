@@ -42,7 +42,7 @@ import com.helger.commons.microdom.impl.MicroDocument;
 
 /**
  * adds a new partner entry in partnership store
- * 
+ *
  * @author joseph mcverry
  */
 public class AddPartnerCommand extends AbstractAliasedPartnershipsCommand
@@ -95,11 +95,9 @@ public class AddPartnerCommand extends AbstractAliasedPartnershipsCommand
             if (pos > 0)
             {
               root.setAttribute (param.substring (0, pos), param.substring (pos + 1));
-
             }
             else
               return new CommandResult (CommandResult.TYPE_ERROR, "incoming parameter missing value");
-
       }
 
       ((XMLPartnershipFactory) partFx).loadPartner (root, partFx.getPartners ());

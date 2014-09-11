@@ -45,8 +45,8 @@
              filename="%home%\commands.xml"/>
   <commandProcessors>
     <commandProcessor classname="com.helger.as2.cmd.processor.StreamCommandProcessor"/>
-    <commandProcessor classname="com.helger.as2.cmd.processor.SocketCommandProcessor"  portId="4321"
-                      userid="userID" password="pWd"/>
+    <commandProcessor classname="com.helger.as2.cmd.processor.SocketCommandProcessor"  
+                      portId="4321" userid="userID" password="pWd"/>
   </commandProcessors>
 
   <processor classname="com.helger.as2lib.processor.DefaultProcessor"
@@ -59,16 +59,18 @@
     <module classname="com.helger.as2lib.processor.receiver.AS2DirectoryPollingModule"
             outboxdir="data\toAny"
             errordir="data\toAny\error"      
-            interval="5"      
+            interval="5"
             delimiters="-."
             format="sender.as2_id, receiver.as2_id, attributes.fileid"      
             mimetype="application/EDI-X12"/>
+    <!--  Special directory for sending messages to "OpenAS2A" -->
     <module classname="com.helger.as2lib.processor.receiver.AS2DirectoryPollingModule"
             outboxdir="data\toOpenAS2A\"
             errordir="data\toOpenAS2A\error"      
             interval="5"      
             defaults="sender.as2_id=OpenAS2B, receiver.as2_id=OpenAS2A"      
             mimetype="application/EDI-X12"/>          
+    <!--  Special directory for sending messages to "OpenAS2B" -->
     <module classname="com.helger.as2lib.processor.receiver.AS2DirectoryPollingModule"
             outboxdir="data\toOpenAS2B"
             errordir="data\toOpenAS2B\error"      
