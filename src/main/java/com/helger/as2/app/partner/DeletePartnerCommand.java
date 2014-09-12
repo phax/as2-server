@@ -33,6 +33,7 @@
 package com.helger.as2.app.partner;
 
 import com.helger.as2.cmd.CommandResult;
+import com.helger.as2.cmd.ECommandResultType;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.partner.IPartnershipFactory;
 import com.helger.as2lib.partner.Partnership;
@@ -67,7 +68,7 @@ public class DeletePartnerCommand extends AbstractAliasedPartnershipsCommand
   {
     if (params.length < 1)
     {
-      return new CommandResult (CommandResult.TYPE_INVALID_PARAM_COUNT, getUsage ());
+      return new CommandResult (ECommandResultType.TYPE_INVALID_PARAM_COUNT, getUsage ());
     }
 
     synchronized (partFx)
@@ -84,7 +85,7 @@ public class DeletePartnerCommand extends AbstractAliasedPartnershipsCommand
         }
 
       if (!found)
-        return new CommandResult (CommandResult.TYPE_ERROR, "Unknown partner name");
+        return new CommandResult (ECommandResultType.TYPE_ERROR, "Unknown partner name");
 
       boolean partnershipFound = false;
       for (final Partnership aPartnership : partFx.getAllPartnerships ())
@@ -95,10 +96,11 @@ public class DeletePartnerCommand extends AbstractAliasedPartnershipsCommand
         }
 
       if (partnershipFound)
-        return new CommandResult (CommandResult.TYPE_ERROR, "Can not delete partner; it is tied to some partnerships");
+        return new CommandResult (ECommandResultType.TYPE_ERROR,
+                                  "Can not delete partner; it is tied to some partnerships");
 
       partFx.getPartners ().remove (name);
-      return new CommandResult (CommandResult.TYPE_OK);
+      return new CommandResult (ECommandResultType.TYPE_OK);
     }
   }
 }

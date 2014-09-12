@@ -33,11 +33,10 @@
 package com.helger.as2.app.cert;
 
 import java.security.cert.Certificate;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import com.helger.as2.cmd.CommandResult;
+import com.helger.as2.cmd.ECommandResultType;
 import com.helger.as2lib.cert.IAliasedCertificateFactory;
 import com.helger.as2lib.exception.OpenAS2Exception;
 
@@ -67,23 +66,14 @@ public class ListCertCommand extends AbstractAliasedCertCommand
     synchronized (certFx)
     {
       final Map <String, Certificate> certs = certFx.getCertificates ();
-      final Iterator <Entry <String, Certificate>> certIt = certs.entrySet ().iterator ();
-      Map.Entry <String, Certificate> currentCert;
-      final CommandResult cmdRes = new CommandResult (CommandResult.TYPE_OK);
+      final CommandResult cmdRes = new CommandResult (ECommandResultType.TYPE_OK);
+      for (final String sCertName : certs.keySet ())
+        cmdRes.addResult (sCertName);
 
-      while (certIt.hasNext ())
-      {
-        currentCert = certIt.next ();
-        cmdRes.getResults ().add (currentCert.getKey ());
-      }
-
-      if (cmdRes.getResults ().size () == 0)
-      {
-        cmdRes.getResults ().add ("No certificates available");
-      }
+      if (cmdRes.hasNoResult ())
+        cmdRes.addResult ("No certificates available");
 
       return cmdRes;
-
     }
   }
 }

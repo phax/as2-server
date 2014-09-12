@@ -32,8 +32,6 @@
  */
 package com.helger.as2.cmd.processor;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -46,15 +44,16 @@ import javax.net.ssl.SSLServerSocket;
 import javax.net.ssl.SSLServerSocketFactory;
 import javax.net.ssl.SSLSocket;
 
-import org.xml.sax.SAXException;
-
 import com.helger.as2.cmd.CommandResult;
 import com.helger.as2.cmd.ICommand;
 import com.helger.as2.util.CommandTokenizer;
 import com.helger.as2lib.exception.OpenAS2Exception;
+import com.helger.as2lib.exception.WrappedOpenAS2Exception;
 import com.helger.as2lib.session.ISession;
 import com.helger.as2lib.util.IStringMap;
 import com.helger.as2lib.util.StringMap;
+import com.helger.commons.io.streams.NonBlockingBufferedReader;
+import com.helger.commons.io.streams.NonBlockingBufferedWriter;
 import com.helger.commons.io.streams.StreamUtils;
 import com.helger.commons.string.StringHelper;
 
@@ -69,8 +68,8 @@ import com.helger.commons.string.StringHelper;
  */
 public class SocketCommandProcessor extends AbstractCommandProcessor
 {
-  private BufferedReader m_aReader;
-  private BufferedWriter m_aWriter;
+  private NonBlockingBufferedReader m_aReader;
+  private NonBlockingBufferedWriter m_aWriter;
   private SSLServerSocket m_aSSLServerSocket;
 
   private String m_sUserID;
@@ -84,33 +83,32 @@ public class SocketCommandProcessor extends AbstractCommandProcessor
   public void initDynamicComponent (@Nonnull final ISession aSession, @Nullable final IStringMap aParams) throws OpenAS2Exception
   {
     final StringMap aParameters = aParams == null ? new StringMap () : new StringMap (aParams);
-    final String p = aParameters.getAttributeAsString ("portid");
+    final String sPort = aParameters.getAttributeAsString ("portid");
     try
     {
-      final int nPort = Integer.parseInt (p);
+      final int nPort = Integer.parseInt (sPort);
 
       final SSLServerSocketFactory aSSLServerSocketFactory = (SSLServerSocketFactory) SSLServerSocketFactory.getDefault ();
       m_aSSLServerSocket = (SSLServerSocket) aSSLServerSocketFactory.createServerSocket (nPort);
-      final String [] enabledCipherSuites = { "SSL_DH_anon_WITH_RC4_128_MD5" };
-      m_aSSLServerSocket.setEnabledCipherSuites (enabledCipherSuites);
+      final String [] aEnabledCipherSuites = { "SSL_DH_anon_WITH_RC4_128_MD5" };
+      m_aSSLServerSocket.setEnabledCipherSuites (aEnabledCipherSuites);
     }
     catch (final IOException e)
     {
-      e.printStackTrace ();
       throw new OpenAS2Exception (e);
     }
     catch (final NumberFormatException e)
     {
-      e.printStackTrace ();
-      throw new OpenAS2Exception ("error converting portid parameter '" + p + "': " + e);
+      throw new OpenAS2Exception ("Error converting portid parameter '" + sPort + "': " + e);
     }
+
     m_sUserID = aParameters.getAttributeAsString ("userid");
     if (StringHelper.hasNoText (m_sUserID))
-      throw new OpenAS2Exception ("missing userid parameter");
+      throw new OpenAS2Exception ("missing 'userid' parameter");
 
     m_sPassword = aParameters.getAttributeAsString ("password");
     if (StringHelper.hasNoText (m_sPassword))
-      throw new OpenAS2Exception ("missing password parameter");
+      throw new OpenAS2Exception ("missing 'password' parameter");
 
     try
     {
@@ -130,8 +128,8 @@ public class SocketCommandProcessor extends AbstractCommandProcessor
     {
       socket = (SSLSocket) m_aSSLServerSocket.accept ();
       socket.setSoTimeout (2000);
-      m_aReader = new BufferedReader (new InputStreamReader (socket.getInputStream ()));
-      m_aWriter = new BufferedWriter (new OutputStreamWriter (socket.getOutputStream ()));
+      m_aReader = new NonBlockingBufferedReader (new InputStreamReader (socket.getInputStream ()));
+      m_aWriter = new NonBlockingBufferedWriter (new OutputStreamWriter (socket.getOutputStream ()));
 
       final String line = m_aReader.readLine ();
 
@@ -156,9 +154,9 @@ public class SocketCommandProcessor extends AbstractCommandProcessor
 
         if (cmdTkn.hasMoreTokens ())
         {
-          final String commandName = cmdTkn.nextToken ().toLowerCase ();
+          final String sCommandName = cmdTkn.nextToken ().toLowerCase ();
 
-          if (commandName.equals (StreamCommandProcessor.EXIT_COMMAND))
+          if (sCommandName.equals (StreamCommandProcessor.EXIT_COMMAND))
           {
             terminate ();
           }
@@ -171,25 +169,24 @@ public class SocketCommandProcessor extends AbstractCommandProcessor
               params.add (cmdTkn.nextToken ());
             }
 
-            final ICommand cmd = getCommand (commandName);
-
-            if (cmd != null)
+            final ICommand aCommand = getCommand (sCommandName);
+            if (aCommand != null)
             {
-              final CommandResult result = cmd.execute (params.toArray ());
+              final CommandResult aResult = aCommand.execute (params.toArray ());
 
-              if (result.getType () == CommandResult.TYPE_OK)
+              if (aResult.getType ().isSuccess ())
               {
-                m_aWriter.write (result.toXML ());
+                m_aWriter.write (aResult.toXML ());
               }
               else
               {
                 m_aWriter.write ("\r\n" + StreamCommandProcessor.COMMAND_ERROR + "\r\n");
-                m_aWriter.write (result.getResult ());
+                m_aWriter.write (aResult.getResultAsString ());
               }
             }
             else
             {
-              m_aWriter.write (StreamCommandProcessor.COMMAND_NOT_FOUND + "> " + commandName + "\r\n");
+              m_aWriter.write (StreamCommandProcessor.COMMAND_NOT_FOUND + "> " + sCommandName + "\r\n");
               m_aWriter.write ("List of commands:" + "\r\n");
               for (final String sCurCmd : getAllCommands ().keySet ())
                 m_aWriter.write (sCurCmd + "\r\n");
@@ -200,17 +197,9 @@ public class SocketCommandProcessor extends AbstractCommandProcessor
       }
       m_aWriter.flush ();
     }
-    catch (final IOException ioe)
+    catch (final Exception ex)
     {
-      ioe.printStackTrace ();
-    }
-    catch (final SAXException e)
-    {
-      throw new OpenAS2Exception (e);
-    }
-    catch (final Exception e)
-    {
-      throw new OpenAS2Exception (e);
+      throw new WrappedOpenAS2Exception (ex);
     }
     finally
     {

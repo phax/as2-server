@@ -33,6 +33,7 @@
 package com.helger.as2.app.cert;
 
 import com.helger.as2.cmd.CommandResult;
+import com.helger.as2.cmd.ECommandResultType;
 import com.helger.as2lib.cert.IAliasedCertificateFactory;
 import com.helger.as2lib.exception.OpenAS2Exception;
 
@@ -61,17 +62,14 @@ public class DeleteCertCommand extends AbstractAliasedCertCommand
   {
     if (params.length < 1)
     {
-      return new CommandResult (CommandResult.TYPE_INVALID_PARAM_COUNT, getUsage ());
+      return new CommandResult (ECommandResultType.TYPE_INVALID_PARAM_COUNT, getUsage ());
     }
 
+    final String alias = params[0].toString ();
     synchronized (certFx)
     {
-      final String alias = params[0].toString ();
-
       certFx.removeCertificate (alias);
-
-      return new CommandResult (CommandResult.TYPE_OK, "deleted " + alias);
-
     }
+    return new CommandResult (ECommandResultType.TYPE_OK, "deleted " + alias);
   }
 }

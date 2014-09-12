@@ -61,21 +61,31 @@ public final class ServerXMLUtil
 
     try
     {
+      // Instantiate class
       final IDynamicComponent aObj = GenericReflection.newInstance (sClassName, IDynamicComponent.class);
+      if (aObj == null)
+        throw new OpenAS2Exception ("Failed to instantiate '" + sClassName + "'");
 
+      // Read all parameters
       final StringMap aParameters = XMLUtil.getAttrsWithLowercaseName (aElement);
       if (aSession instanceof XMLSession)
       {
         // Replace %home% with session base directory
         updateDirectories (((XMLSession) aSession).getBaseDirectory (), aParameters);
       }
+
+      // Init component
       aObj.initDynamicComponent (aSession, aParameters);
 
       return aObj;
     }
-    catch (final Exception e)
+    catch (final OpenAS2Exception ex)
     {
-      throw new WrappedOpenAS2Exception ("Error creating component: " + sClassName, e);
+      throw ex;
+    }
+    catch (final Exception ex)
+    {
+      throw new WrappedOpenAS2Exception ("Error creating component: " + sClassName, ex);
     }
   }
 

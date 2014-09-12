@@ -48,6 +48,7 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotations.ReturnsMutableCopy;
 import com.helger.commons.annotations.UnsupportedOperation;
 import com.helger.commons.collections.ContainerHelper;
+import com.helger.commons.lang.CGStringHelper;
 
 public abstract class AbstractCommandProcessor extends StringMap implements ICommandProcessor, IDynamicComponent, Runnable
 {
@@ -60,7 +61,7 @@ public abstract class AbstractCommandProcessor extends StringMap implements ICom
   @Nullable
   public String getName ()
   {
-    return null;
+    return CGStringHelper.getClassLocalName (this);
   }
 
   @UnsupportedOperation

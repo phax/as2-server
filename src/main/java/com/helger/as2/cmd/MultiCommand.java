@@ -103,9 +103,9 @@ public class MultiCommand extends AbstractCommand
       }
     }
 
-    final CommandResult listCmds = new CommandResult (CommandResult.TYPE_ERROR, "List of valid subcommands:");
+    final CommandResult listCmds = new CommandResult (ECommandResultType.TYPE_ERROR, "List of valid subcommands:");
     for (final ICommand currentCmd : getCommands ())
-      listCmds.getResults ().add (currentCmd.getName ());
+      listCmds.addResult (currentCmd.getName ());
     return listCmds;
   }
 

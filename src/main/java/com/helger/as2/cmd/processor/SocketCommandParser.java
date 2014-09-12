@@ -33,67 +33,57 @@
 package com.helger.as2.cmd.processor;
 
 import java.io.CharArrayWriter;
-import java.io.IOException;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 
 import org.xml.sax.Attributes;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import com.helger.commons.io.streams.NonBlockingStringReader;
+import com.helger.commons.xml.serialize.SAXReader;
+import com.helger.commons.xml.serialize.SAXReaderSettings;
 
 /**
  * used to parse commands from the socket command processor message format
  * <command userid="abc" pasword="xyz"> the actual command </command>
- * 
+ *
  * @author joseph mcverry
  */
-
 public class SocketCommandParser extends DefaultHandler
 {
-  private final SAXParser m_aParser;
   private String m_sUserID;
   private String m_sPassword;
   private String m_sCommandText;
 
   /** simple string processor */
-  protected CharArrayWriter m_aContents = new CharArrayWriter ();
+  private final CharArrayWriter m_aContents = new CharArrayWriter ();
 
   /**
-   * construct the factory with a xml parser
-   * 
-   * @throws Exception
-   *         an xml parser exception
+   * constructor
    */
+  public SocketCommandParser ()
+  {}
 
-  public SocketCommandParser () throws Exception
-  {
-    final SAXParserFactory spf = SAXParserFactory.newInstance ();
-    m_aParser = spf.newSAXParser ();
-  }
-
-  public void parse (@Nullable final String inLine) throws SAXException, IOException
+  public void parse (@Nullable final String sInLine)
   {
     m_sUserID = "";
     m_sPassword = "";
     m_sCommandText = "";
     m_aContents.reset ();
 
-    if (inLine != null)
+    if (sInLine != null)
     {
-      final NonBlockingStringReader aReader = new NonBlockingStringReader (inLine);
-      m_aParser.parse (new InputSource (aReader), this);
+      SAXReader.readXMLSAX (sInLine, new SAXReaderSettings ().setEntityResolver (this)
+                                                             .setDTDHandler (this)
+                                                             .setContentHandler (this)
+                                                             .setErrorHandler (this));
     }
   }
 
   /**
    * Method handles #PCDATA
-   * 
+   *
    * @param ch
    *        array
    * @param start
@@ -141,6 +131,7 @@ public class SocketCommandParser extends DefaultHandler
     if (sQName.equals ("command"))
     {
       m_sCommandText = m_aContents.toString ();
+      m_aContents.reset ();
     }
     else
       m_aContents.flush ();

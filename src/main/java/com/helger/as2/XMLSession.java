@@ -33,10 +33,12 @@
 package com.helger.as2;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.WillClose;
 
 import org.slf4j.Logger;
@@ -49,8 +51,9 @@ import com.helger.as2.cmd.processor.AbstractCommandProcessor;
 import com.helger.as2.util.ServerXMLUtil;
 import com.helger.as2lib.cert.ICertificateFactory;
 import com.helger.as2lib.exception.OpenAS2Exception;
+import com.helger.as2lib.exception.WrappedOpenAS2Exception;
 import com.helger.as2lib.partner.IPartnershipFactory;
-import com.helger.as2lib.processor.IProcessor;
+import com.helger.as2lib.processor.IMessageProcessor;
 import com.helger.as2lib.processor.module.IProcessorModule;
 import com.helger.as2lib.session.Session;
 import com.helger.commons.io.file.FileUtils;
@@ -78,21 +81,36 @@ public class XMLSession extends Session implements ICommandRegistryFactory
   private final CommandManager m_aCmdManager = CommandManager.getCmdManager ();
   private ICommandRegistry m_aCommandRegistry;
 
-  public XMLSession (final String filename) throws OpenAS2Exception
+  public XMLSession (final String sFilename) throws OpenAS2Exception
   {
-    final File file = new File (filename).getAbsoluteFile ();
-    m_sBaseDirectory = file.getParent ();
-    load (FileUtils.getInputStream (file));
+    try
+    {
+      final File aFile = new File (sFilename).getCanonicalFile ().getAbsoluteFile ();
+      m_sBaseDirectory = aFile.getParentFile ().getAbsolutePath ();
+      load (FileUtils.getInputStream (aFile));
+    }
+    catch (final IOException ex)
+    {
+      throw new WrappedOpenAS2Exception (ex);
+    }
   }
 
-  public ICommandRegistry getCommandRegistry ()
-  {
-    return m_aCommandRegistry;
-  }
-
+  @Nonnull
   public String getBaseDirectory ()
   {
     return m_sBaseDirectory;
+  }
+
+  @Nonnull
+  public CommandManager getCommandManager ()
+  {
+    return m_aCmdManager;
+  }
+
+  @Nullable
+  public ICommandRegistry getCommandRegistry ()
+  {
+    return m_aCommandRegistry;
   }
 
   protected void loadCertificates (@Nonnull final IMicroElement aElement) throws OpenAS2Exception
@@ -117,16 +135,12 @@ public class XMLSession extends Session implements ICommandRegistryFactory
       loadCommandProcessor (m_aCmdManager, processor);
   }
 
-  public CommandManager getCommandManager ()
+  protected void loadCommandProcessor (@Nonnull final CommandManager aCommandMgr, @Nonnull final IMicroElement aElement) throws OpenAS2Exception
   {
-    return m_aCmdManager;
-  }
-
-  protected void loadCommandProcessor (@Nonnull final CommandManager aMgr, final IMicroElement aElement) throws OpenAS2Exception
-  {
-    final AbstractCommandProcessor cmdProcesor = (AbstractCommandProcessor) ServerXMLUtil.createComponent (aElement,
-                                                                                                           this);
-    aMgr.addProcessor (cmdProcesor);
+    final AbstractCommandProcessor aCmdProcesor = (AbstractCommandProcessor) ServerXMLUtil.createComponent (aElement,
+                                                                                                            this);
+    aCommandMgr.addProcessor (aCmdProcesor);
+    s_aLogger.info ("    loaded command processor " + aCmdProcesor.getName ());
   }
 
   protected void loadPartnerships (final IMicroElement rootNode) throws OpenAS2Exception
@@ -136,20 +150,22 @@ public class XMLSession extends Session implements ICommandRegistryFactory
     addComponent (IPartnershipFactory.COMPID_PARTNERSHIP_FACTORY, partnerFx);
   }
 
-  protected void loadProcessor (final IMicroElement rootNode) throws OpenAS2Exception
+  protected void loadMessageProcessor (final IMicroElement rootNode) throws OpenAS2Exception
   {
-    s_aLogger.info ("  loading processor");
-    final IProcessor proc = (IProcessor) ServerXMLUtil.createComponent (rootNode, this);
-    addComponent (IProcessor.COMPID_PROCESSOR, proc);
+    s_aLogger.info ("  loading message processor");
+    final IMessageProcessor aMsgProcessor = (IMessageProcessor) ServerXMLUtil.createComponent (rootNode, this);
+    addComponent (IMessageProcessor.COMPID_MESSAGE_PROCESSOR, aMsgProcessor);
 
-    for (final IMicroElement module : rootNode.getAllChildElements ("module"))
-      loadProcessorModule (proc, module);
+    for (final IMicroElement eModule : rootNode.getAllChildElements ("module"))
+      loadProcessorModule (aMsgProcessor, eModule);
   }
 
-  protected void loadProcessorModule (final IProcessor proc, final IMicroElement moduleNode) throws OpenAS2Exception
+  protected void loadProcessorModule (@Nonnull final IMessageProcessor aMsgProcessor,
+                                      @Nonnull final IMicroElement eModule) throws OpenAS2Exception
   {
-    final IProcessorModule procmod = (IProcessorModule) ServerXMLUtil.createComponent (moduleNode, this);
-    proc.addModule (procmod);
+    final IProcessorModule aProcessorModule = (IProcessorModule) ServerXMLUtil.createComponent (eModule, this);
+    aMsgProcessor.addModule (aProcessorModule);
+    s_aLogger.info ("    loaded processor module " + aProcessorModule.getName ());
   }
 
   protected void load (@Nonnull @WillClose final InputStream aIS) throws OpenAS2Exception
@@ -165,7 +181,7 @@ public class XMLSession extends Session implements ICommandRegistryFactory
         loadCertificates (eRootChild);
       else
         if (sNodeName.equals (EL_PROCESSOR))
-          loadProcessor (eRootChild);
+          loadMessageProcessor (eRootChild);
         else
           if (sNodeName.equals (EL_CMDPROCESSOR))
             loadCommandProcessors (eRootChild);

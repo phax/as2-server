@@ -33,6 +33,7 @@
 package com.helger.as2.app.partner;
 
 import com.helger.as2.cmd.CommandResult;
+import com.helger.as2.cmd.ECommandResultType;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.partner.IPartnershipFactory;
 import com.helger.as2lib.partner.Partnership;
@@ -67,7 +68,7 @@ public class DeletePartnershipCommand extends AbstractAliasedPartnershipsCommand
   {
     if (params.length < 1)
     {
-      return new CommandResult (CommandResult.TYPE_INVALID_PARAM_COUNT, getUsage ());
+      return new CommandResult (ECommandResultType.TYPE_INVALID_PARAM_COUNT, getUsage ());
     }
 
     synchronized (partFx)
@@ -78,10 +79,10 @@ public class DeletePartnershipCommand extends AbstractAliasedPartnershipsCommand
         if (part.getName ().equals (name))
         {
           partFx.removePartnership (part);
-          return new CommandResult (CommandResult.TYPE_OK, "deleted " + name);
+          return new CommandResult (ECommandResultType.TYPE_OK, "deleted " + name);
         }
 
-      return new CommandResult (CommandResult.TYPE_ERROR, "Unknown partnership name");
+      return new CommandResult (ECommandResultType.TYPE_ERROR, "Unknown partnership name");
     }
   }
 }

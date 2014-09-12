@@ -32,17 +32,14 @@
  */
 package com.helger.as2.app.partner;
 
-import java.util.Iterator;
-import java.util.Map;
-
 import com.helger.as2.cmd.CommandResult;
+import com.helger.as2.cmd.ECommandResultType;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.partner.IPartnershipFactory;
-import com.helger.as2lib.util.StringMap;
 
 /**
  * list partner entries in partnership store
- * 
+ *
  * @author joseph mcverry
  */
 public class ListPartnersCommand extends AbstractAliasedPartnershipsCommand
@@ -71,21 +68,13 @@ public class ListPartnersCommand extends AbstractAliasedPartnershipsCommand
 
     synchronized (partFx)
     {
+      final CommandResult cmdRes = new CommandResult (ECommandResultType.TYPE_OK);
 
-      final Map <String, StringMap> partners = partFx.getPartners ();
-      final Iterator <String> partIt = partners.keySet ().iterator ();
+      for (final String sPartnershipID : partFx.getPartners ().keySet ())
+        cmdRes.addResult (sPartnershipID);
 
-      final CommandResult cmdRes = new CommandResult (CommandResult.TYPE_OK);
-
-      while (partIt.hasNext ())
-      {
-        cmdRes.getResults ().add (partIt.next ());
-      }
-
-      if (cmdRes.getResults ().size () == 0)
-      {
-        cmdRes.getResults ().add ("No partner definitions available");
-      }
+      if (cmdRes.hasNoResult ())
+        cmdRes.addResult ("No partner definitions available");
 
       return cmdRes;
     }

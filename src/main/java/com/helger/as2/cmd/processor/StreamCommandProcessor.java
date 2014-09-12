@@ -135,14 +135,14 @@ public class StreamCommandProcessor extends AbstractCommandProcessor
             if (aCommand != null)
             {
               final CommandResult aResult = aCommand.execute (aParams.toArray ());
-              if (aResult.getType () == CommandResult.TYPE_OK)
+              if (aResult.getType ().isSuccess ())
               {
                 writeLine (aResult.toString ());
               }
               else
               {
                 writeLine (COMMAND_ERROR);
-                writeLine (aResult.getResult ());
+                writeLine (aResult.getResultAsString ());
               }
             }
             else

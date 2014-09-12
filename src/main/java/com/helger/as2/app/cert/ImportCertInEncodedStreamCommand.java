@@ -38,6 +38,7 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 
 import com.helger.as2.cmd.CommandResult;
+import com.helger.as2.cmd.ECommandResultType;
 import com.helger.as2.util.ByteCoder;
 import com.helger.as2lib.cert.IAliasedCertificateFactory;
 import com.helger.as2lib.exception.OpenAS2Exception;
@@ -69,7 +70,7 @@ public class ImportCertInEncodedStreamCommand extends AbstractAliasedCertCommand
   {
     if (params.length != 2)
     {
-      return new CommandResult (CommandResult.TYPE_INVALID_PARAM_COUNT, getUsage ());
+      return new CommandResult (ECommandResultType.TYPE_INVALID_PARAM_COUNT, getUsage ());
     }
 
     synchronized (certFx)
@@ -100,13 +101,13 @@ public class ImportCertInEncodedStreamCommand extends AbstractAliasedCertCommand
       {
         certFx.addCertificate (alias, (X509Certificate) cert, true);
 
-        final CommandResult cmdRes = new CommandResult (CommandResult.TYPE_OK, "Certificate(s) imported successfully");
-        cmdRes.getResults ().add ("Imported certificate: " + cert.toString ());
+        final CommandResult cmdRes = new CommandResult (ECommandResultType.TYPE_OK,
+                                                        "Certificate(s) imported successfully");
+        cmdRes.addResult ("Imported certificate: " + cert.toString ());
         return cmdRes;
       }
     }
 
-    return new CommandResult (CommandResult.TYPE_ERROR, "No valid X509 certificates found");
+    return new CommandResult (ECommandResultType.TYPE_ERROR, "No valid X509 certificates found");
   }
-
 }

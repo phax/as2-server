@@ -49,7 +49,7 @@
                       portId="4321" userid="userID" password="pWd"/>
   </commandProcessors>
 
-  <processor classname="com.helger.as2lib.processor.DefaultProcessor"
+  <processor classname="com.helger.as2lib.processor.DefaultMessageProcessor"
              pendingMDN="data/pendingMDN3"
              pendingMDNinfo="data/pendinginfoMDN3">
     <module classname="com.helger.as2lib.processor.sender.AS2SenderModule" />

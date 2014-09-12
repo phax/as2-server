@@ -43,6 +43,7 @@ import java.security.cert.X509Certificate;
 import java.util.Enumeration;
 
 import com.helger.as2.cmd.CommandResult;
+import com.helger.as2.cmd.ECommandResultType;
 import com.helger.as2lib.cert.IAliasedCertificateFactory;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.exception.WrappedOpenAS2Exception;
@@ -73,7 +74,7 @@ public class ImportCertCommand extends AbstractAliasedCertCommand
   {
     if (params.length < 2)
     {
-      return new CommandResult (CommandResult.TYPE_INVALID_PARAM_COUNT, getUsage ());
+      return new CommandResult (ECommandResultType.TYPE_INVALID_PARAM_COUNT, getUsage ());
     }
 
     synchronized (certFx)
@@ -93,8 +94,8 @@ public class ImportCertCommand extends AbstractAliasedCertCommand
         {
           if (password == null)
           {
-            return new CommandResult (CommandResult.TYPE_INVALID_PARAM_COUNT, getUsage () +
-                                                                              " (Password is required for p12 files)");
+            return new CommandResult (ECommandResultType.TYPE_INVALID_PARAM_COUNT, getUsage () +
+                                                                                   " (Password is required for p12 files)");
           }
 
           return importPrivateKey (certFx, alias, filename, password);
@@ -117,7 +118,7 @@ public class ImportCertCommand extends AbstractAliasedCertCommand
 
     final java.security.cert.CertificateFactory cf = java.security.cert.CertificateFactory.getInstance ("X.509");
 
-    final CommandResult cmdRes = new CommandResult (CommandResult.TYPE_OK, "Certificate(s) imported successfully");
+    final CommandResult cmdRes = new CommandResult (ECommandResultType.TYPE_OK, "Certificate(s) imported successfully");
 
     while (bis.available () > 0)
     {
@@ -126,13 +127,13 @@ public class ImportCertCommand extends AbstractAliasedCertCommand
       if (cert instanceof X509Certificate)
       {
         certFx.addCertificate (alias, (X509Certificate) cert, true);
-        cmdRes.getResults ().add ("Imported certificate: " + cert.toString ());
+        cmdRes.addResult ("Imported certificate: " + cert.toString ());
 
         return cmdRes;
       }
     }
 
-    return new CommandResult (CommandResult.TYPE_ERROR, "No valid X509 certificates found");
+    return new CommandResult (ECommandResultType.TYPE_ERROR, "No valid X509 certificates found");
   }
 
   protected CommandResult importPrivateKey (final IAliasedCertificateFactory certFx,
@@ -157,11 +158,11 @@ public class ImportCertCommand extends AbstractAliasedCertCommand
         final Key certKey = ks.getKey (certAlias, password.toCharArray ());
         certFx.addPrivateKey (alias, certKey, password);
 
-        return new CommandResult (CommandResult.TYPE_OK, "Imported certificate and key: " + cert.toString ());
+        return new CommandResult (ECommandResultType.TYPE_OK, "Imported certificate and key: " + cert.toString ());
       }
     }
 
-    return new CommandResult (CommandResult.TYPE_ERROR, "No valid X509 certificates found");
+    return new CommandResult (ECommandResultType.TYPE_ERROR, "No valid X509 certificates found");
 
   }
 }

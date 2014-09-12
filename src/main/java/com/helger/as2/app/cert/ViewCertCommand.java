@@ -35,12 +35,13 @@ package com.helger.as2.app.cert;
 import java.security.cert.Certificate;
 
 import com.helger.as2.cmd.CommandResult;
+import com.helger.as2.cmd.ECommandResultType;
 import com.helger.as2lib.cert.IAliasedCertificateFactory;
 import com.helger.as2lib.exception.OpenAS2Exception;
 
 /**
  * view certs by alias
- * 
+ *
  * @author Don Hillsberry
  */
 public class ViewCertCommand extends AbstractAliasedCertCommand
@@ -68,18 +69,14 @@ public class ViewCertCommand extends AbstractAliasedCertCommand
   {
     if (params.length < 1)
     {
-      return new CommandResult (CommandResult.TYPE_INVALID_PARAM_COUNT, getUsage ());
+      return new CommandResult (ECommandResultType.TYPE_INVALID_PARAM_COUNT, getUsage ());
     }
 
     synchronized (certFx)
     {
-
       final String alias = params[0].toString ();
-
       final Certificate cert = certFx.getCertificate (alias);
-
-      return new CommandResult (CommandResult.TYPE_OK, cert.toString ());
-
+      return new CommandResult (ECommandResultType.TYPE_OK, cert.toString ());
     }
   }
 }

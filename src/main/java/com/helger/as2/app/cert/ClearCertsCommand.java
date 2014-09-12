@@ -33,6 +33,7 @@
 package com.helger.as2.app.cert;
 
 import com.helger.as2.cmd.CommandResult;
+import com.helger.as2.cmd.ECommandResultType;
 import com.helger.as2lib.cert.IAliasedCertificateFactory;
 import com.helger.as2lib.exception.OpenAS2Exception;
 
@@ -63,7 +64,7 @@ public class ClearCertsCommand extends AbstractAliasedCertCommand
     {
       certFx.clearCertificates ();
 
-      return new CommandResult (CommandResult.TYPE_OK, "cleared");
+      return new CommandResult (ECommandResultType.TYPE_OK, "cleared");
 
     }
   }

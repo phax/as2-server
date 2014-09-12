@@ -33,6 +33,7 @@
 package com.helger.as2.app.partner;
 
 import com.helger.as2.cmd.CommandResult;
+import com.helger.as2.cmd.ECommandResultType;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.partner.IPartnershipFactory;
 import com.helger.as2lib.partner.Partnership;
@@ -67,7 +68,7 @@ public class ViewPartnershipCommand extends AbstractAliasedPartnershipsCommand
   {
     if (params.length < 1)
     {
-      return new CommandResult (CommandResult.TYPE_INVALID_PARAM_COUNT, getUsage ());
+      return new CommandResult (ECommandResultType.TYPE_INVALID_PARAM_COUNT, getUsage ());
     }
 
     final String name = params[0].toString ();
@@ -75,8 +76,8 @@ public class ViewPartnershipCommand extends AbstractAliasedPartnershipsCommand
     {
       for (final Partnership part : partFx.getAllPartnerships ())
         if (part.getName ().equals (name))
-          return new CommandResult (CommandResult.TYPE_OK, part.toString ());
+          return new CommandResult (ECommandResultType.TYPE_OK, part.toString ());
     }
-    return new CommandResult (CommandResult.TYPE_ERROR, "Unknown partnership name");
+    return new CommandResult (ECommandResultType.TYPE_ERROR, "Unknown partnership name");
   }
 }

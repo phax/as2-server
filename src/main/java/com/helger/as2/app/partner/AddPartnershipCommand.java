@@ -33,6 +33,7 @@
 package com.helger.as2.app.partner;
 
 import com.helger.as2.cmd.CommandResult;
+import com.helger.as2.cmd.ECommandResultType;
 import com.helger.as2.partner.XMLPartnershipFactory;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.partner.IPartnershipFactory;
@@ -71,7 +72,7 @@ public class AddPartnershipCommand extends AbstractAliasedPartnershipsCommand
   {
     if (params.length < 3)
     {
-      return new CommandResult (CommandResult.TYPE_INVALID_PARAM_COUNT, getUsage ());
+      return new CommandResult (ECommandResultType.TYPE_INVALID_PARAM_COUNT, getUsage ());
     }
 
     synchronized (partFx)
@@ -102,7 +103,7 @@ public class AddPartnershipCommand extends AbstractAliasedPartnershipsCommand
             else
               if (pos == 0)
               {
-                return new CommandResult (CommandResult.TYPE_ERROR, "incoming parameter missing name");
+                return new CommandResult (ECommandResultType.TYPE_ERROR, "incoming parameter missing name");
               }
               else
                 if (pos > 0)
@@ -112,7 +113,7 @@ public class AddPartnershipCommand extends AbstractAliasedPartnershipsCommand
                   elem.setAttribute ("value", param.substring (pos + 1));
                 }
                 else
-                  return new CommandResult (CommandResult.TYPE_ERROR, "incoming parameter missing value");
+                  return new CommandResult (ECommandResultType.TYPE_ERROR, "incoming parameter missing value");
 
       }
 
@@ -122,7 +123,7 @@ public class AddPartnershipCommand extends AbstractAliasedPartnershipsCommand
       // add the partnership to the list of available partnerships
       partFx.addPartnership (aPartnership);
 
-      return new CommandResult (CommandResult.TYPE_OK);
+      return new CommandResult (ECommandResultType.TYPE_OK);
     }
   }
 }

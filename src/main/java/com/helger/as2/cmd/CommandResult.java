@@ -36,87 +36,87 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommandResult
+import javax.annotation.Nonnull;
+
+import com.helger.commons.ValueEnforcer;
+import com.helger.commons.annotations.ReturnsMutableCopy;
+import com.helger.commons.collections.ContainerHelper;
+
+public final class CommandResult
 {
-  public static final String TYPE_OK = "OK";
-  public static final String TYPE_ERROR = "ERROR";
-  public static final String TYPE_WARNING = "WARNING";
-  public static final String TYPE_INVALID_PARAM_COUNT = "INVALID PARAMETER COUNT";
-  public static final String TYPE_COMMAND_NOT_SUPPORTED = "COMMAND NOT SUPPORTED";
-  public static final String TYPE_EXCEPTION = "EXCEPTION";
+  private final ECommandResultType m_eType;
+  private final List <Serializable> m_aResults = new ArrayList <Serializable> ();
 
-  private String m_sType;
-  private List <Serializable> m_aResults;
-
-  public CommandResult (final String type, final String msg)
+  public CommandResult (@Nonnull final ECommandResultType eType)
   {
-    super ();
-    m_sType = type;
-    getResults ().add (msg);
+    m_eType = ValueEnforcer.notNull (eType, "Type");
   }
 
-  public CommandResult (final String type)
+  public CommandResult (@Nonnull final ECommandResultType eType, @Nonnull final String msg)
   {
-    super ();
-    m_sType = type;
+    this (eType);
+    addResult (msg);
   }
 
   public CommandResult (final Exception e)
   {
     super ();
-    m_sType = TYPE_EXCEPTION;
-    getResults ().add (e);
+    m_eType = ECommandResultType.TYPE_EXCEPTION;
+    addResult (e);
   }
 
-  public List <Serializable> getResults ()
+  @Nonnull
+  public ECommandResultType getType ()
   {
-    if (m_aResults == null)
-      m_aResults = new ArrayList <Serializable> ();
-    return m_aResults;
+    return m_eType;
   }
 
-  public String getResult ()
+  public void addResult (@Nonnull final Serializable aResult)
+  {
+    ValueEnforcer.notNull (aResult, "Result");
+    m_aResults.add (aResult);
+  }
+
+  public boolean hasNoResult ()
+  {
+    return m_aResults.isEmpty ();
+  }
+
+  @Nonnull
+  @ReturnsMutableCopy
+  public List <Serializable> getAllResults ()
+  {
+    return ContainerHelper.newList (m_aResults);
+  }
+
+  @Nonnull
+  public String getResultAsString ()
   {
     final StringBuilder results = new StringBuilder ();
-    for (final Serializable x : getResults ())
+    for (final Serializable x : m_aResults)
       results.append (x.toString ()).append ("\r\n");
     return results.toString ();
-  }
-
-  public void setResults (final List <Serializable> list)
-  {
-    m_aResults = list;
-  }
-
-  public String getType ()
-  {
-    return m_sType;
   }
 
   @Override
   public String toString ()
   {
     final StringBuilder buf = new StringBuilder ();
-    buf.append (getType ()).append (":\r\n");
-    for (final Serializable x : getResults ())
-      buf.append (x.toString ()).append ("\r\n");
+    buf.append (m_eType.getText ()).append (":\r\n");
+    for (final Serializable aResult : m_aResults)
+      buf.append (aResult.toString ()).append ("\r\n");
     return buf.toString ();
   }
 
   public String toXML ()
   {
     final StringBuilder buf = new StringBuilder ();
-    for (final Serializable x : getResults ())
+    for (final Serializable x : m_aResults)
     {
       buf.append ("<result>");
       buf.append (x.toString ());
       buf.append ("</result>");
     }
     return buf.toString ();
-  }
-
-  public void setType (final String string)
-  {
-    m_sType = string;
   }
 }
