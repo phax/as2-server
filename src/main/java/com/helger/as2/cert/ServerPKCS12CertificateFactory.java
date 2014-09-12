@@ -1,7 +1,7 @@
 /**
  * The FreeBSD Copyright
  * Copyright 1994-2008 The FreeBSD Project. All rights reserved.
- * Copyright (C) 2014 Philip Helger ph[at]phloc[dot]com
+ * Copyright (C) 2013-2014 Philip Helger philip[at]helger[dot]com
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -78,7 +78,7 @@ public class ServerPKCS12CertificateFactory extends PKCS12CertificateFactory imp
       if (m_aFileMonitor != null)
         m_aFileMonitor.stop ();
 
-      final int nInterval = getParameterIntRequired (PARAM_INTERVAL);
+      final int nInterval = getAttributeAsIntRequired (PARAM_INTERVAL);
       final File file = new File (getFilename ());
       m_aFileMonitor = new FileMonitor (file, nInterval);
       m_aFileMonitor.addListener (this);

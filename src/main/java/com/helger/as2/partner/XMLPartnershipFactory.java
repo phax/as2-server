@@ -1,7 +1,7 @@
 /**
  * The FreeBSD Copyright
  * Copyright 1994-2008 The FreeBSD Project. All rights reserved.
- * Copyright (C) 2014 Philip Helger ph[at]phloc[dot]com
+ * Copyright (C) 2013-2014 Philip Helger philip[at]helger[dot]com
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -48,12 +48,12 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.as2.util.FileMonitor;
 import com.helger.as2.util.IFileMonitorListener;
-import com.helger.as2lib.ISession;
 import com.helger.as2lib.exception.InvalidParameterException;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.exception.WrappedOpenAS2Exception;
 import com.helger.as2lib.partner.AbstractPartnershipFactory;
 import com.helger.as2lib.partner.Partnership;
+import com.helger.as2lib.session.ISession;
 import com.helger.as2lib.util.IStringMap;
 import com.helger.as2lib.util.StringMap;
 import com.helger.as2lib.util.XMLUtil;
@@ -99,7 +99,7 @@ public class XMLPartnershipFactory extends AbstractPartnershipFactory implements
       if (m_aFileMonitor != null)
         m_aFileMonitor.stop ();
 
-      final int interval = getParameterIntRequired (PARAM_INTERVAL);
+      final int interval = getAttributeAsIntRequired (PARAM_INTERVAL);
       final File file = new File (getFilename ());
       m_aFileMonitor = new FileMonitor (file, interval);
       m_aFileMonitor.addListener (this);
@@ -115,7 +115,7 @@ public class XMLPartnershipFactory extends AbstractPartnershipFactory implements
 
   public String getFilename () throws InvalidParameterException
   {
-    return getParameterRequired (PARAM_FILENAME);
+    return getAttributeAsStringRequired (PARAM_FILENAME);
   }
 
   public void setPartners (final Map <String, StringMap> map)

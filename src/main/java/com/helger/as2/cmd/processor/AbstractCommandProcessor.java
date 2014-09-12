@@ -1,7 +1,7 @@
 /**
  * The FreeBSD Copyright
  * Copyright 1994-2008 The FreeBSD Project. All rights reserved.
- * Copyright (C) 2014 Philip Helger ph[at]phloc[dot]com
+ * Copyright (C) 2013-2014 Philip Helger philip[at]helger[dot]com
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -41,8 +41,8 @@ import javax.annotation.Nullable;
 import com.helger.as2.cmd.ICommand;
 import com.helger.as2.cmd.ICommandRegistry;
 import com.helger.as2lib.IDynamicComponent;
-import com.helger.as2lib.ISession;
 import com.helger.as2lib.exception.OpenAS2Exception;
+import com.helger.as2lib.session.ISession;
 import com.helger.as2lib.util.StringMap;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotations.ReturnsMutableCopy;

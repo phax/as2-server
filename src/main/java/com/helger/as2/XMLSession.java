@@ -1,7 +1,7 @@
 /**
  * The FreeBSD Copyright
  * Copyright 1994-2008 The FreeBSD Project. All rights reserved.
- * Copyright (C) 2014 Philip Helger ph[at]phloc[dot]com
+ * Copyright (C) 2013-2014 Philip Helger philip[at]helger[dot]com
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -47,12 +47,12 @@ import com.helger.as2.cmd.ICommandRegistry;
 import com.helger.as2.cmd.ICommandRegistryFactory;
 import com.helger.as2.cmd.processor.AbstractCommandProcessor;
 import com.helger.as2.util.ServerXMLUtil;
-import com.helger.as2lib.Session;
 import com.helger.as2lib.cert.ICertificateFactory;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.partner.IPartnershipFactory;
 import com.helger.as2lib.processor.IProcessor;
 import com.helger.as2lib.processor.module.IProcessorModule;
+import com.helger.as2lib.session.Session;
 import com.helger.commons.io.file.FileUtils;
 import com.helger.commons.microdom.IMicroDocument;
 import com.helger.commons.microdom.IMicroElement;

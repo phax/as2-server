@@ -1,7 +1,7 @@
 /**
  * The FreeBSD Copyright
  * Copyright 1994-2008 The FreeBSD Project. All rights reserved.
- * Copyright (C) 2014 Philip Helger ph[at]phloc[dot]com
+ * Copyright (C) 2013-2014 Philip Helger philip[at]helger[dot]com
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -40,6 +40,7 @@ import javax.annotation.Nonnull;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.exception.PartnershipNotFoundException;
 import com.helger.as2lib.partner.AbstractPartnershipFactory;
+import com.helger.as2lib.partner.CPartnershipIDs;
 import com.helger.as2lib.partner.Partnership;
 import com.helger.as2lib.util.StringMap;
 
@@ -67,6 +68,13 @@ public class SimplePartnershipFactory extends AbstractPartnershipFactory
     }
     catch (final PartnershipNotFoundException ex)
     {
+      // Ensure the X509 key is contained for certificate store alias retrieval
+      if (!aPartnership.containsSenderID (CPartnershipIDs.PID_X509_ALIAS))
+        aPartnership.setSenderID (CPartnershipIDs.PID_X509_ALIAS, aPartnership.getSenderID (CPartnershipIDs.PID_AS2));
+      if (!aPartnership.containsReceiverID (CPartnershipIDs.PID_X509_ALIAS))
+        aPartnership.setReceiverID (CPartnershipIDs.PID_X509_ALIAS,
+                                    aPartnership.getReceiverID (CPartnershipIDs.PID_AS2));
+
       // Create a new one
       addPartnership (aPartnership);
       return aPartnership;
