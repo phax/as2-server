@@ -37,11 +37,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.concurrent.NotThreadSafe;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotations.ReturnsMutableCopy;
 import com.helger.commons.collections.ContainerHelper;
+import com.helger.commons.microdom.IMicroContainer;
+import com.helger.commons.microdom.impl.MicroContainer;
+import com.helger.commons.microdom.serialize.MicroWriter;
 
+@NotThreadSafe
 public final class CommandResult
 {
   private final ECommandResultType m_eType;
@@ -98,6 +103,15 @@ public final class CommandResult
     return results.toString ();
   }
 
+  @Nonnull
+  public String getAsXMLString ()
+  {
+    final IMicroContainer aCont = new MicroContainer ();
+    for (final Serializable x : m_aResults)
+      aCont.appendElement ("result").appendText (x.toString ());
+    return MicroWriter.getXMLString (aCont);
+  }
+
   @Override
   public String toString ()
   {
@@ -105,18 +119,6 @@ public final class CommandResult
     buf.append (m_eType.getText ()).append (":\r\n");
     for (final Serializable aResult : m_aResults)
       buf.append (aResult.toString ()).append ("\r\n");
-    return buf.toString ();
-  }
-
-  public String toXML ()
-  {
-    final StringBuilder buf = new StringBuilder ();
-    for (final Serializable x : m_aResults)
-    {
-      buf.append ("<result>");
-      buf.append (x.toString ());
-      buf.append ("</result>");
-    }
     return buf.toString ();
   }
 }

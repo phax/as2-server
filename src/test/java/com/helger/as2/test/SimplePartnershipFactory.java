@@ -32,9 +32,6 @@
  */
 package com.helger.as2.test;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.annotation.Nonnull;
 
 import com.helger.as2lib.exception.OpenAS2Exception;
@@ -42,22 +39,12 @@ import com.helger.as2lib.exception.PartnershipNotFoundException;
 import com.helger.as2lib.partner.AbstractPartnershipFactory;
 import com.helger.as2lib.partner.CPartnershipIDs;
 import com.helger.as2lib.partner.Partnership;
-import com.helger.as2lib.util.StringMap;
 
 /**
  * @author oleo Date: May 12, 2010 Time: 2:18:36 PM
  */
 public class SimplePartnershipFactory extends AbstractPartnershipFactory
 {
-  private Map <String, StringMap> m_aPartners;
-
-  public Map <String, StringMap> getPartners ()
-  {
-    if (m_aPartners == null)
-      m_aPartners = new HashMap <String, StringMap> ();
-    return m_aPartners;
-  }
-
   @Override
   @Nonnull
   public final Partnership getPartnership (@Nonnull final Partnership aPartnership) throws OpenAS2Exception

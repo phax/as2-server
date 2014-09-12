@@ -176,7 +176,7 @@ public class SocketCommandProcessor extends AbstractCommandProcessor
 
               if (aResult.getType ().isSuccess ())
               {
-                m_aWriter.write (aResult.toXML ());
+                m_aWriter.write (aResult.getAsXMLString ());
               }
               else
               {

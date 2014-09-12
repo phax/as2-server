@@ -36,12 +36,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.WillClose;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,6 +52,8 @@ import com.helger.as2lib.exception.InvalidParameterException;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.exception.WrappedOpenAS2Exception;
 import com.helger.as2lib.partner.AbstractPartnershipFactory;
+import com.helger.as2lib.partner.IPartnerMap;
+import com.helger.as2lib.partner.PartnerMap;
 import com.helger.as2lib.partner.Partnership;
 import com.helger.as2lib.session.ISession;
 import com.helger.as2lib.util.IStringMap;
@@ -77,7 +79,6 @@ public class XMLPartnershipFactory extends AbstractPartnershipFactory implements
   private static final Logger s_aLogger = LoggerFactory.getLogger (XMLPartnershipFactory.class);
 
   private FileMonitor m_aFileMonitor;
-  private Map <String, StringMap> m_aPartners;
 
   public void setFileMonitor (final FileMonitor fileMonitor)
   {
@@ -116,19 +117,6 @@ public class XMLPartnershipFactory extends AbstractPartnershipFactory implements
   public String getFilename () throws InvalidParameterException
   {
     return getAttributeAsStringRequired (PARAM_FILENAME);
-  }
-
-  public void setPartners (final Map <String, StringMap> map)
-  {
-    m_aPartners = map;
-  }
-
-  @Nonnull
-  public Map <String, StringMap> getPartners ()
-  {
-    if (m_aPartners == null)
-      m_aPartners = new HashMap <String, StringMap> ();
-    return m_aPartners;
   }
 
   public void handle (final FileMonitor monitor, final File file, final int eventID)
@@ -172,12 +160,12 @@ public class XMLPartnershipFactory extends AbstractPartnershipFactory implements
     }
   }
 
-  protected void load (final InputStream in) throws OpenAS2Exception
+  protected void load (@WillClose final InputStream aIS) throws OpenAS2Exception
   {
-    final IMicroDocument document = MicroReader.readMicroXML (in);
+    final IMicroDocument document = MicroReader.readMicroXML (aIS);
     final IMicroElement root = document.getDocumentElement ();
 
-    final Map <String, StringMap> aNewPartners = new HashMap <String, StringMap> ();
+    final PartnerMap aNewPartners = new PartnerMap ();
     final List <Partnership> aNewPartnerships = new ArrayList <Partnership> ();
 
     for (final IMicroElement eRootNode : root.getAllChildElements ())
@@ -185,12 +173,15 @@ public class XMLPartnershipFactory extends AbstractPartnershipFactory implements
       final String sNodeName = eRootNode.getTagName ();
 
       if (sNodeName.equals ("partner"))
-        loadPartner (eRootNode, aNewPartners);
+      {
+        final StringMap aNewPartner = loadPartner (eRootNode);
+        aNewPartners.add (aNewPartner);
+      }
       else
         if (sNodeName.equals ("partnership"))
         {
-          final Partnership aPartnership = loadPartnership (eRootNode, aNewPartners, aNewPartnerships);
-          aNewPartnerships.add (aPartnership);
+          final Partnership aNewPartnership = loadPartnership (eRootNode, aNewPartners, aNewPartnerships);
+          aNewPartnerships.add (aNewPartnership);
         }
         else
           s_aLogger.warn ("Invalid element '" + sNodeName + "' in XML partnership file");
@@ -209,18 +200,14 @@ public class XMLPartnershipFactory extends AbstractPartnershipFactory implements
     partnership.addAllAttributes (nodes);
   }
 
-  public void loadPartner (@Nonnull final IMicroElement aElement, @Nonnull final Map <String, StringMap> aPartners) throws OpenAS2Exception
+  @Nonnull
+  public StringMap loadPartner (@Nonnull final IMicroElement aElement) throws OpenAS2Exception
   {
-    final StringMap aNewPartner = XMLUtil.getAttrsWithLowercaseNameWithRequired (aElement, "name");
-    final String sName = aNewPartner.getAttributeAsString ("name");
-    if (aPartners.containsKey (sName))
-      throw new OpenAS2Exception ("Partner is defined more than once: '" + sName + "'");
-
-    aPartners.put (sName, aNewPartner);
+    return XMLUtil.getAttrsWithLowercaseNameWithRequired (aElement, "name");
   }
 
   protected void loadPartnerIDs (@Nonnull final IMicroElement aElement,
-                                 @Nonnull final Map <String, StringMap> aAllPartners,
+                                 @Nonnull final IPartnerMap aAllPartners,
                                  @Nonnull final Partnership aPartnership,
                                  final boolean bIsSender) throws OpenAS2Exception
   {
@@ -235,7 +222,7 @@ public class XMLPartnershipFactory extends AbstractPartnershipFactory implements
     final String sPartnerName = aPartnerAttr.getAttributeAsString ("name");
     if (sPartnerName != null)
     {
-      final IStringMap aPartner = aAllPartners.get (sPartnerName);
+      final IStringMap aPartner = aAllPartners.getPartnerOfName (sPartnerName);
       if (aPartner == null)
       {
         throw new OpenAS2Exception ("Partnership '" +
@@ -262,13 +249,13 @@ public class XMLPartnershipFactory extends AbstractPartnershipFactory implements
 
   @Nonnull
   public Partnership loadPartnership (@Nonnull final IMicroElement aElement,
-                                      @Nonnull final Map <String, StringMap> aAllPartners,
+                                      @Nonnull final IPartnerMap aAllPartners,
                                       @Nonnull final List <Partnership> aAllPartnerships) throws OpenAS2Exception
   {
     final IStringMap aPartnershipAttrs = XMLUtil.getAttrsWithLowercaseNameWithRequired (aElement, "name");
     final String sPartnershipName = aPartnershipAttrs.getAttributeAsString ("name");
 
-    if (getPartnershipOfName (aAllPartnerships, sPartnershipName) != null)
+    if (getPartnershipByName (aAllPartnerships, sPartnershipName) != null)
       throw new OpenAS2Exception ("Partnership is defined more than once: " + sPartnershipName);
 
     final Partnership aPartnership = new Partnership (sPartnershipName);
@@ -302,7 +289,7 @@ public class XMLPartnershipFactory extends AbstractPartnershipFactory implements
 
     final IMicroDocument aDoc = new MicroDocument ();
     final IMicroElement ePartnerships = aDoc.appendElement ("partnerships");
-    for (final IStringMap aAttrs : m_aPartners.values ())
+    for (final IStringMap aAttrs : getAllPartners ())
     {
       final IMicroElement ePartner = ePartnerships.appendElement ("partner");
       for (final Map.Entry <String, String> aAttr : aAttrs)

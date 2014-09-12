@@ -77,7 +77,7 @@ public class DeletePartnerCommand extends AbstractAliasedPartnershipsCommand
       final String name = params[0].toString ();
 
       boolean found = false;
-      for (final String partName : partFx.getPartners ().keySet ())
+      for (final String partName : partFx.getAllPartnerNames ())
         if (partName.equals (name))
         {
           found = true;
@@ -99,7 +99,7 @@ public class DeletePartnerCommand extends AbstractAliasedPartnershipsCommand
         return new CommandResult (ECommandResultType.TYPE_ERROR,
                                   "Can not delete partner; it is tied to some partnerships");
 
-      partFx.getPartners ().remove (name);
+      partFx.removePartner (name);
       return new CommandResult (ECommandResultType.TYPE_OK);
     }
   }

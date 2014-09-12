@@ -32,8 +32,6 @@
  */
 package com.helger.as2.app.partner;
 
-import java.util.Iterator;
-
 import com.helger.as2.cmd.CommandResult;
 import com.helger.as2.cmd.ECommandResultType;
 import com.helger.as2lib.exception.OpenAS2Exception;
@@ -69,25 +67,16 @@ public class ViewPartnerCommand extends AbstractAliasedPartnershipsCommand
   protected CommandResult execute (final IPartnershipFactory partFx, final Object [] params) throws OpenAS2Exception
   {
     if (params.length < 1)
-    {
       return new CommandResult (ECommandResultType.TYPE_INVALID_PARAM_COUNT, getUsage ());
-    }
+
     synchronized (partFx)
     {
-
       final String name = params[0].toString ();
-
-      final Iterator <String> parts = partFx.getPartners ().keySet ().iterator ();
-
-      while (parts.hasNext ())
+      final IStringMap aPartner = partFx.getPartnerOfName (name);
+      if (aPartner != null)
       {
-        final String partName = parts.next ().toString ();
-        if (partName.equals (name))
-        {
-          final IStringMap partDefs = partFx.getPartners ().get (name);
-          final String out = name + "\n" + partDefs.toString ();
-          return new CommandResult (ECommandResultType.TYPE_OK, out);
-        }
+        final String out = name + "\n" + aPartner.toString ();
+        return new CommandResult (ECommandResultType.TYPE_OK, out);
       }
 
       return new CommandResult (ECommandResultType.TYPE_ERROR, "Unknown partner name");

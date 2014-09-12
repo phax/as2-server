@@ -70,8 +70,8 @@ public class ListPartnersCommand extends AbstractAliasedPartnershipsCommand
     {
       final CommandResult cmdRes = new CommandResult (ECommandResultType.TYPE_OK);
 
-      for (final String sPartnershipID : partFx.getPartners ().keySet ())
-        cmdRes.addResult (sPartnershipID);
+      for (final String sPartnerName : partFx.getAllPartnerNames ())
+        cmdRes.addResult (sPartnerName);
 
       if (cmdRes.hasNoResult ())
         cmdRes.addResult ("No partner definitions available");

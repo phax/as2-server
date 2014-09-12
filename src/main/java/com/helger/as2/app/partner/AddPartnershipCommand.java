@@ -71,31 +71,29 @@ public class AddPartnershipCommand extends AbstractAliasedPartnershipsCommand
   public CommandResult execute (final IPartnershipFactory partFx, final Object [] params) throws OpenAS2Exception
   {
     if (params.length < 3)
-    {
       return new CommandResult (ECommandResultType.TYPE_INVALID_PARAM_COUNT, getUsage ());
-    }
 
     synchronized (partFx)
     {
       final IMicroDocument doc = new MicroDocument ();
       final IMicroElement root = doc.appendElement ("partnership");
 
-      for (int i = 0; i < params.length; i++)
+      for (int nIndex = 0; nIndex < params.length; nIndex++)
       {
-        final String param = (String) params[i];
+        final String param = (String) params[nIndex];
         final int pos = param.indexOf ('=');
-        if (i == 0)
+        if (nIndex == 0)
         {
           root.setAttribute ("name", param);
         }
         else
-          if (i == 1)
+          if (nIndex == 1)
           {
             final IMicroElement elem = root.appendElement ("sender");
             elem.setAttribute ("name", param);
           }
           else
-            if (i == 2)
+            if (nIndex == 2)
             {
               final IMicroElement elem = root.appendElement ("receiver");
               elem.setAttribute ("name", param);
@@ -118,7 +116,7 @@ public class AddPartnershipCommand extends AbstractAliasedPartnershipsCommand
       }
 
       final Partnership aPartnership = ((XMLPartnershipFactory) partFx).loadPartnership (root,
-                                                                                         partFx.getPartners (),
+                                                                                         partFx.getPartnerMap (),
                                                                                          partFx.getAllPartnerships ());
       // add the partnership to the list of available partnerships
       partFx.addPartnership (aPartnership);
