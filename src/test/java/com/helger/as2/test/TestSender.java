@@ -42,6 +42,7 @@ import javax.mail.internet.MimeBodyPart;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.helger.as2lib.cert.ECertificatePartnershipType;
 import com.helger.as2lib.cert.ICertificateFactory;
 import com.helger.as2lib.exception.DispositionException;
 import com.helger.as2lib.exception.OpenAS2Exception;
@@ -50,7 +51,6 @@ import com.helger.as2lib.message.AS2Message;
 import com.helger.as2lib.message.AS2MessageMDN;
 import com.helger.as2lib.message.IMessageMDN;
 import com.helger.as2lib.partner.CPartnershipIDs;
-import com.helger.as2lib.partner.Partnership;
 import com.helger.as2lib.processor.sender.AS2SenderModule;
 import com.helger.as2lib.processor.storage.IProcessorStorageModule;
 import com.helger.as2lib.util.AS2Util;
@@ -112,7 +112,7 @@ public class TestSender extends AS2SenderModule
         final String certAlias = msg.getPartnership ().getReceiverID (CPartnershipIDs.PID_X509_ALIAS);
         s_aLogger.info ("CERT ALIAS: " + certAlias);
       }
-      final X509Certificate senderCert = cFx.getCertificate (msg, Partnership.PARTNERSHIP_TYPE_RECEIVER);
+      final X509Certificate senderCert = cFx.getCertificate (msg, ECertificatePartnershipType.RECEIVER);
 
       AS2Util.parseMDN (msg, senderCert);
 
