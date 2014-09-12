@@ -32,7 +32,7 @@
  */
 package com.helger.as2.util;
 
-import com.helger.as2lib.exception.WrappedException;
+import com.helger.as2lib.exception.WrappedOpenAS2Exception;
 
 /**
  * emulates StringTokenizer
@@ -61,10 +61,10 @@ public class CommandTokenizer
    * any more tokens in String
    *
    * @return true if there are any more tokens
-   * @throws WrappedException
+   * @throws WrappedOpenAS2Exception
    *         in case another exception occurs
    */
-  public boolean hasMoreTokens () throws WrappedException
+  public boolean hasMoreTokens () throws WrappedOpenAS2Exception
   {
     try
     {
@@ -78,7 +78,7 @@ public class CommandTokenizer
     }
     catch (final RuntimeException e)
     {
-      throw new WrappedException (e);
+      throw new WrappedOpenAS2Exception (e);
     }
   }
 
@@ -86,10 +86,10 @@ public class CommandTokenizer
    * returns the next token, this handles spaces and quotes
    *
    * @return a string
-   * @throws WrappedException
+   * @throws WrappedOpenAS2Exception
    *         In case a RuntimeException occurs
    */
-  public String nextToken () throws WrappedException
+  public String nextToken () throws WrappedOpenAS2Exception
   {
 
     try
@@ -121,7 +121,7 @@ public class CommandTokenizer
     }
     catch (final RuntimeException e)
     {
-      throw new WrappedException (e);
+      throw new WrappedOpenAS2Exception (e);
     }
   }
 }

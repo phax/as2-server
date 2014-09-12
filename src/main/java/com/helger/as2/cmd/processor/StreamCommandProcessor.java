@@ -49,7 +49,7 @@ import com.helger.as2.cmd.ICommand;
 import com.helger.as2.util.CommandTokenizer;
 import com.helger.as2lib.ISession;
 import com.helger.as2lib.exception.OpenAS2Exception;
-import com.helger.as2lib.exception.WrappedException;
+import com.helger.as2lib.exception.WrappedOpenAS2Exception;
 import com.helger.as2lib.util.IStringMap;
 import com.helger.commons.concurrent.ThreadUtils;
 import com.helger.commons.string.StringHelper;
@@ -165,7 +165,7 @@ public class StreamCommandProcessor extends AbstractCommandProcessor
     }
     catch (final IOException ex)
     {
-      throw new WrappedException (ex);
+      throw new WrappedOpenAS2Exception (ex);
     }
   }
 

@@ -40,7 +40,7 @@ import com.helger.as2.XMLSession;
 import com.helger.as2lib.IDynamicComponent;
 import com.helger.as2lib.ISession;
 import com.helger.as2lib.exception.OpenAS2Exception;
-import com.helger.as2lib.exception.WrappedException;
+import com.helger.as2lib.exception.WrappedOpenAS2Exception;
 import com.helger.as2lib.util.StringMap;
 import com.helger.as2lib.util.XMLUtil;
 import com.helger.commons.lang.GenericReflection;
@@ -75,7 +75,7 @@ public final class ServerXMLUtil
     }
     catch (final Exception e)
     {
-      throw new WrappedException ("Error creating component: " + sClassName, e);
+      throw new WrappedOpenAS2Exception ("Error creating component: " + sClassName, e);
     }
   }
 

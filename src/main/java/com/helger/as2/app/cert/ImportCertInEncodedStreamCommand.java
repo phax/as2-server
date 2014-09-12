@@ -41,7 +41,7 @@ import com.helger.as2.cmd.CommandResult;
 import com.helger.as2.util.ByteCoder;
 import com.helger.as2lib.cert.IAliasedCertificateFactory;
 import com.helger.as2lib.exception.OpenAS2Exception;
-import com.helger.as2lib.exception.WrappedException;
+import com.helger.as2lib.exception.WrappedOpenAS2Exception;
 import com.helger.commons.io.streams.NonBlockingByteArrayInputStream;
 
 public class ImportCertInEncodedStreamCommand extends AbstractAliasedCertCommand
@@ -80,7 +80,7 @@ public class ImportCertInEncodedStreamCommand extends AbstractAliasedCertCommand
       }
       catch (final Exception e)
       {
-        throw new WrappedException (e);
+        throw new WrappedOpenAS2Exception (e);
       }
     }
   }

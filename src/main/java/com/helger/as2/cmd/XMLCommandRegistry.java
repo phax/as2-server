@@ -41,7 +41,7 @@ import javax.annotation.Nullable;
 import com.helger.as2.util.ServerXMLUtil;
 import com.helger.as2lib.ISession;
 import com.helger.as2lib.exception.OpenAS2Exception;
-import com.helger.as2lib.exception.WrappedException;
+import com.helger.as2lib.exception.WrappedOpenAS2Exception;
 import com.helger.as2lib.util.IStringMap;
 import com.helger.as2lib.util.XMLUtil;
 import com.helger.commons.microdom.IMicroDocument;
@@ -90,7 +90,7 @@ public class XMLCommandRegistry extends BaseCommandRegistry
     }
     catch (final Exception e)
     {
-      throw new WrappedException (e);
+      throw new WrappedOpenAS2Exception (e);
     }
   }
 

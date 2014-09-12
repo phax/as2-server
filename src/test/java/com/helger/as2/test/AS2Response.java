@@ -37,7 +37,7 @@ package com.helger.as2.test;
  * 
  * @author oleo Date: May 12, 2010 Time: 5:53:45 PM
  */
-public class Response
+public class AS2Response
 {
   public String originalMessageId;
   public String receivedMdnId;

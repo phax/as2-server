@@ -46,7 +46,7 @@ import com.helger.as2lib.cert.ECertificatePartnershipType;
 import com.helger.as2lib.cert.ICertificateFactory;
 import com.helger.as2lib.exception.DispositionException;
 import com.helger.as2lib.exception.OpenAS2Exception;
-import com.helger.as2lib.exception.WrappedException;
+import com.helger.as2lib.exception.WrappedOpenAS2Exception;
 import com.helger.as2lib.message.AS2Message;
 import com.helger.as2lib.message.AS2MessageMDN;
 import com.helger.as2lib.message.IMessageMDN;
@@ -60,101 +60,91 @@ import com.helger.commons.io.streams.NonBlockingByteArrayOutputStream;
 import com.helger.commons.io.streams.StreamUtils;
 import com.helger.commons.string.StringParser;
 
-public class TestSender extends AS2SenderModule
+public class TestSenderModule extends AS2SenderModule
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (TestSender.class);
+  private static final Logger s_aLogger = LoggerFactory.getLogger (TestSenderModule.class);
 
   /**
-   * @param msg
+   * @param aMsg
    *        AS2Message
-   * @param conn
+   * @param aConn
    *        URLConnection
-   * @param originalmic
+   * @param sOriginalMIC
    *        mic value from original msg
    */
-  @Override
-  protected void receiveMDN (final AS2Message msg, final HttpURLConnection conn, final String originalmic) throws OpenAS2Exception,
-                                                                                                          IOException
+  protected void __receiveMDN (final AS2Message aMsg, final HttpURLConnection aConn, final String sOriginalMIC) throws OpenAS2Exception,
+                                                                                                               IOException
   {
     try
     {
       // Create a MessageMDN and copy HTTP headers
-      final IMessageMDN mdn = new AS2MessageMDN (msg);
-      copyHttpHeaders (conn, mdn.getHeaders ());
+      final IMessageMDN aMDN = new AS2MessageMDN (aMsg);
+      copyHttpHeaders (aConn, aMDN.getHeaders ());
 
       // Receive the MDN data
-      final InputStream connIn = conn.getInputStream ();
-      final NonBlockingByteArrayOutputStream mdnStream = new NonBlockingByteArrayOutputStream ();
+      final InputStream aConnIS = aConn.getInputStream ();
+      final NonBlockingByteArrayOutputStream aMDNStream = new NonBlockingByteArrayOutputStream ();
 
       // Retrieve the message content
-      final long nContentLength = StringParser.parseLong (mdn.getHeader (CAS2Header.HEADER_CONTENT_LENGTH), -1);
+      final long nContentLength = StringParser.parseLong (aMDN.getHeader (CAS2Header.HEADER_CONTENT_LENGTH), -1);
       if (nContentLength >= 0)
-        StreamUtils.copyInputStreamToOutputStreamWithLimit (connIn, mdnStream, nContentLength);
+        StreamUtils.copyInputStreamToOutputStreamWithLimit (aConnIS, aMDNStream, nContentLength);
       else
-        StreamUtils.copyInputStreamToOutputStream (connIn, mdnStream);
+        StreamUtils.copyInputStreamToOutputStream (aConnIS, aMDNStream);
 
-      final MimeBodyPart part = new MimeBodyPart (mdn.getHeaders (), mdnStream.toByteArray ());
-      msg.getMDN ().setData (part);
+      final MimeBodyPart aPart = new MimeBodyPart (aMDN.getHeaders (), aMDNStream.toByteArray ());
+      aMsg.getMDN ().setData (aPart);
 
       // get the MDN partnership info
-      mdn.getPartnership ().setSenderID (CPartnershipIDs.PID_AS2, mdn.getHeader (CAS2Header.HEADER_AS2_FROM));
-      mdn.getPartnership ().setReceiverID (CPartnershipIDs.PID_AS2, mdn.getHeader (CAS2Header.HEADER_AS2_TO));
+      aMDN.getPartnership ().setSenderID (CPartnershipIDs.PID_AS2, aMDN.getHeader (CAS2Header.HEADER_AS2_FROM));
+      aMDN.getPartnership ().setReceiverID (CPartnershipIDs.PID_AS2, aMDN.getHeader (CAS2Header.HEADER_AS2_TO));
       if (false)
-        getSession ().getPartnershipFactory ().updatePartnership (mdn, false);
+        getSession ().getPartnershipFactory ().updatePartnership (aMDN, false);
 
-      final ICertificateFactory cFx = getSession ().getCertificateFactory ();
-      if (false)
-      {
-        s_aLogger.info ("ALIAS: " + mdn.getPartnership ());
-        // //.getSenderID(SecurePartnership.PID_X509_ALIAS));
-        // X509Certificate senderCert = cFx.getCertificate(mdn,
-        // Partnership.PTYPE_SENDER);
-        final String certAlias = msg.getPartnership ().getReceiverID (CPartnershipIDs.PID_X509_ALIAS);
-        s_aLogger.info ("CERT ALIAS: " + certAlias);
-      }
-      final X509Certificate senderCert = cFx.getCertificate (msg, ECertificatePartnershipType.RECEIVER);
+      final ICertificateFactory aCertFactory = getSession ().getCertificateFactory ();
+      final X509Certificate aSenderCert = aCertFactory.getCertificate (aMsg, ECertificatePartnershipType.RECEIVER);
 
-      AS2Util.parseMDN (msg, senderCert);
+      AS2Util.parseMDN (aMsg, aSenderCert);
 
       if (false)
-        getSession ().getProcessor ().handle (IProcessorStorageModule.DO_STOREMDN, msg, null);
+        getSession ().getProcessor ().handle (IProcessorStorageModule.DO_STOREMDN, aMsg, null);
 
-      final String disposition = msg.getMDN ().getAttribute (AS2MessageMDN.MDNA_DISPOSITION);
+      final String sDisposition = aMsg.getMDN ().getAttribute (AS2MessageMDN.MDNA_DISPOSITION);
 
-      s_aLogger.info ("received MDN [" + disposition + "]" + msg.getLoggingText ());
+      s_aLogger.info ("received MDN [" + sDisposition + "]" + aMsg.getLoggingText ());
 
       // Asynch MDN 2007-03-12
       // Verify if the original mic is equal to the mic in returned MDN
-      final String returnmic = msg.getMDN ().getAttribute (AS2MessageMDN.MDNA_MIC);
+      final String sReturnMIC = aMsg.getMDN ().getAttribute (AS2MessageMDN.MDNA_MIC);
 
-      if (!returnmic.replaceAll (" ", "").equals (originalmic.replaceAll (" ", "")))
+      if (!sReturnMIC.replaceAll (" ", "").equals (sOriginalMIC.replaceAll (" ", "")))
       {
         // file was sent completely but the returned mic was not matched,
         // don't know it needs or needs not to be resent ? it's depended on
         // what!
         // anyway, just log the warning message here.
         s_aLogger.info ("mic is not matched, original mic: " +
-                        originalmic +
+                        sOriginalMIC +
                         " return mic: " +
-                        returnmic +
-                        msg.getLoggingText ());
+                        sReturnMIC +
+                        aMsg.getLoggingText ());
       }
       else
       {
-        s_aLogger.info ("mic is matched, mic: " + returnmic + msg.getLoggingText ());
+        s_aLogger.info ("mic is matched, mic: " + sReturnMIC + aMsg.getLoggingText ());
       }
 
       try
       {
-        new DispositionType (disposition).validate ();
+        new DispositionType (sDisposition).validate ();
       }
       catch (final DispositionException ex)
       {
-        ex.setText (msg.getMDN ().getText ());
+        ex.setText (aMsg.getMDN ().getText ());
 
         if (ex.getDisposition () != null && ex.getDisposition ().isWarning ())
         {
-          ex.addSource (OpenAS2Exception.SOURCE_MESSAGE, msg);
+          ex.addSource (OpenAS2Exception.SOURCE_MESSAGE, aMsg);
           ex.terminate ();
         }
         else
@@ -169,8 +159,8 @@ public class TestSender extends AS2SenderModule
     }
     catch (final Exception ex)
     {
-      final WrappedException we = new WrappedException (ex);
-      we.addSource (OpenAS2Exception.SOURCE_MESSAGE, msg);
+      final WrappedOpenAS2Exception we = new WrappedOpenAS2Exception (ex);
+      we.addSource (OpenAS2Exception.SOURCE_MESSAGE, aMsg);
       throw we;
     }
   }

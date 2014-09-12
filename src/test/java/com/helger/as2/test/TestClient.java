@@ -32,6 +32,7 @@
  */
 package com.helger.as2.test;
 
+import java.io.File;
 import java.net.HttpURLConnection;
 import java.util.Enumeration;
 
@@ -68,37 +69,37 @@ public class TestClient
   // Message msg = new AS2Message();
   // getSession().getProcessor().handle(SenderModule.DO_SEND, msg, null);
 
-  private static Logger s_aLogger = LoggerFactory.getLogger (TestClient.class);
+  private static final Logger s_aLogger = LoggerFactory.getLogger (TestClient.class);
 
   public static void main (final String [] args)
   {
-    final ConnectionSettings settings = new ConnectionSettings ();
+    final boolean DO_ENCRYPT = true;
+    final boolean DO_SIGN = true;
 
-    settings.p12FilePath = new ClassPathResource ("config/certs.p12").getAsFile ().getAbsolutePath ();
-    settings.p12FilePassword = "test";
-    settings.senderAs2Id = "OpenAS2A";
-    settings.senderEmail = "email";
-    settings.senderKeyAlias = "OpenAS2A";
-    settings.receiverAs2Id = "OpenAS2B";
-    settings.receiverKeyAlias = "OpenAS2B";
-    settings.receiverAs2Url = "http://localhost:10080/HttpReceiver";
-    settings.partnershipName = "partnership name";
-    settings.mdnOptions = "signed-receipt-protocol=optional, pkcs7-signature; signed-receipt-micalg=optional, sha1";
-    settings.encrypt = false ? null : "3des";
-    settings.sign = false ? null : "sha1";
+    final ConnectionSettings aSettings = new ConnectionSettings ();
+    aSettings.p12FilePath = new ClassPathResource ("config/certs.p12").getAsFile ().getAbsolutePath ();
+    aSettings.p12FilePassword = "test";
+    aSettings.senderAs2Id = "OpenAS2A";
+    aSettings.senderEmail = "email";
+    aSettings.senderKeyAlias = "OpenAS2A";
+    aSettings.receiverAs2Id = "OpenAS2B";
+    aSettings.receiverKeyAlias = "OpenAS2B";
+    aSettings.receiverAs2Url = "http://localhost:10080/HttpReceiver";
+    aSettings.partnershipName = "partnership name";
+    aSettings.mdnOptions = "signed-receipt-protocol=optional, pkcs7-signature; signed-receipt-micalg=optional, sha1";
+    aSettings.encrypt = DO_ENCRYPT ? "3des" : null;
+    aSettings.sign = DO_SIGN ? "sha1" : null;
 
-    final Request request = new Request ();
-    request.subject = "Test message";
-    request.filename = "src/test/resources/dummy.txt";
-
-    EdiIntAs2Client.sendSync (settings, request);
+    final AS2Request aRequest = new AS2Request ("Test message");
+    aRequest.setData (new File ("src/test/resources/dummy.txt"));
+    AS2Client.sendSynchronous (aSettings, aRequest);
   }
 
   /**
    * @param args
    *        Main args
    */
-  public static void main2 (final String [] args)
+  public static void main2 (final String [] args) throws Exception
   {
     // Received-content-MIC
     // original-message-id
@@ -111,139 +112,116 @@ public class TestClient
     final String senderKey = "rg";
     final String paAs2Url = "http://172.16.148.1:8080/as2/HttpReceiver";
 
-    final TestSender service = new TestSender ();
+    final TestSenderModule aTestSender = new TestSenderModule ();
 
-    final Partnership partnership = new Partnership ("partnership name");
-    partnership.setAttribute (CPartnershipIDs.PA_AS2_URL, paAs2Url);
-    partnership.setReceiverID (CPartnershipIDs.PID_AS2, pidAs2);
-    partnership.setReceiverID (CPartnershipIDs.PID_X509_ALIAS, receiverKey);
-    partnership.setSenderID (CPartnershipIDs.PID_AS2, pidSenderAs2);
-    partnership.setSenderID (CPartnershipIDs.PID_X509_ALIAS, senderKey);
-
-    partnership.setSenderID (Partnership.PID_EMAIL, pidSenderEmail);
+    final Partnership aPartnership = new Partnership ("partnership name");
+    aPartnership.setAttribute (CPartnershipIDs.PA_AS2_URL, paAs2Url);
+    aPartnership.setReceiverID (CPartnershipIDs.PID_AS2, pidAs2);
+    aPartnership.setReceiverID (CPartnershipIDs.PID_X509_ALIAS, receiverKey);
+    aPartnership.setSenderID (CPartnershipIDs.PID_AS2, pidSenderAs2);
+    aPartnership.setSenderID (CPartnershipIDs.PID_X509_ALIAS, senderKey);
+    aPartnership.setSenderID (Partnership.PID_EMAIL, pidSenderEmail);
 
     // partnership.setAttribute(AS2Partnership.PA_AS2_MDN_TO,"http://localhost:10080");
-    partnership.setAttribute (CPartnershipIDs.PA_AS2_MDN_OPTIONS,
-                              "signed-receipt-protocol=optional, pkcs7-signature; signed-receipt-micalg=optional, sha1");
+    aPartnership.setAttribute (CPartnershipIDs.PA_AS2_MDN_OPTIONS,
+                               "signed-receipt-protocol=optional, pkcs7-signature; signed-receipt-micalg=optional, sha1");
 
-    partnership.setAttribute (CPartnershipIDs.PA_ENCRYPT, "3des");
-    partnership.setAttribute (CPartnershipIDs.PA_SIGN, "sha1");
-    partnership.setAttribute (Partnership.PA_PROTOCOL, "as2");
+    aPartnership.setAttribute (CPartnershipIDs.PA_ENCRYPT, "3des");
+    aPartnership.setAttribute (CPartnershipIDs.PA_SIGN, "sha1");
+    aPartnership.setAttribute (Partnership.PA_PROTOCOL, "as2");
 
-    partnership.setAttribute (CPartnershipIDs.PA_AS2_RECEIPT_OPTION, null);
+    aPartnership.setAttribute (CPartnershipIDs.PA_AS2_RECEIPT_OPTION, null);
 
-    s_aLogger.info ("ALIAS: " + partnership.getSenderID (CPartnershipIDs.PID_X509_ALIAS));
+    s_aLogger.info ("ALIAS: " + aPartnership.getSenderID (CPartnershipIDs.PID_X509_ALIAS));
 
-    final IMessage msg = new AS2Message ();
-    msg.setContentType ("application/xml");
-    msg.setSubject ("some subject");
+    final IMessage aMsg = new AS2Message ();
+    aMsg.setContentType ("application/xml");
+    aMsg.setSubject ("some subject");
 
-    msg.setAttribute (CPartnershipIDs.PA_AS2_URL, paAs2Url);
+    aMsg.setAttribute (CPartnershipIDs.PA_AS2_URL, paAs2Url);
 
-    msg.setAttribute (CPartnershipIDs.PID_AS2, pidAs2);
-    msg.setAttribute (Partnership.PID_EMAIL, "email");
-    try
-    {
-      MimeBodyPart part;
-      // part = new MimeBodyPart(new FileInputStream("/tmp/tst"));
-      part = new MimeBodyPart ();
+    aMsg.setAttribute (CPartnershipIDs.PID_AS2, pidAs2);
+    aMsg.setAttribute (Partnership.PID_EMAIL, "email");
 
-      part.setText ("some text from mme part");
-      // part.setFileName("/");
-      msg.setData (part);
-    }
-    catch (final Exception e)
-    {
-      e.printStackTrace ();
-    }
+    MimeBodyPart aBodyPart;
+    // part = new MimeBodyPart(new FileInputStream("/tmp/tst"));
+    aBodyPart = new MimeBodyPart ();
 
-    msg.setPartnership (partnership);
-    msg.setMessageID (msg.generateMessageID ());
-    s_aLogger.info ("msg id: " + msg.getMessageID ());
+    aBodyPart.setText ("some text from mme part");
+    // part.setFileName("/");
+    aMsg.setData (aBodyPart);
 
-    Session session = null;
-    try
-    {
-      session = new Session ();
-      final ServerPKCS12CertificateFactory cf = new ServerPKCS12CertificateFactory ();
-      /*
-       * filename="%home%/certs.p12" password="test" interval="300"
-       */
-      // String filename =
-      // "/Users/oleo/samples/parfum.spb.ru/as2/openas2/config/certs.p12";
-      final String filename = "/Users/oleo/samples/parfum.spb.ru/as2/mendelson/certificates.p12";
-      // String filename =
-      // "/Users/oleo/samples/parfum.spb.ru/as2/test/test.p12";
-      final String password = "test";
-      // gwtestfm2i
-      // /Users/oleo/Downloads/portecle-1.5.zip
+    aMsg.setPartnership (aPartnership);
+    aMsg.setMessageID (aMsg.generateMessageID ());
+    s_aLogger.info ("msg id: " + aMsg.getMessageID ());
 
-      // /Users/oleo/samples/parfum.spb.ru/as2/test/test.p12
+    final Session aSession = new Session ();
+    final ServerPKCS12CertificateFactory aCertFactory = new ServerPKCS12CertificateFactory ();
+    /*
+     * filename="%home%/certs.p12" password="test" interval="300"
+     */
+    // String filename =
+    // "/Users/oleo/samples/parfum.spb.ru/as2/openas2/config/certs.p12";
+    final String filename = "/Users/oleo/samples/parfum.spb.ru/as2/mendelson/certificates.p12";
+    // String filename =
+    // "/Users/oleo/samples/parfum.spb.ru/as2/test/test.p12";
+    final String password = "test";
+    // gwtestfm2i
+    // /Users/oleo/Downloads/portecle-1.5.zip
 
-      final StringMap map = new StringMap ();
-      map.setAttribute (PKCS12CertificateFactory.PARAM_FILENAME, filename);
-      map.setAttribute (PKCS12CertificateFactory.PARAM_PASSWORD, password);
+    // /Users/oleo/samples/parfum.spb.ru/as2/test/test.p12
 
-      cf.initDynamicComponent (session, map);
+    final StringMap aCertFactorySettings = new StringMap ();
+    aCertFactorySettings.setAttribute (PKCS12CertificateFactory.PARAM_FILENAME, filename);
+    aCertFactorySettings.setAttribute (PKCS12CertificateFactory.PARAM_PASSWORD, password);
 
-      // logger.info(cf.getCertificate(msg.getMDN(), Partnership.PTYPE_SENDER));
+    aCertFactory.initDynamicComponent (aSession, aCertFactorySettings);
 
-      // logger.info(cf.getCertificates());
+    // logger.info(cf.getCertificate(msg.getMDN(), Partnership.PTYPE_SENDER));
 
-      session.addComponent (ICertificateFactory.COMPID_CERTIFICATE_FACTORY, cf);
-      final IDynamicComponent pf = new SimplePartnershipFactory ();
-      session.addComponent (IPartnershipFactory.COMPID_PARTNERSHIP_FACTORY, pf);
-      service.initDynamicComponent (session, null);
-    }
-    catch (final OpenAS2Exception e)
-    {
-      e.printStackTrace ();
-    }
+    // logger.info(cf.getCertificates());
 
-    s_aLogger.info ("is requesting  MDN?: " + msg.isRequestingMDN ());
-    s_aLogger.info ("is async MDN?: " + msg.isRequestingAsynchMDN ());
+    aSession.addComponent (ICertificateFactory.COMPID_CERTIFICATE_FACTORY, aCertFactory);
+
+    final IDynamicComponent aPartnershipFactory = new SimplePartnershipFactory ();
+    aSession.addComponent (IPartnershipFactory.COMPID_PARTNERSHIP_FACTORY, aPartnershipFactory);
+    aTestSender.initDynamicComponent (aSession, null);
+
+    s_aLogger.info ("is requesting  MDN?: " + aMsg.isRequestingMDN ());
+    s_aLogger.info ("is async MDN?: " + aMsg.isRequestingAsynchMDN ());
     s_aLogger.info ("is rule to recieve MDN active?: " +
-                    msg.getPartnership ().getAttribute (CPartnershipIDs.PA_AS2_RECEIPT_OPTION));
+                    aMsg.getPartnership ().getAttribute (CPartnershipIDs.PA_AS2_RECEIPT_OPTION));
 
-    try
+    aTestSender.handle (IProcessorSenderModule.DO_SEND, aMsg, null);
+    s_aLogger.info ("MDN is " + aMsg.getMDN ().toString ());
+
+    s_aLogger.info ("message sent" + aMsg.getLoggingText ());
+
+    final IMessageMDN reply = aMsg.getMDN ();
+
+    final Enumeration <?> aList = reply.getHeaders ().getAllHeaders ();
+    final StringBuilder aSB = new StringBuilder ("MDN headers:\n");
+    while (aList.hasMoreElements ())
     {
-      service.handle (IProcessorSenderModule.DO_SEND, msg, null);
-      s_aLogger.info ("MDN is " + msg.getMDN ().toString ());
+      final Header aHeader = (Header) aList.nextElement ();
+      aSB.append (aHeader.getName ()).append (" = ").append (aHeader.getValue ()).append ('\n');
+    }
 
-      s_aLogger.info ("message sent" + msg.getLoggingText ());
+    // logger.info(sb);
 
-      final IMessageMDN reply = msg.getMDN ();
+    final Enumeration <?> list2 = reply.getData ().getAllHeaders ();
+    final StringBuilder aSB2 = new StringBuilder ("Mime headers:\n");
+    while (list2.hasMoreElements ())
+    {
 
-      final Enumeration <?> list = reply.getHeaders ().getAllHeaders ();
-      final StringBuilder sb = new StringBuilder ("MDN headers:\n");
-      while (list.hasMoreElements ())
-      {
-        final Header h = (Header) list.nextElement ();
-        sb.append (h.getName ()).append (" = ").append (h.getValue ()).append ('\n');
-      }
-
-      // logger.info(sb);
-
-      final Enumeration <?> list2 = reply.getData ().getAllHeaders ();
-      final StringBuilder sb2 = new StringBuilder ("Mime headers:\n");
-      while (list2.hasMoreElements ())
-      {
-
-        final Header h = (Header) list2.nextElement ();
-        sb2.append (h.getName ()).append (" = ").append (h.getValue ()).append ('\n');
-
-      }
-
-      // logger.info(sb2);
-
-      // logger.info(reply.getData().getRawInputStream().toString());
+      final Header aHeader = (Header) list2.nextElement ();
+      aSB2.append (aHeader.getName ()).append (" = ").append (aHeader.getValue ()).append ('\n');
 
     }
-    catch (final Exception e)
-    {
-      s_aLogger.error ("shit happens");
-      e.printStackTrace ();
-    }
+
+    // logger.info(sb2);
+
+    // logger.info(reply.getData().getRawInputStream().toString());
   }
 
   protected static void checkRequired (final IMessage msg)

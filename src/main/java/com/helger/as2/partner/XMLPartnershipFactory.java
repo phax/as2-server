@@ -51,7 +51,7 @@ import com.helger.as2.util.IFileMonitorListener;
 import com.helger.as2lib.ISession;
 import com.helger.as2lib.exception.InvalidParameterException;
 import com.helger.as2lib.exception.OpenAS2Exception;
-import com.helger.as2lib.exception.WrappedException;
+import com.helger.as2lib.exception.WrappedOpenAS2Exception;
 import com.helger.as2lib.partner.AbstractPartnershipFactory;
 import com.helger.as2lib.partner.Partnership;
 import com.helger.as2lib.util.IStringMap;
@@ -168,7 +168,7 @@ public class XMLPartnershipFactory extends AbstractPartnershipFactory implements
     }
     catch (final Exception e)
     {
-      throw new WrappedException (e);
+      throw new WrappedOpenAS2Exception (e);
     }
   }
 
@@ -326,6 +326,6 @@ public class XMLPartnershipFactory extends AbstractPartnershipFactory implements
                     .setAttribute ("value", aAttr.getValue ());
     }
     if (MicroWriter.writeToFile (aDoc, new File (sFilename)).isFailure ())
-      throw new WrappedException ("Failed to write to file " + sFilename);
+      throw new WrappedOpenAS2Exception ("Failed to write to file " + sFilename);
   }
 }
