@@ -71,18 +71,14 @@ public class DeletePartnershipCommand extends AbstractAliasedPartnershipsCommand
       return new CommandResult (ECommandResultType.TYPE_INVALID_PARAM_COUNT, getUsage ());
     }
 
-    synchronized (partFx)
+    final String name = params[0].toString ();
+    final Partnership part = partFx.getPartnershipByName (name);
+    if (part != null)
     {
-
-      final String name = params[0].toString ();
-      for (final Partnership part : partFx.getAllPartnerships ())
-        if (part.getName ().equals (name))
-        {
-          partFx.removePartnership (part);
-          return new CommandResult (ECommandResultType.TYPE_OK, "deleted " + name);
-        }
-
-      return new CommandResult (ECommandResultType.TYPE_ERROR, "Unknown partnership name");
+      partFx.removePartnership (part);
+      return new CommandResult (ECommandResultType.TYPE_OK, "deleted " + name);
     }
+
+    return new CommandResult (ECommandResultType.TYPE_ERROR, "Unknown partnership name");
   }
 }

@@ -32,6 +32,8 @@
  */
 package com.helger.as2.app.partner;
 
+import javax.annotation.Nonnull;
+
 import com.helger.as2.cmd.AbstractCommand;
 import com.helger.as2.cmd.CommandResult;
 import com.helger.as2lib.exception.OpenAS2Exception;
@@ -39,8 +41,11 @@ import com.helger.as2lib.partner.IPartnershipFactory;
 
 public abstract class AbstractAliasedPartnershipsCommand extends AbstractCommand
 {
-  @Override
-  public CommandResult execute (final Object [] params)
+  @Nonnull
+  protected abstract CommandResult execute (IPartnershipFactory partFx, Object [] params) throws OpenAS2Exception;
+
+  @Nonnull
+  public final CommandResult execute (final Object [] params)
   {
     try
     {
@@ -54,6 +59,4 @@ public abstract class AbstractAliasedPartnershipsCommand extends AbstractCommand
       return new CommandResult (oae);
     }
   }
-
-  protected abstract CommandResult execute (IPartnershipFactory partFx, Object [] params) throws OpenAS2Exception;
 }

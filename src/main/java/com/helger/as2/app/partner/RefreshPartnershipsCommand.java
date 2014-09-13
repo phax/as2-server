@@ -68,17 +68,14 @@ public class RefreshPartnershipsCommand extends AbstractCommand
     try
     {
       final IPartnershipFactory partnerFx = getSession ().getPartnershipFactory ();
-      synchronized (partnerFx)
+      if (partnerFx instanceof IRefreshablePartnershipFactory)
       {
-        if (partnerFx instanceof IRefreshablePartnershipFactory)
-        {
-          ((IRefreshablePartnershipFactory) partnerFx).refresh ();
+        ((IRefreshablePartnershipFactory) partnerFx).refresh ();
 
-          return new CommandResult (ECommandResultType.TYPE_OK, "Refreshed partnerships");
-        }
-        return new CommandResult (ECommandResultType.TYPE_COMMAND_NOT_SUPPORTED,
-                                  "Not supported by current certificate store");
+        return new CommandResult (ECommandResultType.TYPE_OK, "Refreshed partnerships");
       }
+      return new CommandResult (ECommandResultType.TYPE_COMMAND_NOT_SUPPORTED,
+                                "Not supported by current certificate store");
     }
     catch (final OpenAS2Exception oae)
     {

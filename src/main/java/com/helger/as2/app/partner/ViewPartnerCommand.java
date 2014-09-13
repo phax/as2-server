@@ -69,17 +69,14 @@ public class ViewPartnerCommand extends AbstractAliasedPartnershipsCommand
     if (params.length < 1)
       return new CommandResult (ECommandResultType.TYPE_INVALID_PARAM_COUNT, getUsage ());
 
-    synchronized (partFx)
+    final String name = params[0].toString ();
+    final IStringMap aPartner = partFx.getPartnerOfName (name);
+    if (aPartner != null)
     {
-      final String name = params[0].toString ();
-      final IStringMap aPartner = partFx.getPartnerOfName (name);
-      if (aPartner != null)
-      {
-        final String out = name + "\n" + aPartner.toString ();
-        return new CommandResult (ECommandResultType.TYPE_OK, out);
-      }
-
-      return new CommandResult (ECommandResultType.TYPE_ERROR, "Unknown partner name");
+      final String out = name + "\n" + aPartner.toString ();
+      return new CommandResult (ECommandResultType.TYPE_OK, out);
     }
+
+    return new CommandResult (ECommandResultType.TYPE_ERROR, "Unknown partner name");
   }
 }

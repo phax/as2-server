@@ -71,17 +71,14 @@ public class StorePartnershipsCommand extends AbstractCommand
     try
     {
       final IPartnershipFactory partnerFx = getSession ().getPartnershipFactory ();
-      synchronized (getSession ().getPartnershipFactory ())
+      if (partnerFx instanceof XMLPartnershipFactory)
       {
-        if (partnerFx instanceof XMLPartnershipFactory)
-        {
-          ((XMLPartnershipFactory) partnerFx).storePartnership ();
+        ((XMLPartnershipFactory) partnerFx).storePartnership ();
 
-          return new CommandResult (ECommandResultType.TYPE_OK, "Stored partnerships");
-        }
-        return new CommandResult (ECommandResultType.TYPE_COMMAND_NOT_SUPPORTED,
-                                  "Not supported by current partnership store, must be XML");
+        return new CommandResult (ECommandResultType.TYPE_OK, "Stored partnerships");
       }
+      return new CommandResult (ECommandResultType.TYPE_COMMAND_NOT_SUPPORTED,
+                                "Not supported by current partnership store, must be XML");
     }
     catch (final OpenAS2Exception oae)
     {

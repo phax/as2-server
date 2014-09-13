@@ -75,37 +75,34 @@ public class AddPartnerCommand extends AbstractAliasedPartnershipsCommand
       return new CommandResult (ECommandResultType.TYPE_INVALID_PARAM_COUNT, getUsage ());
     }
 
-    synchronized (partFx)
-    {
-      final IMicroDocument doc = new MicroDocument ();
-      final IMicroElement root = doc.appendElement ("partner");
+    final IMicroDocument doc = new MicroDocument ();
+    final IMicroElement root = doc.appendElement ("partner");
 
-      for (int i = 0; i < params.length; i++)
+    for (int i = 0; i < params.length; i++)
+    {
+      final String param = (String) params[i];
+      final int pos = param.indexOf ('=');
+      if (i == 0)
       {
-        final String param = (String) params[i];
-        final int pos = param.indexOf ('=');
-        if (i == 0)
+        root.setAttribute ("name", param);
+      }
+      else
+        if (pos == 0)
         {
-          root.setAttribute ("name", param);
+          return new CommandResult (ECommandResultType.TYPE_ERROR, "incoming parameter missing name");
         }
         else
-          if (pos == 0)
+          if (pos > 0)
           {
-            return new CommandResult (ECommandResultType.TYPE_ERROR, "incoming parameter missing name");
+            root.setAttribute (param.substring (0, pos), param.substring (pos + 1));
           }
           else
-            if (pos > 0)
-            {
-              root.setAttribute (param.substring (0, pos), param.substring (pos + 1));
-            }
-            else
-              return new CommandResult (ECommandResultType.TYPE_ERROR, "incoming parameter missing value");
-      }
-
-      final StringMap aNewPartner = ((XMLPartnershipFactory) partFx).loadPartner (root);
-      partFx.addPartner (aNewPartner);
-
-      return new CommandResult (ECommandResultType.TYPE_OK);
+            return new CommandResult (ECommandResultType.TYPE_ERROR, "incoming parameter missing value");
     }
+
+    final StringMap aNewPartner = ((XMLPartnershipFactory) partFx).loadPartner (root);
+    partFx.addPartner (aNewPartner);
+
+    return new CommandResult (ECommandResultType.TYPE_OK);
   }
 }

@@ -80,8 +80,6 @@ public abstract class AbstractCommand extends AbstractDynamicComponent implement
 
   public abstract String getDefaultUsage ();
 
-  public abstract CommandResult execute (Object [] params);
-
   public void setDescription (final String desc)
   {
     setAttribute (PARAM_DESCRIPTION, desc);

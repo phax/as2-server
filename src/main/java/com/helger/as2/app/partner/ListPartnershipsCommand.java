@@ -36,7 +36,6 @@ import com.helger.as2.cmd.CommandResult;
 import com.helger.as2.cmd.ECommandResultType;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.partner.IPartnershipFactory;
-import com.helger.as2lib.partner.Partnership;
 
 /**
  * list partnerships in partnership store by names
@@ -67,12 +66,8 @@ public class ListPartnershipsCommand extends AbstractAliasedPartnershipsCommand
   public CommandResult execute (final IPartnershipFactory partFx, final Object [] params) throws OpenAS2Exception
   {
     final CommandResult cmdRes = new CommandResult (ECommandResultType.TYPE_OK);
-
-    synchronized (partFx)
-    {
-      for (final Partnership part : partFx.getAllPartnerships ())
-        cmdRes.addResult (part.getName ());
-    }
+    for (final String sName : partFx.getAllPartnershipNames ())
+      cmdRes.addResult (sName);
 
     if (cmdRes.hasNoResult ())
       cmdRes.addResult ("No partnerships available");

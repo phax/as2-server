@@ -71,36 +71,32 @@ public class DeletePartnerCommand extends AbstractAliasedPartnershipsCommand
       return new CommandResult (ECommandResultType.TYPE_INVALID_PARAM_COUNT, getUsage ());
     }
 
-    synchronized (partFx)
-    {
+    final String name = params[0].toString ();
 
-      final String name = params[0].toString ();
+    boolean found = false;
+    for (final String partName : partFx.getAllPartnerNames ())
+      if (partName.equals (name))
+      {
+        found = true;
+        break;
+      }
 
-      boolean found = false;
-      for (final String partName : partFx.getAllPartnerNames ())
-        if (partName.equals (name))
-        {
-          found = true;
-          break;
-        }
+    if (!found)
+      return new CommandResult (ECommandResultType.TYPE_ERROR, "Unknown partner name");
 
-      if (!found)
-        return new CommandResult (ECommandResultType.TYPE_ERROR, "Unknown partner name");
+    boolean partnershipFound = false;
+    for (final Partnership aPartnership : partFx.getAllPartnerships ())
+      if (aPartnership.containsReceiverID (name) || aPartnership.containsSenderID (name))
+      {
+        partnershipFound = true;
+        break;
+      }
 
-      boolean partnershipFound = false;
-      for (final Partnership aPartnership : partFx.getAllPartnerships ())
-        if (aPartnership.containsReceiverID (name) || aPartnership.containsSenderID (name))
-        {
-          partnershipFound = true;
-          break;
-        }
+    if (partnershipFound)
+      return new CommandResult (ECommandResultType.TYPE_ERROR,
+                                "Can not delete partner; it is tied to some partnerships");
 
-      if (partnershipFound)
-        return new CommandResult (ECommandResultType.TYPE_ERROR,
-                                  "Can not delete partner; it is tied to some partnerships");
-
-      partFx.removePartner (name);
-      return new CommandResult (ECommandResultType.TYPE_OK);
-    }
+    partFx.removePartner (name);
+    return new CommandResult (ECommandResultType.TYPE_OK);
   }
 }

@@ -73,55 +73,52 @@ public class AddPartnershipCommand extends AbstractAliasedPartnershipsCommand
     if (params.length < 3)
       return new CommandResult (ECommandResultType.TYPE_INVALID_PARAM_COUNT, getUsage ());
 
-    synchronized (partFx)
-    {
-      final IMicroDocument doc = new MicroDocument ();
-      final IMicroElement root = doc.appendElement ("partnership");
+    final IMicroDocument doc = new MicroDocument ();
+    final IMicroElement root = doc.appendElement ("partnership");
 
-      for (int nIndex = 0; nIndex < params.length; nIndex++)
+    for (int nIndex = 0; nIndex < params.length; nIndex++)
+    {
+      final String param = (String) params[nIndex];
+      final int pos = param.indexOf ('=');
+      if (nIndex == 0)
       {
-        final String param = (String) params[nIndex];
-        final int pos = param.indexOf ('=');
-        if (nIndex == 0)
+        root.setAttribute ("name", param);
+      }
+      else
+        if (nIndex == 1)
         {
-          root.setAttribute ("name", param);
+          final IMicroElement elem = root.appendElement ("sender");
+          elem.setAttribute ("name", param);
         }
         else
-          if (nIndex == 1)
+          if (nIndex == 2)
           {
-            final IMicroElement elem = root.appendElement ("sender");
+            final IMicroElement elem = root.appendElement ("receiver");
             elem.setAttribute ("name", param);
           }
           else
-            if (nIndex == 2)
+            if (pos == 0)
             {
-              final IMicroElement elem = root.appendElement ("receiver");
-              elem.setAttribute ("name", param);
+              return new CommandResult (ECommandResultType.TYPE_ERROR, "incoming parameter missing name");
             }
             else
-              if (pos == 0)
+              if (pos > 0)
               {
-                return new CommandResult (ECommandResultType.TYPE_ERROR, "incoming parameter missing name");
+                final IMicroElement elem = root.appendElement ("attribute");
+                elem.setAttribute ("name", param.substring (0, pos));
+                elem.setAttribute ("value", param.substring (pos + 1));
               }
               else
-                if (pos > 0)
-                {
-                  final IMicroElement elem = root.appendElement ("attribute");
-                  elem.setAttribute ("name", param.substring (0, pos));
-                  elem.setAttribute ("value", param.substring (pos + 1));
-                }
-                else
-                  return new CommandResult (ECommandResultType.TYPE_ERROR, "incoming parameter missing value");
+                return new CommandResult (ECommandResultType.TYPE_ERROR, "incoming parameter missing value");
 
-      }
-
-      final Partnership aPartnership = ((XMLPartnershipFactory) partFx).loadPartnership (root,
-                                                                                         partFx.getPartnerMap (),
-                                                                                         partFx.getAllPartnerships ());
-      // add the partnership to the list of available partnerships
-      partFx.addPartnership (aPartnership);
-
-      return new CommandResult (ECommandResultType.TYPE_OK);
     }
+
+    final Partnership aPartnership = ((XMLPartnershipFactory) partFx).loadPartnership (root,
+                                                                                       partFx.getPartnerMap (),
+                                                                                       partFx.getPartnershipMap ());
+    // add the partnership to the list of available partnerships
+    partFx.addPartnership (aPartnership);
+
+    return new CommandResult (ECommandResultType.TYPE_OK);
   }
 }

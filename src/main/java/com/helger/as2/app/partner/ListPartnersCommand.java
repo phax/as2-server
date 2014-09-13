@@ -65,18 +65,14 @@ public class ListPartnersCommand extends AbstractAliasedPartnershipsCommand
   @Override
   public CommandResult execute (final IPartnershipFactory partFx, final Object [] params) throws OpenAS2Exception
   {
+    final CommandResult cmdRes = new CommandResult (ECommandResultType.TYPE_OK);
 
-    synchronized (partFx)
-    {
-      final CommandResult cmdRes = new CommandResult (ECommandResultType.TYPE_OK);
+    for (final String sPartnerName : partFx.getAllPartnerNames ())
+      cmdRes.addResult (sPartnerName);
 
-      for (final String sPartnerName : partFx.getAllPartnerNames ())
-        cmdRes.addResult (sPartnerName);
+    if (cmdRes.hasNoResult ())
+      cmdRes.addResult ("No partner definitions available");
 
-      if (cmdRes.hasNoResult ())
-        cmdRes.addResult ("No partner definitions available");
-
-      return cmdRes;
-    }
+    return cmdRes;
   }
 }

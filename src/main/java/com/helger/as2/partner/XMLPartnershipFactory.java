@@ -33,10 +33,7 @@
 package com.helger.as2.partner;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
@@ -53,12 +50,15 @@ import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.exception.WrappedOpenAS2Exception;
 import com.helger.as2lib.partner.AbstractPartnershipFactory;
 import com.helger.as2lib.partner.IPartnerMap;
+import com.helger.as2lib.partner.IPartnershipMap;
 import com.helger.as2lib.partner.PartnerMap;
 import com.helger.as2lib.partner.Partnership;
+import com.helger.as2lib.partner.PartnershipMap;
 import com.helger.as2lib.session.ISession;
 import com.helger.as2lib.util.IStringMap;
 import com.helger.as2lib.util.StringMap;
 import com.helger.as2lib.util.XMLUtil;
+import com.helger.commons.io.file.FileUtils;
 import com.helger.commons.microdom.IMicroDocument;
 import com.helger.commons.microdom.IMicroElement;
 import com.helger.commons.microdom.impl.MicroDocument;
@@ -87,12 +87,14 @@ public class XMLPartnershipFactory extends AbstractPartnershipFactory implements
 
   public FileMonitor getFileMonitor () throws InvalidParameterException
   {
-    boolean bCreateMonitor = m_aFileMonitor == null && containsAttribute (PARAM_INTERVAL);
+    boolean bCreateMonitor;
 
-    if (!bCreateMonitor && (m_aFileMonitor != null))
+    bCreateMonitor = m_aFileMonitor == null && containsAttribute (PARAM_INTERVAL);
+
+    if (!bCreateMonitor && m_aFileMonitor != null)
     {
       final String filename = m_aFileMonitor.getFilename ();
-      bCreateMonitor = ((filename != null) && !filename.equals (getFilename ()));
+      bCreateMonitor = filename != null && !filename.equals (getFilename ());
     }
 
     if (bCreateMonitor)
@@ -150,7 +152,7 @@ public class XMLPartnershipFactory extends AbstractPartnershipFactory implements
   {
     try
     {
-      load (new FileInputStream (getFilename ()));
+      load (FileUtils.getInputStream (getFilename ()));
 
       getFileMonitor ();
     }
@@ -166,7 +168,7 @@ public class XMLPartnershipFactory extends AbstractPartnershipFactory implements
     final IMicroElement root = document.getDocumentElement ();
 
     final PartnerMap aNewPartners = new PartnerMap ();
-    final List <Partnership> aNewPartnerships = new ArrayList <Partnership> ();
+    final PartnershipMap aNewPartnerships = new PartnershipMap ();
 
     for (final IMicroElement eRootNode : root.getAllChildElements ())
     {
@@ -175,23 +177,20 @@ public class XMLPartnershipFactory extends AbstractPartnershipFactory implements
       if (sNodeName.equals ("partner"))
       {
         final StringMap aNewPartner = loadPartner (eRootNode);
-        aNewPartners.add (aNewPartner);
+        aNewPartners.addPartner (aNewPartner);
       }
       else
         if (sNodeName.equals ("partnership"))
         {
           final Partnership aNewPartnership = loadPartnership (eRootNode, aNewPartners, aNewPartnerships);
-          aNewPartnerships.add (aNewPartnership);
+          aNewPartnerships.addPartnership (aNewPartnership);
         }
         else
           s_aLogger.warn ("Invalid element '" + sNodeName + "' in XML partnership file");
     }
 
-    synchronized (this)
-    {
-      setPartners (aNewPartners);
-      setPartnerships (aNewPartnerships);
-    }
+    setPartners (aNewPartners);
+    setPartnerships (aNewPartnerships);
   }
 
   protected void loadAttributes (final IMicroElement node, final Partnership partnership) throws OpenAS2Exception
@@ -250,12 +249,12 @@ public class XMLPartnershipFactory extends AbstractPartnershipFactory implements
   @Nonnull
   public Partnership loadPartnership (@Nonnull final IMicroElement aElement,
                                       @Nonnull final IPartnerMap aAllPartners,
-                                      @Nonnull final List <Partnership> aAllPartnerships) throws OpenAS2Exception
+                                      @Nonnull final IPartnershipMap aAllPartnerships) throws OpenAS2Exception
   {
     final IStringMap aPartnershipAttrs = XMLUtil.getAttrsWithLowercaseNameWithRequired (aElement, "name");
     final String sPartnershipName = aPartnershipAttrs.getAttributeAsString ("name");
 
-    if (getPartnershipByName (aAllPartnerships, sPartnershipName) != null)
+    if (aAllPartnerships.getPartnershipByName (sPartnershipName) != null)
       throw new OpenAS2Exception ("Partnership is defined more than once: " + sPartnershipName);
 
     final Partnership aPartnership = new Partnership (sPartnershipName);

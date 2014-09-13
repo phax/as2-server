@@ -72,12 +72,10 @@ public class ViewPartnershipCommand extends AbstractAliasedPartnershipsCommand
     }
 
     final String name = params[0].toString ();
-    synchronized (partFx)
-    {
-      for (final Partnership part : partFx.getAllPartnerships ())
-        if (part.getName ().equals (name))
-          return new CommandResult (ECommandResultType.TYPE_OK, part.toString ());
-    }
+    final Partnership part = partFx.getPartnershipByName (name);
+    if (part != null)
+      return new CommandResult (ECommandResultType.TYPE_OK, part.toString ());
+
     return new CommandResult (ECommandResultType.TYPE_ERROR, "Unknown partnership name");
   }
 }
