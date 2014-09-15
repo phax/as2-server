@@ -41,8 +41,8 @@ import com.helger.as2.XMLSession;
 import com.helger.as2.cmd.CommandManager;
 import com.helger.as2.cmd.ICommandRegistry;
 import com.helger.as2.cmd.processor.AbstractCommandProcessor;
+import com.helger.as2lib.CAS2Info;
 import com.helger.as2lib.exception.OpenAS2Exception;
-import com.helger.as2lib.util.CInfo;
 import com.helger.commons.lang.CGStringHelper;
 
 /**
@@ -65,7 +65,7 @@ public class MainOpenAS2Server
     XMLSession aXMLSession = null;
     try
     {
-      s_aLogger.info (CInfo.NAME_VERSION + " - starting Server...");
+      s_aLogger.info (CAS2Info.NAME_VERSION + " - starting Server...");
 
       // create the OpenAS2 Session object
       // this is used by all other objects to access global configs and
