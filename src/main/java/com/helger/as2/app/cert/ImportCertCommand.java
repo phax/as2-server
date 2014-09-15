@@ -141,11 +141,10 @@ public class ImportCertCommand extends AbstractAliasedCertCommand
                                             final String filename,
                                             final String password) throws Exception
   {
-    final KeyStore ks = AS2Util.getCryptoHelper ().getKeyStore ();
+    final KeyStore ks = AS2Util.getCryptoHelper ().createNewKeyStore ();
     ks.load (new FileInputStream (filename), password.toCharArray ());
 
     final Enumeration <String> aliases = ks.aliases ();
-
     while (aliases.hasMoreElements ())
     {
       final String certAlias = aliases.nextElement ();

@@ -162,31 +162,34 @@ public class XMLPartnershipFactory extends AbstractPartnershipFactory implements
     }
   }
 
-  protected void load (@WillClose final InputStream aIS) throws OpenAS2Exception
+  protected void load (@Nullable @WillClose final InputStream aIS) throws OpenAS2Exception
   {
-    final IMicroDocument document = MicroReader.readMicroXML (aIS);
-    final IMicroElement root = document.getDocumentElement ();
-
     final PartnerMap aNewPartners = new PartnerMap ();
     final PartnershipMap aNewPartnerships = new PartnershipMap ();
 
-    for (final IMicroElement eRootNode : root.getAllChildElements ())
+    if (aIS != null)
     {
-      final String sNodeName = eRootNode.getTagName ();
+      final IMicroDocument aDocument = MicroReader.readMicroXML (aIS);
+      final IMicroElement root = aDocument.getDocumentElement ();
 
-      if (sNodeName.equals ("partner"))
+      for (final IMicroElement eRootNode : root.getAllChildElements ())
       {
-        final StringMap aNewPartner = loadPartner (eRootNode);
-        aNewPartners.addPartner (aNewPartner);
-      }
-      else
-        if (sNodeName.equals ("partnership"))
+        final String sNodeName = eRootNode.getTagName ();
+
+        if (sNodeName.equals ("partner"))
         {
-          final Partnership aNewPartnership = loadPartnership (eRootNode, aNewPartners, aNewPartnerships);
-          aNewPartnerships.addPartnership (aNewPartnership);
+          final StringMap aNewPartner = loadPartner (eRootNode);
+          aNewPartners.addPartner (aNewPartner);
         }
         else
-          s_aLogger.warn ("Invalid element '" + sNodeName + "' in XML partnership file");
+          if (sNodeName.equals ("partnership"))
+          {
+            final Partnership aNewPartnership = loadPartnership (eRootNode, aNewPartners, aNewPartnerships);
+            aNewPartnerships.addPartnership (aNewPartnership);
+          }
+          else
+            s_aLogger.warn ("Invalid element '" + sNodeName + "' in XML partnership file");
+      }
     }
 
     setPartners (aNewPartners);

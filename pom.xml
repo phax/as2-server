@@ -88,8 +88,19 @@
         <extensions>true</extensions>
         <configuration>
           <instructions>
-            <Export-Package>com.helger.as2.*</Export-Package>
+            <Export-Package>
+              com.helger.as2.*
+            </Export-Package>
           </instructions>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.mycila</groupId>
+        <artifactId>license-maven-plugin</artifactId>
+        <configuration>
+          <excludes>
+            <exclude>src/main/resources/config/*.txt</exclude>
+          </excludes>
         </configuration>
       </plugin>
     </plugins>
