@@ -32,6 +32,8 @@
  */
 package com.helger.as2.util;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
 
 /**
@@ -52,9 +54,6 @@ public class ByteCoderTest
     }
     final String in = ByteCoder.encode (sb.toString ());
     final String out = ByteCoder.decode (in);
-    if (sb.toString ().equals (out))
-      System.out.println ("success");
-    else
-      System.out.println ("failed expected:" + in + "\ngot:" + out);
+    assertEquals (sb.toString (), out);
   }
 }

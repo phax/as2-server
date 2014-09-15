@@ -36,6 +36,8 @@ import java.util.regex.Matcher;
 
 import javax.annotation.Nonnull;
 
+import com.helger.commons.charset.CCharset;
+import com.helger.commons.io.streams.NonBlockingByteArrayOutputStream;
 import com.helger.commons.regex.RegExHelper;
 
 /**
@@ -50,22 +52,27 @@ public final class ByteCoder
   public static String encode (@Nonnull final String inStr)
   {
     final StringBuilder aSB = new StringBuilder (inStr.length () * 3);
-    for (final byte element : inStr.getBytes ())
-      aSB.append ('.').append (element).append ('.');
+    for (final byte element : inStr.getBytes (CCharset.CHARSET_ISO_8859_1_OBJ))
+    {
+      // Ensure unsigned int
+      aSB.append ('.').append (element & 0xff).append ('.');
+    }
     return aSB.toString ();
   }
 
   @Nonnull
   public static String decode (@Nonnull final String inStr)
   {
-    final StringBuilder aSB = new StringBuilder (inStr.length () / 3);
-    final Matcher match = RegExHelper.getMatcher (".[0-9]+.", inStr);
-    while (match.find ())
+    final NonBlockingByteArrayOutputStream aBAOS = new NonBlockingByteArrayOutputStream (inStr.length () / 3);
+    final Matcher aMatcher = RegExHelper.getMatcher (".[0-9]+.", inStr);
+    while (aMatcher.find ())
     {
-      final String sMatch = match.group ();
-      final byte me = (byte) Integer.parseInt (sMatch.substring (1, sMatch.length () - 1));
-      aSB.append ((char) me);
+      final String sMatch = aMatcher.group ();
+      // Ensure unsigned int
+      final byte me = (byte) (Integer.parseInt (sMatch.substring (1, sMatch.length () - 1)) & 0xff);
+      aBAOS.write (me);
     }
-    return aSB.toString ();
+    aBAOS.close ();
+    return aBAOS.getAsString (CCharset.CHARSET_ISO_8859_1_OBJ);
   }
 }
