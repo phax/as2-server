@@ -182,10 +182,10 @@ public class TestClient
 
     // logger.info(cf.getCertificates());
 
-    aSession.addComponent (ICertificateFactory.COMPID_CERTIFICATE_FACTORY, aCertFactory);
+    aSession.addComponent (ICertificateFactory.COMPONENT_ID_CERTIFICATE_FACTORY, aCertFactory);
 
     final IDynamicComponent aPartnershipFactory = new SimplePartnershipFactory ();
-    aSession.addComponent (IPartnershipFactory.COMPID_PARTNERSHIP_FACTORY, aPartnershipFactory);
+    aSession.addComponent (IPartnershipFactory.COMPONENT_ID_PARTNERSHIP_FACTORY, aPartnershipFactory);
     aTestSender.initDynamicComponent (aSession, null);
 
     s_aLogger.info ("is requesting  MDN?: " + aMsg.isRequestingMDN ());

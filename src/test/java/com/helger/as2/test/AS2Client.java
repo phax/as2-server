@@ -132,11 +132,11 @@ public class AS2Client
 
         final ServerPKCS12CertificateFactory aCertFactory = new ServerPKCS12CertificateFactory ();
         aCertFactory.initDynamicComponent (aSession, aParams);
-        aSession.addComponent (ICertificateFactory.COMPID_CERTIFICATE_FACTORY, aCertFactory);
+        aSession.addComponent (ICertificateFactory.COMPONENT_ID_CERTIFICATE_FACTORY, aCertFactory);
       }
 
       final IDynamicComponent aPartnershipFactory = new SimplePartnershipFactory ();
-      aSession.addComponent (IPartnershipFactory.COMPID_PARTNERSHIP_FACTORY, aPartnershipFactory);
+      aSession.addComponent (IPartnershipFactory.COMPONENT_ID_PARTNERSHIP_FACTORY, aPartnershipFactory);
 
       final TestSenderModule aSender = new TestSenderModule ();
       aSender.initDynamicComponent (aSession, null);

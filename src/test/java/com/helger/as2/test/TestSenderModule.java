@@ -136,7 +136,7 @@ public class TestSenderModule extends AS2SenderModule
 
       try
       {
-        new DispositionType (sDisposition).validate ();
+        DispositionType.parse (sDisposition).validate ();
       }
       catch (final DispositionException ex)
       {

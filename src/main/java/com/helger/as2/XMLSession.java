@@ -117,7 +117,7 @@ public class XMLSession extends Session implements ICommandRegistryFactory
   {
     s_aLogger.info ("  loading certificates");
     final ICertificateFactory certFx = (ICertificateFactory) ServerXMLUtil.createComponent (aElement, this);
-    addComponent (ICertificateFactory.COMPID_CERTIFICATE_FACTORY, certFx);
+    addComponent (ICertificateFactory.COMPONENT_ID_CERTIFICATE_FACTORY, certFx);
   }
 
   protected void loadCommands (@Nonnull final IMicroElement aElement) throws OpenAS2Exception
@@ -147,14 +147,14 @@ public class XMLSession extends Session implements ICommandRegistryFactory
   {
     s_aLogger.info ("  loading partnerships");
     final IPartnershipFactory partnerFx = (IPartnershipFactory) ServerXMLUtil.createComponent (rootNode, this);
-    addComponent (IPartnershipFactory.COMPID_PARTNERSHIP_FACTORY, partnerFx);
+    addComponent (IPartnershipFactory.COMPONENT_ID_PARTNERSHIP_FACTORY, partnerFx);
   }
 
   protected void loadMessageProcessor (final IMicroElement rootNode) throws OpenAS2Exception
   {
     s_aLogger.info ("  loading message processor");
     final IMessageProcessor aMsgProcessor = (IMessageProcessor) ServerXMLUtil.createComponent (rootNode, this);
-    addComponent (IMessageProcessor.COMPID_MESSAGE_PROCESSOR, aMsgProcessor);
+    addComponent (IMessageProcessor.COMPONEND_ID_MESSAGE_PROCESSOR, aMsgProcessor);
 
     for (final IMicroElement eModule : rootNode.getAllChildElements ("module"))
       loadProcessorModule (aMsgProcessor, eModule);

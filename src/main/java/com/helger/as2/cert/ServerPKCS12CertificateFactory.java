@@ -48,6 +48,7 @@ import com.helger.as2lib.exception.OpenAS2Exception;
 
 public class ServerPKCS12CertificateFactory extends PKCS12CertificateFactory implements IFileMonitorListener
 {
+  public static final String PARAM_INTERVAL = "interval";
   private static final Logger s_aLogger = LoggerFactory.getLogger (ServerPKCS12CertificateFactory.class);
 
   private FileMonitor m_aFileMonitor;
