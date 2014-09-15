@@ -46,6 +46,7 @@ import com.helger.as2.cert.ServerPKCS12CertificateFactory;
 import com.helger.as2lib.IDynamicComponent;
 import com.helger.as2lib.cert.ICertificateFactory;
 import com.helger.as2lib.cert.PKCS12CertificateFactory;
+import com.helger.as2lib.crypto.ECryptoAlgorithm;
 import com.helger.as2lib.exception.InvalidParameterException;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.message.AS2Message;
@@ -87,8 +88,8 @@ public class TestClient
     aSettings.receiverAs2Url = "http://localhost:10080/HttpReceiver";
     aSettings.partnershipName = "partnership name";
     aSettings.mdnOptions = "signed-receipt-protocol=optional, pkcs7-signature; signed-receipt-micalg=optional, sha1";
-    aSettings.encrypt = DO_ENCRYPT ? "3des" : null;
-    aSettings.sign = DO_SIGN ? "sha1" : null;
+    aSettings.encrypt = DO_ENCRYPT ? ECryptoAlgorithm.CRYPT_3DES : null;
+    aSettings.sign = DO_SIGN ? ECryptoAlgorithm.DIGEST_SHA1 : null;
 
     final AS2Request aRequest = new AS2Request ("Test message");
     aRequest.setData (new File ("src/test/resources/dummy.txt"));
@@ -126,8 +127,8 @@ public class TestClient
     aPartnership.setAttribute (CPartnershipIDs.PA_AS2_MDN_OPTIONS,
                                "signed-receipt-protocol=optional, pkcs7-signature; signed-receipt-micalg=optional, sha1");
 
-    aPartnership.setAttribute (CPartnershipIDs.PA_ENCRYPT, "3des");
-    aPartnership.setAttribute (CPartnershipIDs.PA_SIGN, "sha1");
+    aPartnership.setAttribute (CPartnershipIDs.PA_ENCRYPT, ECryptoAlgorithm.CRYPT_3DES.getID ());
+    aPartnership.setAttribute (CPartnershipIDs.PA_SIGN, ECryptoAlgorithm.DIGEST_SHA1.getID ());
     aPartnership.setAttribute (Partnership.PA_PROTOCOL, "as2");
 
     aPartnership.setAttribute (CPartnershipIDs.PA_AS2_RECEIPT_OPTION, null);

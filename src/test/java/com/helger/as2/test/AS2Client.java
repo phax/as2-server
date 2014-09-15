@@ -75,8 +75,9 @@ public class AS2Client
 
     aPartnership.setAttribute (CPartnershipIDs.PA_AS2_MDN_OPTIONS, aSettings.mdnOptions);
 
-    aPartnership.setAttribute (CPartnershipIDs.PA_ENCRYPT, aSettings.encrypt);
-    aPartnership.setAttribute (CPartnershipIDs.PA_SIGN, aSettings.sign);
+    aPartnership.setAttribute (CPartnershipIDs.PA_ENCRYPT,
+                               aSettings.encrypt == null ? null : aSettings.encrypt.getID ());
+    aPartnership.setAttribute (CPartnershipIDs.PA_SIGN, aSettings.sign == null ? null : aSettings.sign.getID ());
     aPartnership.setAttribute (Partnership.PA_PROTOCOL, "as2");
     // partnership.setAttribute(AS2Partnership.PA_AS2_MDN_TO,"http://localhost:10080");
     aPartnership.setAttribute (CPartnershipIDs.PA_AS2_RECEIPT_OPTION, null);
@@ -109,7 +110,8 @@ public class AS2Client
 
   // TODO do object
   // TODO extract interface
-  public static AS2Response sendSynchronous (@Nonnull final ConnectionSettings aSettings, @Nonnull final AS2Request aRequest)
+  public static AS2Response sendSynchronous (@Nonnull final ConnectionSettings aSettings,
+                                             @Nonnull final AS2Request aRequest)
   {
     final AS2Response aResponse = new AS2Response ();
     IMessage aMsg = null;

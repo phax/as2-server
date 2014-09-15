@@ -32,6 +32,8 @@
  */
 package com.helger.as2.test;
 
+import com.helger.as2lib.crypto.ECryptoAlgorithm;
+
 /**
  * @author oleo Date: May 12, 2010 Time: 5:16:57 PM
  */
@@ -50,8 +52,8 @@ public final class ConnectionSettings
 
   public String partnershipName = "partnership name";
   public String mdnOptions = "signed-receipt-protocol=optional, pkcs7-signature; signed-receipt-micalg=optional, sha1";
-  public String encrypt = "3des";
-  public String sign = "sha1";
+  public ECryptoAlgorithm encrypt = ECryptoAlgorithm.CRYPT_3DES;
+  public ECryptoAlgorithm sign = ECryptoAlgorithm.DIGEST_SHA1;
 
   public String messageIDFormat = "Test-$date.ddMMyyyyHHmmssZ$-$rand.1234$@$msg.sender.as2_id$_$msg.receiver.as2_id$";
 }
