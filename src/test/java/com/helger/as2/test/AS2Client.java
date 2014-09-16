@@ -132,7 +132,7 @@ public class AS2Client
         aSession.setCertificateFactory (aCertFactory);
       }
 
-      final SimplePartnershipFactory aPartnershipFactory = new SimplePartnershipFactory ();
+      final SelfFillingPartnershipFactory aPartnershipFactory = new SelfFillingPartnershipFactory ();
       aSession.setPartnershipFactory (aPartnershipFactory);
 
       final TestSenderModule aSender = new TestSenderModule ();

@@ -43,7 +43,7 @@ import com.helger.as2lib.partner.Partnership;
 /**
  * @author oleo Date: May 12, 2010 Time: 2:18:36 PM
  */
-public class SimplePartnershipFactory extends AbstractPartnershipFactory
+public class SelfFillingPartnershipFactory extends AbstractPartnershipFactory
 {
   @Override
   @Nonnull

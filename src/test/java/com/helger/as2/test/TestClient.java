@@ -181,7 +181,7 @@ public class TestClient
 
     aSession.setCertificateFactory (aCertFactory);
 
-    final SimplePartnershipFactory aPartnershipFactory = new SimplePartnershipFactory ();
+    final SelfFillingPartnershipFactory aPartnershipFactory = new SelfFillingPartnershipFactory ();
     aSession.setPartnershipFactory (aPartnershipFactory);
     aTestSender.initDynamicComponent (aSession, null);
 
