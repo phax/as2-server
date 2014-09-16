@@ -69,14 +69,14 @@ public class AS2Client
 
     aPartnership.setSenderID (CPartnershipIDs.PID_AS2, aSettings.senderAs2Id);
     aPartnership.setSenderID (CPartnershipIDs.PID_X509_ALIAS, aSettings.senderKeyAlias);
-    aPartnership.setSenderID (Partnership.PID_EMAIL, aSettings.senderEmail);
+    aPartnership.setSenderID (CPartnershipIDs.PID_EMAIL, aSettings.senderEmail);
 
     aPartnership.setAttribute (CPartnershipIDs.PA_AS2_MDN_OPTIONS, aSettings.mdnOptions);
 
     aPartnership.setAttribute (CPartnershipIDs.PA_ENCRYPT,
                                aSettings.encrypt == null ? null : aSettings.encrypt.getID ());
     aPartnership.setAttribute (CPartnershipIDs.PA_SIGN, aSettings.sign == null ? null : aSettings.sign.getID ());
-    aPartnership.setAttribute (Partnership.PA_PROTOCOL, "as2");
+    aPartnership.setAttribute (CPartnershipIDs.PA_PROTOCOL, "as2");
     // partnership.setAttribute(AS2Partnership.PA_AS2_MDN_TO,"http://localhost:10080");
     aPartnership.setAttribute (CPartnershipIDs.PA_AS2_RECEIPT_OPTION, null);
 
@@ -96,7 +96,7 @@ public class AS2Client
 
     aMsg.setAttribute (CPartnershipIDs.PA_AS2_URL, aPartnership.getAttribute (CPartnershipIDs.PA_AS2_URL));
     aMsg.setAttribute (CPartnershipIDs.PID_AS2, aPartnership.getReceiverID (CPartnershipIDs.PID_AS2));
-    aMsg.setAttribute (Partnership.PID_EMAIL, aPartnership.getSenderID (Partnership.PID_EMAIL));
+    aMsg.setAttribute (CPartnershipIDs.PID_EMAIL, aPartnership.getSenderID (CPartnershipIDs.PID_EMAIL));
 
     // Build message content
     final MimeBodyPart aPart = new MimeBodyPart ();

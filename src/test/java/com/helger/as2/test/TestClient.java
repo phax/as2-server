@@ -119,7 +119,7 @@ public class TestClient
     aPartnership.setReceiverID (CPartnershipIDs.PID_X509_ALIAS, receiverKey);
     aPartnership.setSenderID (CPartnershipIDs.PID_AS2, pidSenderAs2);
     aPartnership.setSenderID (CPartnershipIDs.PID_X509_ALIAS, senderKey);
-    aPartnership.setSenderID (Partnership.PID_EMAIL, pidSenderEmail);
+    aPartnership.setSenderID (CPartnershipIDs.PID_EMAIL, pidSenderEmail);
 
     // partnership.setAttribute(AS2Partnership.PA_AS2_MDN_TO,"http://localhost:10080");
     aPartnership.setAttribute (CPartnershipIDs.PA_AS2_MDN_OPTIONS,
@@ -127,7 +127,7 @@ public class TestClient
 
     aPartnership.setAttribute (CPartnershipIDs.PA_ENCRYPT, ECryptoAlgorithm.CRYPT_3DES.getID ());
     aPartnership.setAttribute (CPartnershipIDs.PA_SIGN, ECryptoAlgorithm.DIGEST_SHA1.getID ());
-    aPartnership.setAttribute (Partnership.PA_PROTOCOL, "as2");
+    aPartnership.setAttribute (CPartnershipIDs.PA_PROTOCOL, "as2");
 
     aPartnership.setAttribute (CPartnershipIDs.PA_AS2_RECEIPT_OPTION, null);
 
@@ -140,7 +140,7 @@ public class TestClient
     aMsg.setAttribute (CPartnershipIDs.PA_AS2_URL, paAs2Url);
 
     aMsg.setAttribute (CPartnershipIDs.PID_AS2, pidAs2);
-    aMsg.setAttribute (Partnership.PID_EMAIL, "email");
+    aMsg.setAttribute (CPartnershipIDs.PID_EMAIL, "email");
 
     MimeBodyPart aBodyPart;
     // part = new MimeBodyPart(new FileInputStream("/tmp/tst"));
@@ -241,8 +241,8 @@ public class TestClient
                                             partnership.getSenderID (CPartnershipIDs.PID_AS2));
       InvalidParameterException.checkValue (msg, "Subject", msg.getSubject ());
       InvalidParameterException.checkValue (msg,
-                                            "Sender: " + Partnership.PID_EMAIL,
-                                            partnership.getSenderID (Partnership.PID_EMAIL));
+                                            "Sender: " + CPartnershipIDs.PID_EMAIL,
+                                            partnership.getSenderID (CPartnershipIDs.PID_EMAIL));
       InvalidParameterException.checkValue (msg, "Message Data", msg.getData ());
     }
     catch (final InvalidParameterException rpe)
@@ -269,7 +269,7 @@ public class TestClient
     conn.setRequestProperty (CAS2Header.HEADER_AS2_TO, partnership.getReceiverID (CPartnershipIDs.PID_AS2));
     conn.setRequestProperty (CAS2Header.HEADER_AS2_FROM, partnership.getSenderID (CPartnershipIDs.PID_AS2));
     conn.setRequestProperty (CAS2Header.HEADER_SUBJECT, msg.getSubject ());
-    conn.setRequestProperty (CAS2Header.HEADER_FROM, partnership.getSenderID (Partnership.PID_EMAIL));
+    conn.setRequestProperty (CAS2Header.HEADER_FROM, partnership.getSenderID (CPartnershipIDs.PID_EMAIL));
 
     final String dispTo = partnership.getAttribute (CPartnershipIDs.PA_AS2_MDN_TO);
     if (dispTo != null)
