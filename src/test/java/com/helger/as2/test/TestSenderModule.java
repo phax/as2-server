@@ -107,7 +107,7 @@ public class TestSenderModule extends AS2SenderModule
       AS2Util.parseMDN (aMsg, aSenderCert);
 
       if (false)
-        getSession ().getProcessor ().handle (IProcessorStorageModule.DO_STOREMDN, aMsg, null);
+        getSession ().getMessageProcessor ().handle (IProcessorStorageModule.DO_STOREMDN, aMsg, null);
 
       final String sDisposition = aMsg.getMDN ().getAttribute (AS2MessageMDN.MDNA_DISPOSITION);
 

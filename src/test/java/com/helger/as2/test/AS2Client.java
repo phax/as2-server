@@ -42,14 +42,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.as2.cert.ServerPKCS12CertificateFactory;
-import com.helger.as2lib.IDynamicComponent;
-import com.helger.as2lib.cert.ICertificateFactory;
 import com.helger.as2lib.cert.PKCS12CertificateFactory;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.message.AS2Message;
 import com.helger.as2lib.message.IMessage;
 import com.helger.as2lib.partner.CPartnershipIDs;
-import com.helger.as2lib.partner.IPartnershipFactory;
 import com.helger.as2lib.partner.Partnership;
 import com.helger.as2lib.processor.sender.IProcessorSenderModule;
 import com.helger.as2lib.session.Session;
@@ -132,11 +129,11 @@ public class AS2Client
 
         final ServerPKCS12CertificateFactory aCertFactory = new ServerPKCS12CertificateFactory ();
         aCertFactory.initDynamicComponent (aSession, aParams);
-        aSession.addComponent (ICertificateFactory.COMPONENT_ID_CERTIFICATE_FACTORY, aCertFactory);
+        aSession.setCertificateFactory (aCertFactory);
       }
 
-      final IDynamicComponent aPartnershipFactory = new SimplePartnershipFactory ();
-      aSession.addComponent (IPartnershipFactory.COMPONENT_ID_PARTNERSHIP_FACTORY, aPartnershipFactory);
+      final SimplePartnershipFactory aPartnershipFactory = new SimplePartnershipFactory ();
+      aSession.setPartnershipFactory (aPartnershipFactory);
 
       final TestSenderModule aSender = new TestSenderModule ();
       aSender.initDynamicComponent (aSession, null);

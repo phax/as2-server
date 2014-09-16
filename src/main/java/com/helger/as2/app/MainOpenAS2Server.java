@@ -85,7 +85,7 @@ public class MainOpenAS2Server
 
       // start the active processor modules
       s_aLogger.info ("Starting Active Modules...");
-      aXMLSession.getProcessor ().startActiveModules ();
+      aXMLSession.getMessageProcessor ().startActiveModules ();
 
       final ICommandRegistry aCommandRegistry = aXMLSession.getCommandRegistry ();
       final CommandManager aCommandMgr = aXMLSession.getCommandManager ();
@@ -123,7 +123,7 @@ public class MainOpenAS2Server
       {
         try
         {
-          aXMLSession.getProcessor ().stopActiveModules ();
+          aXMLSession.getMessageProcessor ().stopActiveModules ();
         }
         catch (final OpenAS2Exception same)
         {

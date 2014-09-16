@@ -117,7 +117,7 @@ public class XMLSession extends Session implements ICommandRegistryFactory
   {
     s_aLogger.info ("  loading certificates");
     final ICertificateFactory certFx = (ICertificateFactory) ServerXMLUtil.createComponent (aElement, this);
-    addComponent (ICertificateFactory.COMPONENT_ID_CERTIFICATE_FACTORY, certFx);
+    setCertificateFactory (certFx);
   }
 
   protected void loadCommands (@Nonnull final IMicroElement aElement) throws OpenAS2Exception
@@ -143,20 +143,20 @@ public class XMLSession extends Session implements ICommandRegistryFactory
     s_aLogger.info ("    loaded command processor " + aCmdProcesor.getName ());
   }
 
-  protected void loadPartnerships (final IMicroElement rootNode) throws OpenAS2Exception
+  protected void loadPartnerships (final IMicroElement eRootNode) throws OpenAS2Exception
   {
     s_aLogger.info ("  loading partnerships");
-    final IPartnershipFactory partnerFx = (IPartnershipFactory) ServerXMLUtil.createComponent (rootNode, this);
-    addComponent (IPartnershipFactory.COMPONENT_ID_PARTNERSHIP_FACTORY, partnerFx);
+    final IPartnershipFactory partnerFx = (IPartnershipFactory) ServerXMLUtil.createComponent (eRootNode, this);
+    setPartnershipFactory (partnerFx);
   }
 
-  protected void loadMessageProcessor (final IMicroElement rootNode) throws OpenAS2Exception
+  protected void loadMessageProcessor (final IMicroElement eRootNode) throws OpenAS2Exception
   {
     s_aLogger.info ("  loading message processor");
-    final IMessageProcessor aMsgProcessor = (IMessageProcessor) ServerXMLUtil.createComponent (rootNode, this);
-    addComponent (IMessageProcessor.COMPONEND_ID_MESSAGE_PROCESSOR, aMsgProcessor);
+    final IMessageProcessor aMsgProcessor = (IMessageProcessor) ServerXMLUtil.createComponent (eRootNode, this);
+    setMessageProcessor (aMsgProcessor);
 
-    for (final IMicroElement eModule : rootNode.getAllChildElements ("module"))
+    for (final IMicroElement eModule : eRootNode.getAllChildElements ("module"))
       loadProcessorModule (aMsgProcessor, eModule);
   }
 
