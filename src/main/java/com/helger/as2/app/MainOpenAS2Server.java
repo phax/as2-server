@@ -34,6 +34,8 @@ package com.helger.as2.app;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,7 +45,9 @@ import com.helger.as2.cmd.ICommandRegistry;
 import com.helger.as2.cmd.processor.AbstractCommandProcessor;
 import com.helger.as2lib.CAS2Info;
 import com.helger.as2lib.exception.OpenAS2Exception;
+import com.helger.commons.collections.ArrayHelper;
 import com.helger.commons.lang.CGStringHelper;
+import com.helger.commons.string.StringHelper;
 
 /**
  * original author unknown in this release added ability to have multiple
@@ -57,10 +61,10 @@ public class MainOpenAS2Server
 
   public static void main (final String [] args)
   {
-    new MainOpenAS2Server ().start (args);
+    new MainOpenAS2Server ().start (ArrayHelper.getFirst (args));
   }
 
-  public void start (final String [] aArgs)
+  public void start (@Nullable final String sConfigFilePath)
   {
     XMLSession aXMLSession = null;
     try
@@ -71,10 +75,10 @@ public class MainOpenAS2Server
       // this is used by all other objects to access global configs and
       // functionality
       s_aLogger.info ("Loading configuration...");
-      if (aArgs.length > 0)
+      if (StringHelper.hasText (sConfigFilePath))
       {
         // Load config file
-        aXMLSession = new XMLSession (aArgs[0]);
+        aXMLSession = new XMLSession (sConfigFilePath);
       }
       else
       {
