@@ -48,6 +48,7 @@ import com.helger.as2lib.message.AS2Message;
 import com.helger.as2lib.message.IMessage;
 import com.helger.as2lib.partner.CPartnershipIDs;
 import com.helger.as2lib.partner.Partnership;
+import com.helger.as2lib.partner.SelfFillingPartnershipFactory;
 import com.helger.as2lib.processor.sender.IProcessorSenderModule;
 import com.helger.as2lib.session.Session;
 import com.helger.as2lib.util.StringMap;
