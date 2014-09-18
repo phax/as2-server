@@ -112,8 +112,9 @@ public class MainOpenAS2Server
         {
           if (cmd.isTerminated ())
             break breakOut;
-          Thread.sleep (100);
         }
+        // Wait outside loop in case no command processor is present
+        Thread.sleep (100);
       }
       s_aLogger.info ("- OpenAS2 Stopped -");
     }
