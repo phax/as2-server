@@ -49,6 +49,7 @@ import com.helger.as2lib.message.IMessage;
 import com.helger.as2lib.partner.CPartnershipIDs;
 import com.helger.as2lib.partner.Partnership;
 import com.helger.as2lib.partner.SelfFillingPartnershipFactory;
+import com.helger.as2lib.processor.sender.AS2SenderModule;
 import com.helger.as2lib.processor.sender.IProcessorSenderModule;
 import com.helger.as2lib.session.Session;
 import com.helger.as2lib.util.StringMap;
@@ -136,7 +137,7 @@ public class AS2Client
       final SelfFillingPartnershipFactory aPartnershipFactory = new SelfFillingPartnershipFactory ();
       aSession.setPartnershipFactory (aPartnershipFactory);
 
-      final TestSenderModule aSender = new TestSenderModule ();
+      final AS2SenderModule aSender = new AS2SenderModule ();
       aSender.initDynamicComponent (aSession, null);
       aSender.handle (IProcessorSenderModule.DO_SEND, aMsg, null);
     }

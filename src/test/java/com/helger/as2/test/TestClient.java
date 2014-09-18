@@ -53,6 +53,7 @@ import com.helger.as2lib.message.IMessageMDN;
 import com.helger.as2lib.partner.CPartnershipIDs;
 import com.helger.as2lib.partner.Partnership;
 import com.helger.as2lib.partner.SelfFillingPartnershipFactory;
+import com.helger.as2lib.processor.sender.AS2SenderModule;
 import com.helger.as2lib.processor.sender.IProcessorSenderModule;
 import com.helger.as2lib.session.Session;
 import com.helger.as2lib.util.CAS2Header;
@@ -113,7 +114,7 @@ public class TestClient
     final String senderKey = "rg";
     final String paAs2Url = "http://172.16.148.1:8080/as2/HttpReceiver";
 
-    final TestSenderModule aTestSender = new TestSenderModule ();
+    final AS2SenderModule aTestSender = new AS2SenderModule ();
 
     final Partnership aPartnership = new Partnership ("partnership name");
     aPartnership.setAttribute (CPartnershipIDs.PA_AS2_URL, paAs2Url);
