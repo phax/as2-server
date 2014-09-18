@@ -126,8 +126,8 @@ public class AS2Client
       final Session aSession = new Session ();
       {
         final StringMap aParams = new StringMap ();
-        aParams.setAttribute (PKCS12CertificateFactory.PARAM_FILENAME, aSettings.p12FilePath);
-        aParams.setAttribute (PKCS12CertificateFactory.PARAM_PASSWORD, aSettings.p12FilePassword);
+        aParams.setAttribute (PKCS12CertificateFactory.ATTR_FILENAME, aSettings.p12FilePath);
+        aParams.setAttribute (PKCS12CertificateFactory.ATTR_PASSWORD, aSettings.p12FilePassword);
 
         final ServerPKCS12CertificateFactory aCertFactory = new ServerPKCS12CertificateFactory ();
         aCertFactory.initDynamicComponent (aSession, aParams);

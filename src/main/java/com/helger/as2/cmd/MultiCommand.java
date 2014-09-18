@@ -52,16 +52,16 @@ public class MultiCommand extends AbstractCommand
   public void initDynamicComponent (@Nonnull final ISession session, @Nullable final IStringMap parameters) throws OpenAS2Exception
   {
     super.initDynamicComponent (session, parameters);
-    getAttributeAsStringRequired (PARAM_NAME);
-    getAttributeAsStringRequired (PARAM_DESCRIPTION);
+    getAttributeAsStringRequired (ATTR_NAME);
+    getAttributeAsStringRequired (ATTR_DESCRIPTION);
     if (getUsage () == null)
       setUsage (getName () + " <command> <parameters>");
   }
 
   @Nullable
-  public ICommand getCommand (@Nonnull final String name)
+  public ICommand getCommand (@Nonnull final String sName)
   {
-    final String sLCName = name.toLowerCase (Locale.US);
+    final String sLCName = sName.toLowerCase (Locale.US);
     for (final ICommand cmd : getCommands ())
       if (cmd.getName ().equals (sLCName))
         return cmd;

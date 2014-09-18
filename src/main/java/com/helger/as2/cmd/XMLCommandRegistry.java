@@ -32,7 +32,6 @@
  */
 package com.helger.as2.cmd;
 
-import java.io.FileInputStream;
 import java.io.InputStream;
 
 import javax.annotation.Nonnull;
@@ -44,13 +43,14 @@ import com.helger.as2lib.exception.WrappedOpenAS2Exception;
 import com.helger.as2lib.session.ISession;
 import com.helger.as2lib.util.IStringMap;
 import com.helger.as2lib.util.XMLUtil;
+import com.helger.commons.io.file.FileUtils;
 import com.helger.commons.microdom.IMicroDocument;
 import com.helger.commons.microdom.IMicroElement;
 import com.helger.commons.microdom.serialize.MicroReader;
 
 public class XMLCommandRegistry extends BaseCommandRegistry
 {
-  public static final String PARAM_FILENAME = "filename";
+  public static final String ATTR_FILENAME = "filename";
 
   @Override
   public void initDynamicComponent (@Nonnull final ISession session, @Nullable final IStringMap parameters) throws OpenAS2Exception
@@ -86,7 +86,7 @@ public class XMLCommandRegistry extends BaseCommandRegistry
   {
     try
     {
-      load (new FileInputStream (getAttributeAsStringRequired (PARAM_FILENAME)));
+      load (FileUtils.getInputStream (getAttributeAsStringRequired (ATTR_FILENAME)));
     }
     catch (final Exception e)
     {
@@ -108,33 +108,25 @@ public class XMLCommandRegistry extends BaseCommandRegistry
     }
   }
 
-  protected void loadMultiCommand (final IMicroElement node, final MultiCommand parent) throws OpenAS2Exception
+  protected void loadMultiCommand (@Nonnull final IMicroElement node, @Nullable final MultiCommand parent) throws OpenAS2Exception
   {
     final MultiCommand cmd = new MultiCommand ();
     cmd.initDynamicComponent (getSession (), XMLUtil.getAttrsWithLowercaseName (node));
 
     if (parent != null)
-    {
       parent.getCommands ().add (cmd);
-    }
     else
-    {
       addCommand (cmd);
-    }
 
     for (final IMicroElement childNode : node.getAllChildElements ())
     {
-      final String childName = childNode.getNodeName ();
+      final String sChildName = childNode.getNodeName ();
 
-      if (childName.equals ("command"))
-      {
+      if (sChildName.equals ("command"))
         loadCommand (childNode, cmd);
-      }
       else
-        if (childName.equals ("multicommand"))
-        {
+        if (sChildName.equals ("multicommand"))
           loadMultiCommand (childNode, cmd);
-        }
     }
   }
 }

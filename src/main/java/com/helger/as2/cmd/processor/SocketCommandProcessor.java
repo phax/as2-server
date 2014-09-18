@@ -68,6 +68,10 @@ import com.helger.commons.string.StringHelper;
  */
 public class SocketCommandProcessor extends AbstractCommandProcessor
 {
+  public static final String ATTR_PORTID = "portid";
+  public static final String ATTR_USERID = "userid";
+  public static final String ATTR_PASSWORD = "password";
+
   private NonBlockingBufferedReader m_aReader;
   private NonBlockingBufferedWriter m_aWriter;
   private SSLServerSocket m_aSSLServerSocket;
@@ -83,7 +87,7 @@ public class SocketCommandProcessor extends AbstractCommandProcessor
   public void initDynamicComponent (@Nonnull final ISession aSession, @Nullable final IStringMap aParams) throws OpenAS2Exception
   {
     final StringMap aParameters = aParams == null ? new StringMap () : new StringMap (aParams);
-    final String sPort = aParameters.getAttributeAsString ("portid");
+    final String sPort = aParameters.getAttributeAsString (ATTR_PORTID);
     try
     {
       final int nPort = Integer.parseInt (sPort);
@@ -102,11 +106,11 @@ public class SocketCommandProcessor extends AbstractCommandProcessor
       throw new OpenAS2Exception ("Error converting portid parameter '" + sPort + "': " + e);
     }
 
-    m_sUserID = aParameters.getAttributeAsString ("userid");
+    m_sUserID = aParameters.getAttributeAsString (ATTR_USERID);
     if (StringHelper.hasNoText (m_sUserID))
       throw new OpenAS2Exception ("missing 'userid' parameter");
 
-    m_sPassword = aParameters.getAttributeAsString ("password");
+    m_sPassword = aParameters.getAttributeAsString (ATTR_PASSWORD);
     if (StringHelper.hasNoText (m_sPassword))
       throw new OpenAS2Exception ("missing 'password' parameter");
 

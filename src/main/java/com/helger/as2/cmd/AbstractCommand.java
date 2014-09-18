@@ -42,9 +42,9 @@ import com.helger.as2lib.util.IStringMap;
 
 public abstract class AbstractCommand extends AbstractDynamicComponent implements ICommand
 {
-  public static final String PARAM_NAME = "name";
-  public static final String PARAM_DESCRIPTION = "description";
-  public static final String PARAM_USAGE = "usage";
+  public static final String ATTR_NAME = "name";
+  public static final String ATTR_DESCRIPTION = "description";
+  public static final String ATTR_USAGE = "usage";
 
   @Override
   public void initDynamicComponent (@Nonnull final ISession session, @Nullable final IStringMap parameters) throws OpenAS2Exception
@@ -60,18 +60,33 @@ public abstract class AbstractCommand extends AbstractDynamicComponent implement
 
   public String getDescription ()
   {
-    return getAttributeAsString (PARAM_DESCRIPTION);
+    return getAttributeAsString (ATTR_DESCRIPTION);
+  }
+
+  public void setDescription (final String desc)
+  {
+    setAttribute (ATTR_DESCRIPTION, desc);
   }
 
   @Override
   public String getName ()
   {
-    return getAttributeAsString (PARAM_NAME);
+    return getAttributeAsString (ATTR_NAME);
+  }
+
+  public void setName (final String name)
+  {
+    setAttribute (ATTR_NAME, name);
   }
 
   public String getUsage ()
   {
-    return getAttributeAsString (PARAM_USAGE);
+    return getAttributeAsString (ATTR_USAGE);
+  }
+
+  public void setUsage (final String usage)
+  {
+    setAttribute (ATTR_USAGE, usage);
   }
 
   public abstract String getDefaultName ();
@@ -79,19 +94,4 @@ public abstract class AbstractCommand extends AbstractDynamicComponent implement
   public abstract String getDefaultDescription ();
 
   public abstract String getDefaultUsage ();
-
-  public void setDescription (final String desc)
-  {
-    setAttribute (PARAM_DESCRIPTION, desc);
-  }
-
-  public void setName (final String name)
-  {
-    setAttribute (PARAM_NAME, name);
-  }
-
-  public void setUsage (final String usage)
-  {
-    setAttribute (PARAM_USAGE, usage);
-  }
 }

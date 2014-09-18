@@ -174,8 +174,8 @@ public class TestClient
     // /Users/oleo/samples/parfum.spb.ru/as2/test/test.p12
 
     final StringMap aCertFactorySettings = new StringMap ();
-    aCertFactorySettings.setAttribute (PKCS12CertificateFactory.PARAM_FILENAME, filename);
-    aCertFactorySettings.setAttribute (PKCS12CertificateFactory.PARAM_PASSWORD, password);
+    aCertFactorySettings.setAttribute (PKCS12CertificateFactory.ATTR_FILENAME, filename);
+    aCertFactorySettings.setAttribute (PKCS12CertificateFactory.ATTR_PASSWORD, password);
 
     aCertFactory.initDynamicComponent (aSession, aCertFactorySettings);
 

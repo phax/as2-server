@@ -48,7 +48,7 @@ import com.helger.as2lib.exception.OpenAS2Exception;
 
 public class ServerPKCS12CertificateFactory extends PKCS12CertificateFactory implements IFileMonitorListener
 {
-  public static final String PARAM_INTERVAL = "interval";
+  public static final String ATTR_INTERVAL = "interval";
   private static final Logger s_aLogger = LoggerFactory.getLogger (ServerPKCS12CertificateFactory.class);
 
   private FileMonitor m_aFileMonitor;
@@ -67,19 +67,19 @@ public class ServerPKCS12CertificateFactory extends PKCS12CertificateFactory imp
 
   public FileMonitor getFileMonitor () throws InvalidParameterException
   {
-    boolean createMonitor = m_aFileMonitor == null && getAttributeAsString (PARAM_INTERVAL) != null;
-    if (!createMonitor && m_aFileMonitor != null)
+    boolean bCreateMonitor = m_aFileMonitor == null && getAttributeAsString (ATTR_INTERVAL) != null;
+    if (!bCreateMonitor && m_aFileMonitor != null)
     {
       final String filename = m_aFileMonitor.getFilename ();
-      createMonitor = filename != null && !filename.equals (getFilename ());
+      bCreateMonitor = filename != null && !filename.equals (getFilename ());
     }
 
-    if (createMonitor)
+    if (bCreateMonitor)
     {
       if (m_aFileMonitor != null)
         m_aFileMonitor.stop ();
 
-      final int nInterval = getAttributeAsIntRequired (PARAM_INTERVAL);
+      final int nInterval = getAttributeAsIntRequired (ATTR_INTERVAL);
       final File file = new File (getFilename ());
       m_aFileMonitor = new FileMonitor (file, nInterval);
       m_aFileMonitor.addListener (this);
