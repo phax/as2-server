@@ -99,7 +99,7 @@
         <artifactId>license-maven-plugin</artifactId>
         <configuration>
           <excludes>
-            <exclude>src/main/resources/config/*.txt</exclude>
+            <exclude>**/*.txt</exclude>
           </excludes>
         </configuration>
       </plugin>

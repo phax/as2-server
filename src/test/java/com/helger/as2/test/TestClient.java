@@ -97,6 +97,8 @@ public class TestClient
   /**
    * @param args
    *        Main args
+   * @throws Exception
+   *         in case of error
    */
   public static void main2 (final String [] args) throws Exception
   {
