@@ -157,9 +157,9 @@ public class XMLPartnershipFactory extends AbstractPartnershipFactory implements
 
       getFileMonitor ();
     }
-    catch (final Exception e)
+    catch (final Exception ex)
     {
-      throw new WrappedOpenAS2Exception (e);
+      throw WrappedOpenAS2Exception.wrap (ex);
     }
   }
 
@@ -316,6 +316,6 @@ public class XMLPartnershipFactory extends AbstractPartnershipFactory implements
                     .setAttribute ("value", aAttr.getValue ());
     }
     if (MicroWriter.writeToFile (aDoc, new File (sFilename)).isFailure ())
-      throw new WrappedOpenAS2Exception ("Failed to write to file " + sFilename);
+      throw new OpenAS2Exception ("Failed to write to file " + sFilename);
   }
 }

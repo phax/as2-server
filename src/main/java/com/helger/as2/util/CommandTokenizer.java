@@ -32,6 +32,7 @@
  */
 package com.helger.as2.util;
 
+import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.exception.WrappedOpenAS2Exception;
 
 /**
@@ -61,10 +62,10 @@ public class CommandTokenizer
    * any more tokens in String
    *
    * @return true if there are any more tokens
-   * @throws WrappedOpenAS2Exception
+   * @throws OpenAS2Exception
    *         in case another exception occurs
    */
-  public boolean hasMoreTokens () throws WrappedOpenAS2Exception
+  public boolean hasMoreTokens () throws OpenAS2Exception
   {
     try
     {
@@ -76,9 +77,9 @@ public class CommandTokenizer
 
       return false;
     }
-    catch (final RuntimeException e)
+    catch (final RuntimeException ex)
     {
-      throw new WrappedOpenAS2Exception (e);
+      throw WrappedOpenAS2Exception.wrap (ex);
     }
   }
 
@@ -89,9 +90,8 @@ public class CommandTokenizer
    * @throws WrappedOpenAS2Exception
    *         In case a RuntimeException occurs
    */
-  public String nextToken () throws WrappedOpenAS2Exception
+  public String nextToken () throws OpenAS2Exception
   {
-
     try
     {
       while (pos < len - 1 && workString.charAt (pos) == ' ')
@@ -119,9 +119,9 @@ public class CommandTokenizer
 
       return sb.toString ();
     }
-    catch (final RuntimeException e)
+    catch (final RuntimeException ex)
     {
-      throw new WrappedOpenAS2Exception (e);
+      throw WrappedOpenAS2Exception.wrap (ex);
     }
   }
 }

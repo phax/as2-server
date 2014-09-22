@@ -39,7 +39,6 @@ import javax.annotation.Nullable;
 
 import com.helger.as2.util.ServerXMLUtil;
 import com.helger.as2lib.exception.OpenAS2Exception;
-import com.helger.as2lib.exception.WrappedOpenAS2Exception;
 import com.helger.as2lib.session.ISession;
 import com.helger.as2lib.util.IStringMap;
 import com.helger.as2lib.util.XMLUtil;
@@ -84,14 +83,7 @@ public class XMLCommandRegistry extends BaseCommandRegistry
 
   public void refresh () throws OpenAS2Exception
   {
-    try
-    {
-      load (FileUtils.getInputStream (getAttributeAsStringRequired (ATTR_FILENAME)));
-    }
-    catch (final Exception e)
-    {
-      throw new WrappedOpenAS2Exception (e);
-    }
+    load (FileUtils.getInputStream (getAttributeAsStringRequired (ATTR_FILENAME)));
   }
 
   protected void loadCommand (final IMicroElement node, final MultiCommand parent) throws OpenAS2Exception

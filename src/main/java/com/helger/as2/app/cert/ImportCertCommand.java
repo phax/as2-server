@@ -102,9 +102,9 @@ public class ImportCertCommand extends AbstractAliasedCertCommand
         }
         return importCert (certFx, alias, filename);
       }
-      catch (final Exception e)
+      catch (final Exception ex)
       {
-        throw new WrappedOpenAS2Exception (e);
+        throw WrappedOpenAS2Exception.wrap (ex);
       }
     }
   }

@@ -79,9 +79,9 @@ public class ImportCertInEncodedStreamCommand extends AbstractAliasedCertCommand
       {
         return _importCert (certFx, params[0].toString (), params[1].toString ());
       }
-      catch (final Exception e)
+      catch (final Exception ex)
       {
-        throw new WrappedOpenAS2Exception (e);
+        throw WrappedOpenAS2Exception.wrap (ex);
       }
     }
   }

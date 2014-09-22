@@ -165,7 +165,7 @@ public class StreamCommandProcessor extends AbstractCommandProcessor
     }
     catch (final IOException ex)
     {
-      throw new WrappedOpenAS2Exception (ex);
+      throw WrappedOpenAS2Exception.wrap (ex);
     }
   }
 

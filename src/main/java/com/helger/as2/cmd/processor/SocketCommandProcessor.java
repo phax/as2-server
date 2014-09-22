@@ -203,7 +203,7 @@ public class SocketCommandProcessor extends AbstractCommandProcessor
     }
     catch (final Exception ex)
     {
-      throw new WrappedOpenAS2Exception (ex);
+      throw WrappedOpenAS2Exception.wrap (ex);
     }
     finally
     {
