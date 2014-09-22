@@ -42,20 +42,19 @@ import com.helger.as2lib.partner.IPartnershipFactory;
 public abstract class AbstractAliasedPartnershipsCommand extends AbstractCommand
 {
   @Nonnull
-  protected abstract CommandResult execute (IPartnershipFactory partFx, Object [] params) throws OpenAS2Exception;
+  protected abstract CommandResult execute (@Nonnull IPartnershipFactory aPartnershipFactory, Object [] params) throws OpenAS2Exception;
 
   @Nonnull
   public final CommandResult execute (final Object [] params)
   {
     try
     {
-      final IPartnershipFactory partFx = getSession ().getPartnershipFactory ();
-      return execute (partFx, params);
+      final IPartnershipFactory aPartnershipFactory = getSession ().getPartnershipFactory ();
+      return execute (aPartnershipFactory, params);
     }
     catch (final OpenAS2Exception oae)
     {
       oae.terminate ();
-
       return new CommandResult (oae);
     }
   }

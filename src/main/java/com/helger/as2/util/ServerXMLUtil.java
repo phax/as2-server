@@ -36,7 +36,7 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
-import com.helger.as2.app.XMLSession;
+import com.helger.as2.app.session.XMLSession;
 import com.helger.as2lib.IDynamicComponent;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.exception.WrappedOpenAS2Exception;

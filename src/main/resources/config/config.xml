@@ -34,18 +34,18 @@
 
 -->
 <openas2>
-  <certificates classname="com.helger.as2.cert.ServerPKCS12CertificateFactory" 
+  <certificates classname="com.helger.as2.app.cert.ServerPKCS12CertificateFactory" 
                 filename="%home%\certs.p12"
                 password="test"
                 interval="300"/>    
-  <partnerships classname="com.helger.as2.partner.XMLPartnershipFactory"
+  <partnerships classname="com.helger.as2.app.partner.XMLPartnershipFactory"
                 filename="%home%\partnerships.xml"/>
 
   <commands classname="com.helger.as2.cmd.XMLCommandRegistry"
              filename="%home%\commands.xml"/>
   <commandProcessors>
-    <commandProcessor classname="com.helger.as2.cmd.processor.StreamCommandProcessor"/>
-    <commandProcessor classname="com.helger.as2.cmd.processor.SocketCommandProcessor"  
+    <commandProcessor classname="com.helger.as2.cmdprocessor.StreamCommandProcessor"/>
+    <commandProcessor classname="com.helger.as2.cmdprocessor.SocketCommandProcessor"  
                       portId="4321" userid="userID" password="pWd"/>
   </commandProcessors>
 
