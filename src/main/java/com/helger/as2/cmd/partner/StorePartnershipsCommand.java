@@ -30,53 +30,61 @@
  * are those of the authors and should not be interpreted as representing
  * official policies, either expressed or implied, of the FreeBSD Project.
  */
-package com.helger.as2.app.cert;
+package com.helger.as2.cmd.partner;
 
-import java.security.cert.Certificate;
-
+import com.helger.as2.app.partner.XMLPartnershipFactory;
+import com.helger.as2.cmd.AbstractCommand;
 import com.helger.as2.cmd.CommandResult;
 import com.helger.as2.cmd.ECommandResultType;
-import com.helger.as2lib.cert.IAliasedCertificateFactory;
 import com.helger.as2lib.exception.OpenAS2Exception;
+import com.helger.as2lib.partner.IPartnershipFactory;
 
 /**
- * view certs by alias
+ * replaces the partnership store, backs up the original store
  *
- * @author Don Hillsberry
+ * @author joseph mcverry
  */
-public class ViewCertCommand extends AbstractAliasedCertCommand
+public class StorePartnershipsCommand extends AbstractCommand
 {
   @Override
   public String getDefaultDescription ()
   {
-    return "View the certificate associated with an alias.";
+    return "Stores the current partnerships in storage";
   }
 
   @Override
   public String getDefaultName ()
   {
-    return "view";
+    return "store";
   }
 
   @Override
   public String getDefaultUsage ()
   {
-    return "view <alias>";
+    return "store";
   }
 
   @Override
-  protected CommandResult execute (final IAliasedCertificateFactory certFx, final Object [] params) throws OpenAS2Exception
+  public CommandResult execute (final Object [] params)
   {
-    if (params.length < 1)
-    {
-      return new CommandResult (ECommandResultType.TYPE_INVALID_PARAM_COUNT, getUsage ());
-    }
 
-    synchronized (certFx)
+    try
     {
-      final String alias = params[0].toString ();
-      final Certificate cert = certFx.getCertificate (alias);
-      return new CommandResult (ECommandResultType.TYPE_OK, cert.toString ());
+      final IPartnershipFactory partnerFx = getSession ().getPartnershipFactory ();
+      if (partnerFx instanceof XMLPartnershipFactory)
+      {
+        ((XMLPartnershipFactory) partnerFx).storePartnership ();
+
+        return new CommandResult (ECommandResultType.TYPE_OK, "Stored partnerships");
+      }
+      return new CommandResult (ECommandResultType.TYPE_COMMAND_NOT_SUPPORTED,
+                                "Not supported by current partnership store, must be XML");
+    }
+    catch (final OpenAS2Exception oae)
+    {
+      oae.terminate ();
+
+      return new CommandResult (oae);
     }
   }
 }

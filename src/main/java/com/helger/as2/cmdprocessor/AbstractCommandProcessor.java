@@ -30,30 +30,81 @@
  * are those of the authors and should not be interpreted as representing
  * official policies, either expressed or implied, of the FreeBSD Project.
  */
-package com.helger.as2.cmd.processor;
+package com.helger.as2.cmdprocessor;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.helger.as2.cmd.ICommand;
 import com.helger.as2.cmd.ICommandRegistry;
+import com.helger.as2lib.IDynamicComponent;
 import com.helger.as2lib.exception.OpenAS2Exception;
+import com.helger.as2lib.session.ISession;
+import com.helger.as2lib.util.StringMap;
+import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotations.ReturnsMutableCopy;
+import com.helger.commons.annotations.UnsupportedOperation;
+import com.helger.commons.collections.ContainerHelper;
+import com.helger.commons.lang.CGStringHelper;
 
-public interface ICommandProcessor
+public abstract class AbstractCommandProcessor extends StringMap implements ICommandProcessor, IDynamicComponent, Runnable
 {
+  private final Map <String, ICommand> m_aCommands = new LinkedHashMap <String, ICommand> ();
+  private volatile boolean m_bTerminated = false;
+
+  public AbstractCommandProcessor ()
+  {}
+
+  @Nullable
+  public String getName ()
+  {
+    return CGStringHelper.getClassLocalName (this);
+  }
+
+  @UnsupportedOperation
+  public ISession getSession ()
+  {
+    throw new UnsupportedOperationException ("No session available!");
+  }
+
+  public void init () throws OpenAS2Exception
+  {}
+
   @Nonnull
   @ReturnsMutableCopy
-  Map <String, ICommand> getAllCommands ();
+  public Map <String, ICommand> getAllCommands ()
+  {
+    return ContainerHelper.newOrderedMap (m_aCommands);
+  }
 
-  boolean isTerminated ();
+  @Nullable
+  public ICommand getCommand (final String name)
+  {
+    return m_aCommands.get (name);
+  }
 
-  void addCommands (@Nonnull ICommandRegistry reg);
+  public boolean isTerminated ()
+  {
+    return m_bTerminated;
+  }
 
-  void init () throws OpenAS2Exception;
+  @UnsupportedOperation
+  public void processCommand () throws OpenAS2Exception
+  {
+    throw new OpenAS2Exception ("super class method call, not initialized correctly");
+  }
 
-  void terminate ();
+  public void addCommands (@Nonnull final ICommandRegistry aCommandRegistry)
+  {
+    ValueEnforcer.notNull (aCommandRegistry, "CommandRegistry");
+    m_aCommands.putAll (aCommandRegistry.getAllCommands ());
+  }
 
-  void processCommand () throws OpenAS2Exception;
+  public void terminate ()
+  {
+    m_bTerminated = true;
+  }
 }

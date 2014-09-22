@@ -30,7 +30,7 @@
  * are those of the authors and should not be interpreted as representing
  * official policies, either expressed or implied, of the FreeBSD Project.
  */
-package com.helger.as2;
+package com.helger.as2.app;
 
 import java.io.File;
 import java.io.IOException;
@@ -47,7 +47,7 @@ import org.slf4j.LoggerFactory;
 import com.helger.as2.cmd.CommandManager;
 import com.helger.as2.cmd.ICommandRegistry;
 import com.helger.as2.cmd.ICommandRegistryFactory;
-import com.helger.as2.cmd.processor.AbstractCommandProcessor;
+import com.helger.as2.cmdprocessor.AbstractCommandProcessor;
 import com.helger.as2.util.ServerXMLUtil;
 import com.helger.as2lib.cert.ICertificateFactory;
 import com.helger.as2lib.exception.OpenAS2Exception;

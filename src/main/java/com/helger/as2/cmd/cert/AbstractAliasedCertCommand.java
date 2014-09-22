@@ -30,55 +30,37 @@
  * are those of the authors and should not be interpreted as representing
  * official policies, either expressed or implied, of the FreeBSD Project.
  */
-package com.helger.as2.app.partner;
+package com.helger.as2.cmd.cert;
 
+import com.helger.as2.cmd.AbstractCommand;
 import com.helger.as2.cmd.CommandResult;
 import com.helger.as2.cmd.ECommandResultType;
+import com.helger.as2lib.cert.IAliasedCertificateFactory;
+import com.helger.as2lib.cert.ICertificateFactory;
 import com.helger.as2lib.exception.OpenAS2Exception;
-import com.helger.as2lib.partner.IPartnershipFactory;
-import com.helger.as2lib.partner.Partnership;
 
-/**
- * removes a partnership entry in partnership store
- *
- * @author joseph mcverry
- */
-public class DeletePartnershipCommand extends AbstractAliasedPartnershipsCommand
+public abstract class AbstractAliasedCertCommand extends AbstractCommand
 {
   @Override
-  public String getDefaultDescription ()
+  public final CommandResult execute (final Object [] params)
   {
-    return "Delete the partnership associated with an name.";
-  }
-
-  @Override
-  public String getDefaultName ()
-  {
-    return "delete";
-  }
-
-  @Override
-  public String getDefaultUsage ()
-  {
-    return "delete <name>";
-  }
-
-  @Override
-  public CommandResult execute (final IPartnershipFactory partFx, final Object [] params) throws OpenAS2Exception
-  {
-    if (params.length < 1)
+    try
     {
-      return new CommandResult (ECommandResultType.TYPE_INVALID_PARAM_COUNT, getUsage ());
-    }
+      final ICertificateFactory certFx = getSession ().getCertificateFactory ();
 
-    final String name = params[0].toString ();
-    final Partnership part = partFx.getPartnershipByName (name);
-    if (part != null)
+      if (certFx instanceof IAliasedCertificateFactory)
+        return execute ((IAliasedCertificateFactory) certFx, params);
+
+      return new CommandResult (ECommandResultType.TYPE_COMMAND_NOT_SUPPORTED,
+                                "Not supported by current certificate store");
+    }
+    catch (final OpenAS2Exception oae)
     {
-      partFx.removePartnership (part);
-      return new CommandResult (ECommandResultType.TYPE_OK, "deleted " + name);
-    }
+      oae.terminate ();
 
-    return new CommandResult (ECommandResultType.TYPE_ERROR, "Unknown partnership name");
+      return new CommandResult (oae);
+    }
   }
+
+  protected abstract CommandResult execute (IAliasedCertificateFactory certFx, Object [] params) throws OpenAS2Exception;
 }

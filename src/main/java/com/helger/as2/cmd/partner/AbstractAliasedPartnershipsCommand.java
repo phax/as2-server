@@ -30,48 +30,33 @@
  * are those of the authors and should not be interpreted as representing
  * official policies, either expressed or implied, of the FreeBSD Project.
  */
-package com.helger.as2.app.partner;
+package com.helger.as2.cmd.partner;
 
+import javax.annotation.Nonnull;
+
+import com.helger.as2.cmd.AbstractCommand;
 import com.helger.as2.cmd.CommandResult;
-import com.helger.as2.cmd.ECommandResultType;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.partner.IPartnershipFactory;
 
-/**
- * list partnerships in partnership store by names
- *
- * @author joseph mcverry
- */
-public class ListPartnershipsCommand extends AbstractAliasedPartnershipsCommand
+public abstract class AbstractAliasedPartnershipsCommand extends AbstractCommand
 {
-  @Override
-  public String getDefaultDescription ()
+  @Nonnull
+  protected abstract CommandResult execute (IPartnershipFactory partFx, Object [] params) throws OpenAS2Exception;
+
+  @Nonnull
+  public final CommandResult execute (final Object [] params)
   {
-    return "List all partnerships in the current partnership store";
-  }
+    try
+    {
+      final IPartnershipFactory partFx = getSession ().getPartnershipFactory ();
+      return execute (partFx, params);
+    }
+    catch (final OpenAS2Exception oae)
+    {
+      oae.terminate ();
 
-  @Override
-  public String getDefaultName ()
-  {
-    return "list";
-  }
-
-  @Override
-  public String getDefaultUsage ()
-  {
-    return "list";
-  }
-
-  @Override
-  public CommandResult execute (final IPartnershipFactory partFx, final Object [] params) throws OpenAS2Exception
-  {
-    final CommandResult cmdRes = new CommandResult (ECommandResultType.TYPE_OK);
-    for (final String sName : partFx.getAllPartnershipNames ())
-      cmdRes.addResult (sName);
-
-    if (cmdRes.hasNoResult ())
-      cmdRes.addResult ("No partnerships available");
-
-    return cmdRes;
+      return new CommandResult (oae);
+    }
   }
 }

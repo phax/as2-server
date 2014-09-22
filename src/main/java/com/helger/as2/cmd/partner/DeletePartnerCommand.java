@@ -30,53 +30,73 @@
  * are those of the authors and should not be interpreted as representing
  * official policies, either expressed or implied, of the FreeBSD Project.
  */
-package com.helger.as2.app.partner;
+package com.helger.as2.cmd.partner;
 
 import com.helger.as2.cmd.CommandResult;
 import com.helger.as2.cmd.ECommandResultType;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.partner.IPartnershipFactory;
-import com.helger.as2lib.util.IStringMap;
+import com.helger.as2lib.partner.Partnership;
 
 /**
- * view the partner entries in the partnership store
+ * removes a partner entry in partnership store
  *
- * @author Joe McVerry
+ * @author joseph mcverry
  */
-public class ViewPartnerCommand extends AbstractAliasedPartnershipsCommand
+public class DeletePartnerCommand extends AbstractAliasedPartnershipsCommand
 {
   @Override
   public String getDefaultDescription ()
   {
-    return "View the partner entry in the partnership store.";
+    return "Delete the partnership associated with an name.";
   }
 
   @Override
   public String getDefaultName ()
   {
-    return "view";
+    return "delete";
   }
 
   @Override
   public String getDefaultUsage ()
   {
-    return "view <name>";
+    return "delete <name>";
   }
 
   @Override
-  protected CommandResult execute (final IPartnershipFactory partFx, final Object [] params) throws OpenAS2Exception
+  public CommandResult execute (final IPartnershipFactory partFx, final Object [] params) throws OpenAS2Exception
   {
     if (params.length < 1)
-      return new CommandResult (ECommandResultType.TYPE_INVALID_PARAM_COUNT, getUsage ());
-
-    final String name = params[0].toString ();
-    final IStringMap aPartner = partFx.getPartnerOfName (name);
-    if (aPartner != null)
     {
-      final String out = name + "\n" + aPartner.toString ();
-      return new CommandResult (ECommandResultType.TYPE_OK, out);
+      return new CommandResult (ECommandResultType.TYPE_INVALID_PARAM_COUNT, getUsage ());
     }
 
-    return new CommandResult (ECommandResultType.TYPE_ERROR, "Unknown partner name");
+    final String name = params[0].toString ();
+
+    boolean found = false;
+    for (final String partName : partFx.getAllPartnerNames ())
+      if (partName.equals (name))
+      {
+        found = true;
+        break;
+      }
+
+    if (!found)
+      return new CommandResult (ECommandResultType.TYPE_ERROR, "Unknown partner name");
+
+    boolean partnershipFound = false;
+    for (final Partnership aPartnership : partFx.getAllPartnerships ())
+      if (aPartnership.containsReceiverID (name) || aPartnership.containsSenderID (name))
+      {
+        partnershipFound = true;
+        break;
+      }
+
+    if (partnershipFound)
+      return new CommandResult (ECommandResultType.TYPE_ERROR,
+                                "Can not delete partner; it is tied to some partnerships");
+
+    partFx.removePartner (name);
+    return new CommandResult (ECommandResultType.TYPE_OK);
   }
 }

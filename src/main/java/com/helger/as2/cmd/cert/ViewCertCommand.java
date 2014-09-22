@@ -30,33 +30,53 @@
  * are those of the authors and should not be interpreted as representing
  * official policies, either expressed or implied, of the FreeBSD Project.
  */
-package com.helger.as2.app.partner;
+package com.helger.as2.cmd.cert;
 
-import javax.annotation.Nonnull;
+import java.security.cert.Certificate;
 
-import com.helger.as2.cmd.AbstractCommand;
 import com.helger.as2.cmd.CommandResult;
+import com.helger.as2.cmd.ECommandResultType;
+import com.helger.as2lib.cert.IAliasedCertificateFactory;
 import com.helger.as2lib.exception.OpenAS2Exception;
-import com.helger.as2lib.partner.IPartnershipFactory;
 
-public abstract class AbstractAliasedPartnershipsCommand extends AbstractCommand
+/**
+ * view certs by alias
+ *
+ * @author Don Hillsberry
+ */
+public class ViewCertCommand extends AbstractAliasedCertCommand
 {
-  @Nonnull
-  protected abstract CommandResult execute (IPartnershipFactory partFx, Object [] params) throws OpenAS2Exception;
-
-  @Nonnull
-  public final CommandResult execute (final Object [] params)
+  @Override
+  public String getDefaultDescription ()
   {
-    try
-    {
-      final IPartnershipFactory partFx = getSession ().getPartnershipFactory ();
-      return execute (partFx, params);
-    }
-    catch (final OpenAS2Exception oae)
-    {
-      oae.terminate ();
+    return "View the certificate associated with an alias.";
+  }
 
-      return new CommandResult (oae);
+  @Override
+  public String getDefaultName ()
+  {
+    return "view";
+  }
+
+  @Override
+  public String getDefaultUsage ()
+  {
+    return "view <alias>";
+  }
+
+  @Override
+  protected CommandResult execute (final IAliasedCertificateFactory certFx, final Object [] params) throws OpenAS2Exception
+  {
+    if (params.length < 1)
+    {
+      return new CommandResult (ECommandResultType.TYPE_INVALID_PARAM_COUNT, getUsage ());
+    }
+
+    synchronized (certFx)
+    {
+      final String alias = params[0].toString ();
+      final Certificate cert = certFx.getCertificate (alias);
+      return new CommandResult (ECommandResultType.TYPE_OK, cert.toString ());
     }
   }
 }

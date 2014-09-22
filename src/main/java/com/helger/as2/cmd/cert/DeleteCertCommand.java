@@ -30,79 +30,46 @@
  * are those of the authors and should not be interpreted as representing
  * official policies, either expressed or implied, of the FreeBSD Project.
  */
-package com.helger.as2.app.partner;
+package com.helger.as2.cmd.cert;
 
 import com.helger.as2.cmd.CommandResult;
 import com.helger.as2.cmd.ECommandResultType;
-import com.helger.as2.partner.XMLPartnershipFactory;
+import com.helger.as2lib.cert.IAliasedCertificateFactory;
 import com.helger.as2lib.exception.OpenAS2Exception;
-import com.helger.as2lib.partner.IPartnershipFactory;
-import com.helger.as2lib.util.StringMap;
-import com.helger.commons.microdom.IMicroDocument;
-import com.helger.commons.microdom.IMicroElement;
-import com.helger.commons.microdom.impl.MicroDocument;
 
-/**
- * adds a new partner entry in partnership store
- *
- * @author joseph mcverry
- */
-public class AddPartnerCommand extends AbstractAliasedPartnershipsCommand
+public class DeleteCertCommand extends AbstractAliasedCertCommand
 {
   @Override
   public String getDefaultDescription ()
   {
-    return "Add a new partner to partnership store.";
+    return "Delete the certificate and private key associated with an alias.";
   }
 
   @Override
   public String getDefaultName ()
   {
-    return "add";
+    return "delete";
   }
 
   @Override
   public String getDefaultUsage ()
   {
-    return "add name <attribute 1=value 1> <attribute 2=value 2> ... <attribute n=value n>";
+    return "delete <alias>";
   }
 
   @Override
-  public CommandResult execute (final IPartnershipFactory partFx, final Object [] params) throws OpenAS2Exception
+  public CommandResult execute (final IAliasedCertificateFactory certFx, final Object [] params) throws OpenAS2Exception
   {
     if (params.length < 1)
     {
       return new CommandResult (ECommandResultType.TYPE_INVALID_PARAM_COUNT, getUsage ());
     }
 
-    final IMicroDocument doc = new MicroDocument ();
-    final IMicroElement root = doc.appendElement ("partner");
-
-    for (int i = 0; i < params.length; i++)
+    final String alias = params[0].toString ();
+    synchronized (certFx)
     {
-      final String param = (String) params[i];
-      final int pos = param.indexOf ('=');
-      if (i == 0)
-      {
-        root.setAttribute ("name", param);
-      }
-      else
-        if (pos == 0)
-        {
-          return new CommandResult (ECommandResultType.TYPE_ERROR, "incoming parameter missing name");
-        }
-        else
-          if (pos > 0)
-          {
-            root.setAttribute (param.substring (0, pos), param.substring (pos + 1));
-          }
-          else
-            return new CommandResult (ECommandResultType.TYPE_ERROR, "incoming parameter missing value");
+      certFx.removeCertificate (alias);
     }
-
-    final StringMap aNewPartner = ((XMLPartnershipFactory) partFx).loadPartner (root);
-    partFx.addPartner (aNewPartner);
-
-    return new CommandResult (ECommandResultType.TYPE_OK);
+    return new CommandResult (ECommandResultType.TYPE_OK, "deleted " + alias);
   }
 }

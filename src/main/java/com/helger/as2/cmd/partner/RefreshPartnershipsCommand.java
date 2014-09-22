@@ -30,50 +30,57 @@
  * are those of the authors and should not be interpreted as representing
  * official policies, either expressed or implied, of the FreeBSD Project.
  */
-package com.helger.as2.app.cert;
+package com.helger.as2.cmd.partner;
 
-import java.security.cert.Certificate;
-import java.util.Map;
-
+import com.helger.as2.app.partner.IRefreshablePartnershipFactory;
+import com.helger.as2.cmd.AbstractCommand;
 import com.helger.as2.cmd.CommandResult;
 import com.helger.as2.cmd.ECommandResultType;
-import com.helger.as2lib.cert.IAliasedCertificateFactory;
 import com.helger.as2lib.exception.OpenAS2Exception;
+import com.helger.as2lib.partner.IPartnershipFactory;
 
-public class ListCertCommand extends AbstractAliasedCertCommand
+/**
+ * reloads the partnership store
+ */
+public class RefreshPartnershipsCommand extends AbstractCommand
 {
   @Override
   public String getDefaultDescription ()
   {
-    return "List all certificate aliases in the current certificate store";
+    return "Refresh the current partnerships from storage";
   }
 
   @Override
   public String getDefaultName ()
   {
-    return "list";
+    return "refresh";
   }
 
   @Override
   public String getDefaultUsage ()
   {
-    return "list";
+    return "refresh";
   }
 
   @Override
-  public CommandResult execute (final IAliasedCertificateFactory certFx, final Object [] params) throws OpenAS2Exception
+  public CommandResult execute (final Object [] params)
   {
-    synchronized (certFx)
+    try
     {
-      final Map <String, Certificate> certs = certFx.getCertificates ();
-      final CommandResult cmdRes = new CommandResult (ECommandResultType.TYPE_OK);
-      for (final String sCertName : certs.keySet ())
-        cmdRes.addResult (sCertName);
+      final IPartnershipFactory partnerFx = getSession ().getPartnershipFactory ();
+      if (partnerFx instanceof IRefreshablePartnershipFactory)
+      {
+        ((IRefreshablePartnershipFactory) partnerFx).refresh ();
 
-      if (cmdRes.hasNoResult ())
-        cmdRes.addResult ("No certificates available");
-
-      return cmdRes;
+        return new CommandResult (ECommandResultType.TYPE_OK, "Refreshed partnerships");
+      }
+      return new CommandResult (ECommandResultType.TYPE_COMMAND_NOT_SUPPORTED,
+                                "Not supported by current certificate store");
+    }
+    catch (final OpenAS2Exception oae)
+    {
+      oae.terminate ();
+      return new CommandResult (oae);
     }
   }
 }

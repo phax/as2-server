@@ -30,7 +30,7 @@
  * are those of the authors and should not be interpreted as representing
  * official policies, either expressed or implied, of the FreeBSD Project.
  */
-package com.helger.as2.partner;
+package com.helger.as2.app.partner;
 
 import javax.annotation.Nonnull;
 

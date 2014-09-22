@@ -30,37 +30,48 @@
  * are those of the authors and should not be interpreted as representing
  * official policies, either expressed or implied, of the FreeBSD Project.
  */
-package com.helger.as2.app.cert;
+package com.helger.as2.cmd.partner;
 
-import com.helger.as2.cmd.AbstractCommand;
 import com.helger.as2.cmd.CommandResult;
 import com.helger.as2.cmd.ECommandResultType;
-import com.helger.as2lib.cert.IAliasedCertificateFactory;
-import com.helger.as2lib.cert.ICertificateFactory;
 import com.helger.as2lib.exception.OpenAS2Exception;
+import com.helger.as2lib.partner.IPartnershipFactory;
 
-public abstract class AbstractAliasedCertCommand extends AbstractCommand
+/**
+ * list partnerships in partnership store by names
+ *
+ * @author joseph mcverry
+ */
+public class ListPartnershipsCommand extends AbstractAliasedPartnershipsCommand
 {
   @Override
-  public final CommandResult execute (final Object [] params)
+  public String getDefaultDescription ()
   {
-    try
-    {
-      final ICertificateFactory certFx = getSession ().getCertificateFactory ();
-
-      if (certFx instanceof IAliasedCertificateFactory)
-        return execute ((IAliasedCertificateFactory) certFx, params);
-
-      return new CommandResult (ECommandResultType.TYPE_COMMAND_NOT_SUPPORTED,
-                                "Not supported by current certificate store");
-    }
-    catch (final OpenAS2Exception oae)
-    {
-      oae.terminate ();
-
-      return new CommandResult (oae);
-    }
+    return "List all partnerships in the current partnership store";
   }
 
-  protected abstract CommandResult execute (IAliasedCertificateFactory certFx, Object [] params) throws OpenAS2Exception;
+  @Override
+  public String getDefaultName ()
+  {
+    return "list";
+  }
+
+  @Override
+  public String getDefaultUsage ()
+  {
+    return "list";
+  }
+
+  @Override
+  public CommandResult execute (final IPartnershipFactory partFx, final Object [] params) throws OpenAS2Exception
+  {
+    final CommandResult cmdRes = new CommandResult (ECommandResultType.TYPE_OK);
+    for (final String sName : partFx.getAllPartnershipNames ())
+      cmdRes.addResult (sName);
+
+    if (cmdRes.hasNoResult ())
+      cmdRes.addResult ("No partnerships available");
+
+    return cmdRes;
+  }
 }

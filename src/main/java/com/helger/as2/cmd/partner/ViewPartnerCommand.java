@@ -30,49 +30,53 @@
  * are those of the authors and should not be interpreted as representing
  * official policies, either expressed or implied, of the FreeBSD Project.
  */
-package com.helger.as2.app.partner;
+package com.helger.as2.cmd.partner;
 
 import com.helger.as2.cmd.CommandResult;
 import com.helger.as2.cmd.ECommandResultType;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.partner.IPartnershipFactory;
+import com.helger.as2lib.util.IStringMap;
 
 /**
- * list partner entries in partnership store
+ * view the partner entries in the partnership store
  *
- * @author joseph mcverry
+ * @author Joe McVerry
  */
-public class ListPartnersCommand extends AbstractAliasedPartnershipsCommand
+public class ViewPartnerCommand extends AbstractAliasedPartnershipsCommand
 {
   @Override
   public String getDefaultDescription ()
   {
-    return "List all partners in the current partnership store";
+    return "View the partner entry in the partnership store.";
   }
 
   @Override
   public String getDefaultName ()
   {
-    return "list";
+    return "view";
   }
 
   @Override
   public String getDefaultUsage ()
   {
-    return "list";
+    return "view <name>";
   }
 
   @Override
-  public CommandResult execute (final IPartnershipFactory partFx, final Object [] params) throws OpenAS2Exception
+  protected CommandResult execute (final IPartnershipFactory partFx, final Object [] params) throws OpenAS2Exception
   {
-    final CommandResult cmdRes = new CommandResult (ECommandResultType.TYPE_OK);
+    if (params.length < 1)
+      return new CommandResult (ECommandResultType.TYPE_INVALID_PARAM_COUNT, getUsage ());
 
-    for (final String sPartnerName : partFx.getAllPartnerNames ())
-      cmdRes.addResult (sPartnerName);
+    final String name = params[0].toString ();
+    final IStringMap aPartner = partFx.getPartnerOfName (name);
+    if (aPartner != null)
+    {
+      final String out = name + "\n" + aPartner.toString ();
+      return new CommandResult (ECommandResultType.TYPE_OK, out);
+    }
 
-    if (cmdRes.hasNoResult ())
-      cmdRes.addResult ("No partner definitions available");
-
-    return cmdRes;
+    return new CommandResult (ECommandResultType.TYPE_ERROR, "Unknown partner name");
   }
 }

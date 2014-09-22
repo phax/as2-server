@@ -39,10 +39,9 @@ import javax.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.as2.XMLSession;
 import com.helger.as2.cmd.CommandManager;
 import com.helger.as2.cmd.ICommandRegistry;
-import com.helger.as2.cmd.processor.AbstractCommandProcessor;
+import com.helger.as2.cmdprocessor.AbstractCommandProcessor;
 import com.helger.as2lib.CAS2Info;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.commons.collections.ArrayHelper;

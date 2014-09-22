@@ -37,7 +37,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import com.helger.as2.cmd.processor.AbstractCommandProcessor;
+import com.helger.as2.cmdprocessor.AbstractCommandProcessor;
 
 /**
  * command calls the registered command processors

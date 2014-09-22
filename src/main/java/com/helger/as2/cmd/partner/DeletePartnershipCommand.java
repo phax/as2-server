@@ -30,7 +30,7 @@
  * are those of the authors and should not be interpreted as representing
  * official policies, either expressed or implied, of the FreeBSD Project.
  */
-package com.helger.as2.app.partner;
+package com.helger.as2.cmd.partner;
 
 import com.helger.as2.cmd.CommandResult;
 import com.helger.as2.cmd.ECommandResultType;
@@ -39,11 +39,11 @@ import com.helger.as2lib.partner.IPartnershipFactory;
 import com.helger.as2lib.partner.Partnership;
 
 /**
- * removes a partner entry in partnership store
+ * removes a partnership entry in partnership store
  *
  * @author joseph mcverry
  */
-public class DeletePartnerCommand extends AbstractAliasedPartnershipsCommand
+public class DeletePartnershipCommand extends AbstractAliasedPartnershipsCommand
 {
   @Override
   public String getDefaultDescription ()
@@ -72,31 +72,13 @@ public class DeletePartnerCommand extends AbstractAliasedPartnershipsCommand
     }
 
     final String name = params[0].toString ();
+    final Partnership part = partFx.getPartnershipByName (name);
+    if (part != null)
+    {
+      partFx.removePartnership (part);
+      return new CommandResult (ECommandResultType.TYPE_OK, "deleted " + name);
+    }
 
-    boolean found = false;
-    for (final String partName : partFx.getAllPartnerNames ())
-      if (partName.equals (name))
-      {
-        found = true;
-        break;
-      }
-
-    if (!found)
-      return new CommandResult (ECommandResultType.TYPE_ERROR, "Unknown partner name");
-
-    boolean partnershipFound = false;
-    for (final Partnership aPartnership : partFx.getAllPartnerships ())
-      if (aPartnership.containsReceiverID (name) || aPartnership.containsSenderID (name))
-      {
-        partnershipFound = true;
-        break;
-      }
-
-    if (partnershipFound)
-      return new CommandResult (ECommandResultType.TYPE_ERROR,
-                                "Can not delete partner; it is tied to some partnerships");
-
-    partFx.removePartner (name);
-    return new CommandResult (ECommandResultType.TYPE_OK);
+    return new CommandResult (ECommandResultType.TYPE_ERROR, "Unknown partnership name");
   }
 }

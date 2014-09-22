@@ -30,52 +30,30 @@
  * are those of the authors and should not be interpreted as representing
  * official policies, either expressed or implied, of the FreeBSD Project.
  */
-package com.helger.as2.app.partner;
+package com.helger.as2.cmdprocessor;
 
-import com.helger.as2.cmd.CommandResult;
-import com.helger.as2.cmd.ECommandResultType;
+import java.util.Map;
+
+import javax.annotation.Nonnull;
+
+import com.helger.as2.cmd.ICommand;
+import com.helger.as2.cmd.ICommandRegistry;
 import com.helger.as2lib.exception.OpenAS2Exception;
-import com.helger.as2lib.partner.IPartnershipFactory;
-import com.helger.as2lib.partner.Partnership;
+import com.helger.commons.annotations.ReturnsMutableCopy;
 
-/**
- * view the partnership in the partnership stores
- *
- * @author Don Hillsberry
- */
-public class ViewPartnershipCommand extends AbstractAliasedPartnershipsCommand
+public interface ICommandProcessor
 {
-  @Override
-  public String getDefaultDescription ()
-  {
-    return "View the partnership entry in partnership store.";
-  }
+  @Nonnull
+  @ReturnsMutableCopy
+  Map <String, ICommand> getAllCommands ();
 
-  @Override
-  public String getDefaultName ()
-  {
-    return "view";
-  }
+  boolean isTerminated ();
 
-  @Override
-  public String getDefaultUsage ()
-  {
-    return "view <name>";
-  }
+  void addCommands (@Nonnull ICommandRegistry reg);
 
-  @Override
-  protected CommandResult execute (final IPartnershipFactory partFx, final Object [] params) throws OpenAS2Exception
-  {
-    if (params.length < 1)
-    {
-      return new CommandResult (ECommandResultType.TYPE_INVALID_PARAM_COUNT, getUsage ());
-    }
+  void init () throws OpenAS2Exception;
 
-    final String name = params[0].toString ();
-    final Partnership part = partFx.getPartnershipByName (name);
-    if (part != null)
-      return new CommandResult (ECommandResultType.TYPE_OK, part.toString ());
+  void terminate ();
 
-    return new CommandResult (ECommandResultType.TYPE_ERROR, "Unknown partnership name");
-  }
+  void processCommand () throws OpenAS2Exception;
 }
