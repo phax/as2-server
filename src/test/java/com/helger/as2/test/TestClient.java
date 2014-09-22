@@ -201,15 +201,8 @@ public class TestClient
 
     final IMessageMDN reply = aMsg.getMDN ();
 
-    final Enumeration <?> aList = reply.getHeaders ().getAllHeaders ();
-    final StringBuilder aSB = new StringBuilder ("MDN headers:\n");
-    while (aList.hasMoreElements ())
-    {
-      final Header aHeader = (Header) aList.nextElement ();
-      aSB.append (aHeader.getName ()).append (" = ").append (aHeader.getValue ()).append ('\n');
-    }
-
-    // logger.info(sb);
+    if (false)
+      s_aLogger.info ("MDN headers:\n" + reply.getHeadersFormatted ());
 
     final Enumeration <?> list2 = reply.getData ().getAllHeaders ();
     final StringBuilder aSB2 = new StringBuilder ("Mime headers:\n");
@@ -218,7 +211,6 @@ public class TestClient
 
       final Header aHeader = (Header) list2.nextElement ();
       aSB2.append (aHeader.getName ()).append (" = ").append (aHeader.getValue ()).append ('\n');
-
     }
 
     // logger.info(sb2);
