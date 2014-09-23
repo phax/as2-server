@@ -35,14 +35,14 @@
 -->
 <openas2>
   <certificates classname="com.helger.as2.app.cert.ServerPKCS12CertificateFactory" 
-                filename="%home%\certs.p12"
+                filename="%home%/certs.p12"
                 password="test"
                 interval="300"/>    
   <partnerships classname="com.helger.as2.app.partner.ServerXMLPartnershipFactory"
-                filename="%home%\partnerships.xml"/>
+                filename="%home%/partnerships.xml"/>
 
   <commands classname="com.helger.as2.cmd.XMLCommandRegistry"
-             filename="%home%\commands.xml"/>
+             filename="%home%/commands.xml"/>
   <commandProcessors>
     <commandProcessor classname="com.helger.as2.cmdprocessor.StreamCommandProcessor"/>
     <commandProcessor classname="com.helger.as2.cmdprocessor.SocketCommandProcessor"  
@@ -57,45 +57,45 @@
     <!-- This will parse the filename to get a sender and receiver. For instance a file
       named OpenAS2A-OpenAS2B.1234 would be sent from OpenAS2A to OpenAS2B. -->
     <module classname="com.helger.as2lib.processor.receiver.AS2DirectoryPollingModule"
-            outboxdir="data\toAny"
-            errordir="data\toAny\error"      
+            outboxdir="data/toAny"
+            errordir="data/toAny/error"      
             interval="5"
             delimiters="-."
             format="sender.as2_id, receiver.as2_id, attributes.fileid"      
             mimetype="application/EDI-X12"/>
     <!--  Special directory for sending messages to "OpenAS2A" -->
     <module classname="com.helger.as2lib.processor.receiver.AS2DirectoryPollingModule"
-            outboxdir="data\toOpenAS2A\"
-            errordir="data\toOpenAS2A\error"      
+            outboxdir="data/toOpenAS2A/"
+            errordir="data/toOpenAS2A/error"      
             interval="5"      
             defaults="sender.as2_id=OpenAS2B, receiver.as2_id=OpenAS2A"      
             mimetype="application/EDI-X12"/>          
     <!--  Special directory for sending messages to "OpenAS2B" -->
     <module classname="com.helger.as2lib.processor.receiver.AS2DirectoryPollingModule"
-            outboxdir="data\toOpenAS2B"
-            errordir="data\toOpenAS2B\error"      
+            outboxdir="data/toOpenAS2B"
+            errordir="data/toOpenAS2B/error"      
             interval="5"      
             defaults="sender.as2_id=OpenAS2A, receiver.as2_id=OpenAS2B"      
             sendFilename="true"
             mimetype="application/EDI-X12"/>
     <module classname="com.helger.as2lib.processor.storage.MDNFileModule"
-            filename="data\mdn\$date.yyyy$\$date.MM$\$mdn.msg.sender.as2_id$-$mdn.msg.receiver.as2_id$-$mdn.msg.headers.message-id$"      
+            filename="data/mdn/$date.yyyy$/$date.MM$/$mdn.msg.sender.as2_id$-$mdn.msg.receiver.as2_id$-$mdn.msg.headers.message-id$"      
             protocol="as2"
-            tempdir="data\temp"/>
+            tempdir="data/temp"/>
     <module classname="com.helger.as2lib.processor.storage.MessageFileModule"
-            filename="data\inbox\$msg.sender.as2_id$-$msg.receiver.as2_id$-$msg.headers.message-id$"
-            header="data\inbox\msgheaders\$date.yyyy$\$date.MM$\$msg.sender.as2_id$-$msg.receiver.as2_id$-$msg.headers.message-id$"    
+            filename="data/inbox/$msg.sender.as2_id$-$msg.receiver.as2_id$-$msg.headers.message-id$"
+            header="data/inbox/msgheaders/$date.yyyy$/$date.MM$/$msg.sender.as2_id$-$msg.receiver.as2_id$-$msg.headers.message-id$"    
             protocol="as2"
-            tempdir="data\temp"/>    
+            tempdir="data/temp"/>    
     <module classname="com.helger.as2lib.processor.receiver.AS2ReceiverModule"      
             port="10080"
-            errordir="data\inbox\error"
-            errorformat="sender.as2_id, receiver.as2_id, headers.message-id"/>        
+            errordir="data/inbox/error"
+            errorformat="$msg.sender.as2_id$, $msg.receiver.as2_id$, $msg.headers.message-id$"/>        
     <module classname="com.helger.as2lib.processor.receiver.AS2MDNReceiverModule"      
             port="10081"/>
     <module classname="com.helger.as2lib.processor.resender.DirectoryResenderModule"
-            resenddir="data\resend"
-            errordir="data\resend\error"
+            resenddir="data/resend"
+            errordir="data/resend/error"
             resenddelay="60"/>      
   </processor>
 </openas2>
