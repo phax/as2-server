@@ -41,7 +41,6 @@ import javax.mail.internet.MimeBodyPart;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.as2.app.cert.ServerPKCS12CertificateFactory;
 import com.helger.as2lib.cert.PKCS12CertificateFactory;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.message.AS2Message;
@@ -129,7 +128,7 @@ public class AS2Client
         aParams.setAttribute (PKCS12CertificateFactory.ATTR_FILENAME, aSettings.p12FilePath);
         aParams.setAttribute (PKCS12CertificateFactory.ATTR_PASSWORD, aSettings.p12FilePassword);
 
-        final ServerPKCS12CertificateFactory aCertFactory = new ServerPKCS12CertificateFactory ();
+        final PKCS12CertificateFactory aCertFactory = new PKCS12CertificateFactory ();
         aCertFactory.initDynamicComponent (aSession, aParams);
         aSession.setCertificateFactory (aCertFactory);
       }

@@ -42,7 +42,6 @@ import javax.mail.internet.MimeBodyPart;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.as2.app.cert.ServerPKCS12CertificateFactory;
 import com.helger.as2lib.cert.PKCS12CertificateFactory;
 import com.helger.as2lib.crypto.ECryptoAlgorithm;
 import com.helger.as2lib.exception.InvalidParameterException;
@@ -158,7 +157,7 @@ public class TestClient
     s_aLogger.info ("msg id: " + aMsg.getMessageID ());
 
     final Session aSession = new Session ();
-    final ServerPKCS12CertificateFactory aCertFactory = new ServerPKCS12CertificateFactory ();
+    final PKCS12CertificateFactory aCertFactory = new PKCS12CertificateFactory ();
     /*
      * filename="%home%/certs.p12" password="test" interval="300"
      */
