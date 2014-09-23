@@ -43,6 +43,7 @@ import com.helger.as2lib.exception.WrappedOpenAS2Exception;
 import com.helger.as2lib.session.ISession;
 import com.helger.as2lib.util.StringMap;
 import com.helger.as2lib.util.XMLUtil;
+import com.helger.commons.ValueEnforcer;
 import com.helger.commons.lang.GenericReflection;
 import com.helger.commons.microdom.IMicroElement;
 
@@ -51,10 +52,27 @@ public final class ServerXMLUtil
   private ServerXMLUtil ()
   {}
 
+  public static void updateDirectories (final String baseDirectory, final StringMap attributes) throws OpenAS2Exception
+  {
+    for (final Map.Entry <String, String> attrEntry : attributes)
+    {
+      final String value = attrEntry.getValue ();
+      if (value.startsWith ("%home%"))
+      {
+        if (baseDirectory == null)
+          throw new OpenAS2Exception ("Base directory isn't set");
+        attributes.setAttribute (attrEntry.getKey (), baseDirectory + value.substring (6));
+      }
+    }
+  }
+
   @Nonnull
   public static IDynamicComponent createComponent (@Nonnull final IMicroElement aElement,
                                                    @Nonnull final ISession aSession) throws OpenAS2Exception
   {
+    ValueEnforcer.notNull (aElement, "Element");
+    ValueEnforcer.notNull (aSession, "Session");
+
     final String sClassName = aElement.getAttribute ("classname");
     if (sClassName == null)
       throw new OpenAS2Exception ("Missing classname");
@@ -86,20 +104,6 @@ public final class ServerXMLUtil
     catch (final Exception ex)
     {
       throw new WrappedOpenAS2Exception ("Error creating component: " + sClassName, ex);
-    }
-  }
-
-  public static void updateDirectories (final String baseDirectory, final StringMap attributes) throws OpenAS2Exception
-  {
-    for (final Map.Entry <String, String> attrEntry : attributes)
-    {
-      final String value = attrEntry.getValue ();
-      if (value.startsWith ("%home%"))
-      {
-        if (baseDirectory == null)
-          throw new OpenAS2Exception ("Base directory isn't set");
-        attributes.setAttribute (attrEntry.getKey (), baseDirectory + value.substring (6));
-      }
     }
   }
 }
