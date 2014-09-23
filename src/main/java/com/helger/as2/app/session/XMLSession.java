@@ -51,7 +51,6 @@ import com.helger.as2.cmdprocessor.AbstractCommandProcessor;
 import com.helger.as2.util.ServerXMLUtil;
 import com.helger.as2lib.cert.ICertificateFactory;
 import com.helger.as2lib.exception.OpenAS2Exception;
-import com.helger.as2lib.exception.WrappedOpenAS2Exception;
 import com.helger.as2lib.partner.IPartnershipFactory;
 import com.helger.as2lib.processor.IMessageProcessor;
 import com.helger.as2lib.processor.module.IProcessorModule;
@@ -81,18 +80,15 @@ public class XMLSession extends Session implements ICommandRegistryFactory
   private final CommandManager m_aCmdManager = CommandManager.getCmdManager ();
   private ICommandRegistry m_aCommandRegistry;
 
-  public XMLSession (final String sFilename) throws OpenAS2Exception
+  public XMLSession (@Nonnull final String sFilename) throws OpenAS2Exception, IOException
   {
-    try
-    {
-      final File aFile = new File (sFilename).getCanonicalFile ().getAbsoluteFile ();
-      m_sBaseDirectory = aFile.getParentFile ().getAbsolutePath ();
-      load (FileUtils.getInputStream (aFile));
-    }
-    catch (final IOException ex)
-    {
-      throw WrappedOpenAS2Exception.wrap (ex);
-    }
+    this (new File (sFilename).getCanonicalFile ().getAbsoluteFile ());
+  }
+
+  public XMLSession (@Nonnull final File aFile) throws OpenAS2Exception
+  {
+    m_sBaseDirectory = aFile.getParentFile ().getAbsolutePath ();
+    load (FileUtils.getInputStream (aFile));
   }
 
   @Nonnull
