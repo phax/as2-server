@@ -38,7 +38,7 @@
                 filename="%home%\certs.p12"
                 password="test"
                 interval="300"/>    
-  <partnerships classname="com.helger.as2.app.partner.XMLPartnershipFactory"
+  <partnerships classname="com.helger.as2.app.partner.ServerXMLPartnershipFactory"
                 filename="%home%\partnerships.xml"/>
 
   <commands classname="com.helger.as2.cmd.XMLCommandRegistry"
