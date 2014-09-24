@@ -32,6 +32,8 @@
  */
 package com.helger.as2.util;
 
+import javax.annotation.Nonnull;
+
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.exception.WrappedOpenAS2Exception;
 
@@ -42,9 +44,9 @@ import com.helger.as2lib.exception.WrappedOpenAS2Exception;
  */
 public class CommandTokenizer
 {
-  private final String workString;
-  private int pos = 0;
-  private int len = -1;
+  private final String m_sWorkString;
+  private int m_nPos = 0;
+  private final int m_nLen;
 
   /**
    * constructor
@@ -52,10 +54,10 @@ public class CommandTokenizer
    * @param inString
    *        in string
    */
-  public CommandTokenizer (final String inString)
+  public CommandTokenizer (@Nonnull final String inString)
   {
-    workString = inString;
-    len = workString.length ();
+    m_sWorkString = inString;
+    m_nLen = m_sWorkString.length ();
   }
 
   /**
@@ -69,10 +71,10 @@ public class CommandTokenizer
   {
     try
     {
-      while (pos < len - 1 && workString.charAt (pos) == ' ')
-        pos++;
+      while (m_nPos < m_nLen - 1 && m_sWorkString.charAt (m_nPos) == ' ')
+        m_nPos++;
 
-      if (pos < len)
+      if (m_nPos < m_nLen)
         return true;
 
       return false;
@@ -87,34 +89,34 @@ public class CommandTokenizer
    * returns the next token, this handles spaces and quotes
    *
    * @return a string
-   * @throws WrappedOpenAS2Exception
-   *         In case a RuntimeException occurs
+   * @throws OpenAS2Exception
+   *         In case a {@link RuntimeException} occurs
    */
   public String nextToken () throws OpenAS2Exception
   {
     try
     {
-      while (pos < len - 1 && workString.charAt (pos) == ' ')
-        pos++;
+      while (m_nPos < m_nLen - 1 && m_sWorkString.charAt (m_nPos) == ' ')
+        m_nPos++;
 
       final StringBuilder sb = new StringBuilder ();
 
-      while (pos < len && workString.charAt (pos) != ' ')
+      while (m_nPos < m_nLen && m_sWorkString.charAt (m_nPos) != ' ')
       {
 
-        if (workString.charAt (pos) == '"')
+        if (m_sWorkString.charAt (m_nPos) == '"')
         {
-          pos++;
-          while (pos < len && workString.charAt (pos) != '"')
+          m_nPos++;
+          while (m_nPos < m_nLen && m_sWorkString.charAt (m_nPos) != '"')
           {
-            sb.append (workString.charAt (pos));
-            pos++;
+            sb.append (m_sWorkString.charAt (m_nPos));
+            m_nPos++;
           }
-          pos++;
+          m_nPos++;
           return sb.toString ();
         }
-        sb.append (workString.charAt (pos));
-        pos++;
+        sb.append (m_sWorkString.charAt (m_nPos));
+        m_nPos++;
       }
 
       return sb.toString ();
