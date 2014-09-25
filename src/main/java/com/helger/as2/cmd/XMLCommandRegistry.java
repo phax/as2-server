@@ -37,7 +37,7 @@ import java.io.InputStream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.helger.as2.app.session.AS2XMLSession;
+import com.helger.as2.app.session.AS2ServerXMLSession;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.session.IAS2Session;
 import com.helger.as2lib.util.IStringMap;
@@ -62,7 +62,7 @@ public class XMLCommandRegistry extends BaseCommandRegistry
   protected void loadCommand (final IMicroElement eCommand, @Nullable final MultiCommand aParent) throws OpenAS2Exception
   {
     final IAS2Session aSession = getSession ();
-    final String sBaseDirectory = aSession instanceof AS2XMLSession ? ((AS2XMLSession) aSession).getBaseDirectory ()
+    final String sBaseDirectory = aSession instanceof AS2ServerXMLSession ? ((AS2ServerXMLSession) aSession).getBaseDirectory ()
                                                                    : null;
     final ICommand aCommand = XMLUtil.createComponent (eCommand, ICommand.class, aSession, sBaseDirectory);
     if (aParent != null)

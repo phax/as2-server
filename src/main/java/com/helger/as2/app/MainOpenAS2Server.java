@@ -39,7 +39,7 @@ import javax.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.as2.app.session.AS2XMLSession;
+import com.helger.as2.app.session.AS2ServerXMLSession;
 import com.helger.as2.cmd.CommandManager;
 import com.helger.as2.cmd.ICommandRegistry;
 import com.helger.as2.cmdprocessor.AbstractCommandProcessor;
@@ -66,7 +66,7 @@ public class MainOpenAS2Server
 
   public void start (@Nullable final String sConfigFilePath)
   {
-    AS2XMLSession aXMLSession = null;
+    AS2ServerXMLSession aXMLSession = null;
     try
     {
       s_aLogger.info (CAS2Info.NAME_VERSION + " - starting Server...");
@@ -78,7 +78,7 @@ public class MainOpenAS2Server
       if (StringHelper.hasText (sConfigFilePath))
       {
         // Load config file
-        aXMLSession = new AS2XMLSession (sConfigFilePath);
+        aXMLSession = new AS2ServerXMLSession (sConfigFilePath);
       }
       else
       {
