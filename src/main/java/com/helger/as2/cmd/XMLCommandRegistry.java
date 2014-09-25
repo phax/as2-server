@@ -37,7 +37,7 @@ import java.io.InputStream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.helger.as2.util.ServerXMLUtil;
+import com.helger.as2.app.session.AS2XMLSession;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.session.IAS2Session;
 import com.helger.as2lib.util.IStringMap;
@@ -52,33 +52,36 @@ public class XMLCommandRegistry extends BaseCommandRegistry
   public static final String ATTR_FILENAME = "filename";
 
   @Override
-  public void initDynamicComponent (@Nonnull final IAS2Session session, @Nullable final IStringMap parameters) throws OpenAS2Exception
+  public void initDynamicComponent (@Nonnull final IAS2Session aSession, @Nullable final IStringMap aParameters) throws OpenAS2Exception
   {
-    super.initDynamicComponent (session, parameters);
+    super.initDynamicComponent (aSession, aParameters);
 
     refresh ();
   }
 
-  protected void loadCommand (final IMicroElement node, @Nullable final MultiCommand parent) throws OpenAS2Exception
+  protected void loadCommand (final IMicroElement eCommand, @Nullable final MultiCommand aParent) throws OpenAS2Exception
   {
-    final ICommand aCommand = ServerXMLUtil.createComponent (node, ICommand.class, getSession ());
-    if (parent != null)
-      parent.getCommands ().add (aCommand);
+    final IAS2Session aSession = getSession ();
+    final String sBaseDirectory = aSession instanceof AS2XMLSession ? ((AS2XMLSession) aSession).getBaseDirectory ()
+                                                                   : null;
+    final ICommand aCommand = XMLUtil.createComponent (eCommand, ICommand.class, aSession, sBaseDirectory);
+    if (aParent != null)
+      aParent.getCommands ().add (aCommand);
     else
       addCommand (aCommand);
   }
 
-  protected void loadMultiCommand (@Nonnull final IMicroElement aElement, @Nullable final MultiCommand parent) throws OpenAS2Exception
+  protected void loadMultiCommand (@Nonnull final IMicroElement aCommand, @Nullable final MultiCommand parent) throws OpenAS2Exception
   {
     final MultiCommand cmd = new MultiCommand ();
-    cmd.initDynamicComponent (getSession (), XMLUtil.getAttrsWithLowercaseName (aElement));
+    cmd.initDynamicComponent (getSession (), XMLUtil.getAttrsWithLowercaseName (aCommand));
 
     if (parent != null)
       parent.getCommands ().add (cmd);
     else
       addCommand (cmd);
 
-    for (final IMicroElement aChildElement : aElement.getAllChildElements ())
+    for (final IMicroElement aChildElement : aCommand.getAllChildElements ())
     {
       final String sChildName = aChildElement.getNodeName ();
 
