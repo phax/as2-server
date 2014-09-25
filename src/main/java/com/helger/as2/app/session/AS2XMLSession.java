@@ -54,7 +54,7 @@ import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.partner.IPartnershipFactory;
 import com.helger.as2lib.processor.IMessageProcessor;
 import com.helger.as2lib.processor.module.IProcessorModule;
-import com.helger.as2lib.session.Session;
+import com.helger.as2lib.session.AS2Session;
 import com.helger.commons.io.file.FileUtils;
 import com.helger.commons.microdom.IMicroDocument;
 import com.helger.commons.microdom.IMicroElement;
@@ -65,7 +65,7 @@ import com.helger.commons.microdom.serialize.MicroReader;
  *
  * @author joseph mcverry
  */
-public class XMLSession extends Session implements ICommandRegistryFactory
+public class AS2XMLSession extends AS2Session implements ICommandRegistryFactory
 {
   public static final String EL_CERTIFICATES = "certificates";
   public static final String EL_CMDPROCESSOR = "commandProcessors";
@@ -74,18 +74,18 @@ public class XMLSession extends Session implements ICommandRegistryFactory
   public static final String EL_COMMANDS = "commands";
   public static final String PARAM_BASE_DIRECTORY = "basedir";
 
-  private static final Logger s_aLogger = LoggerFactory.getLogger (XMLSession.class);
+  private static final Logger s_aLogger = LoggerFactory.getLogger (AS2XMLSession.class);
 
   private final String m_sBaseDirectory;
   private final CommandManager m_aCmdManager = CommandManager.getCmdManager ();
   private ICommandRegistry m_aCommandRegistry;
 
-  public XMLSession (@Nonnull final String sFilename) throws OpenAS2Exception, IOException
+  public AS2XMLSession (@Nonnull final String sFilename) throws OpenAS2Exception, IOException
   {
     this (new File (sFilename).getCanonicalFile ().getAbsoluteFile ());
   }
 
-  public XMLSession (@Nonnull final File aFile) throws OpenAS2Exception
+  public AS2XMLSession (@Nonnull final File aFile) throws OpenAS2Exception
   {
     m_sBaseDirectory = aFile.getParentFile ().getAbsolutePath ();
     load (FileUtils.getInputStream (aFile));

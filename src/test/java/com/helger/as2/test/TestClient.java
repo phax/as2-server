@@ -54,7 +54,7 @@ import com.helger.as2lib.partner.Partnership;
 import com.helger.as2lib.partner.SelfFillingPartnershipFactory;
 import com.helger.as2lib.processor.sender.AS2SenderModule;
 import com.helger.as2lib.processor.sender.IProcessorSenderModule;
-import com.helger.as2lib.session.Session;
+import com.helger.as2lib.session.AS2Session;
 import com.helger.as2lib.util.CAS2Header;
 import com.helger.as2lib.util.DateUtil;
 import com.helger.as2lib.util.StringMap;
@@ -156,7 +156,7 @@ public class TestClient
     aMsg.setMessageID (aMsg.generateMessageID ());
     s_aLogger.info ("msg id: " + aMsg.getMessageID ());
 
-    final Session aSession = new Session ();
+    final AS2Session aSession = new AS2Session ();
     final PKCS12CertificateFactory aCertFactory = new PKCS12CertificateFactory ();
     /*
      * filename="%home%/certs.p12" password="test" interval="300"

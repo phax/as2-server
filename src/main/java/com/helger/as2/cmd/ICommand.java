@@ -33,7 +33,7 @@
 package com.helger.as2.cmd;
 
 import com.helger.as2lib.IDynamicComponent;
-import com.helger.as2lib.session.ISession;
+import com.helger.as2lib.session.IAS2Session;
 
 public interface ICommand extends IDynamicComponent
 {
@@ -45,7 +45,7 @@ public interface ICommand extends IDynamicComponent
 
   String getName ();
 
-  ISession getSession ();
+  IAS2Session getSession ();
 
   void setUsage (String usage);
 

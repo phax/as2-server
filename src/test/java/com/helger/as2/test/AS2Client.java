@@ -50,7 +50,7 @@ import com.helger.as2lib.partner.Partnership;
 import com.helger.as2lib.partner.SelfFillingPartnershipFactory;
 import com.helger.as2lib.processor.sender.AS2SenderModule;
 import com.helger.as2lib.processor.sender.IProcessorSenderModule;
-import com.helger.as2lib.session.Session;
+import com.helger.as2lib.session.AS2Session;
 import com.helger.as2lib.util.StringMap;
 import com.helger.commons.annotations.UnsupportedOperation;
 
@@ -122,7 +122,7 @@ public class AS2Client
 
       // logger.info("msgId to send: "+msg.getMessageID());
 
-      final Session aSession = new Session ();
+      final AS2Session aSession = new AS2Session ();
       {
         final StringMap aParams = new StringMap ();
         aParams.setAttribute (PKCS12CertificateFactory.ATTR_FILENAME, aSettings.p12FilePath);

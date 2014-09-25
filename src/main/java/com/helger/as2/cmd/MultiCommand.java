@@ -40,7 +40,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.helger.as2lib.exception.OpenAS2Exception;
-import com.helger.as2lib.session.ISession;
+import com.helger.as2lib.session.IAS2Session;
 import com.helger.as2lib.util.IStringMap;
 import com.helger.commons.collections.ArrayHelper;
 
@@ -49,7 +49,7 @@ public class MultiCommand extends AbstractCommand
   private List <ICommand> m_aCmds;
 
   @Override
-  public void initDynamicComponent (@Nonnull final ISession session, @Nullable final IStringMap parameters) throws OpenAS2Exception
+  public void initDynamicComponent (@Nonnull final IAS2Session session, @Nullable final IStringMap parameters) throws OpenAS2Exception
   {
     super.initDynamicComponent (session, parameters);
     getAttributeAsStringRequired (ATTR_NAME);

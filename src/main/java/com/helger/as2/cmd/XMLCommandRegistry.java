@@ -39,7 +39,7 @@ import javax.annotation.Nullable;
 
 import com.helger.as2.util.ServerXMLUtil;
 import com.helger.as2lib.exception.OpenAS2Exception;
-import com.helger.as2lib.session.ISession;
+import com.helger.as2lib.session.IAS2Session;
 import com.helger.as2lib.util.IStringMap;
 import com.helger.as2lib.util.XMLUtil;
 import com.helger.commons.io.file.FileUtils;
@@ -52,7 +52,7 @@ public class XMLCommandRegistry extends BaseCommandRegistry
   public static final String ATTR_FILENAME = "filename";
 
   @Override
-  public void initDynamicComponent (@Nonnull final ISession session, @Nullable final IStringMap parameters) throws OpenAS2Exception
+  public void initDynamicComponent (@Nonnull final IAS2Session session, @Nullable final IStringMap parameters) throws OpenAS2Exception
   {
     super.initDynamicComponent (session, parameters);
 

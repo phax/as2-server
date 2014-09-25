@@ -49,7 +49,7 @@ import com.helger.as2.cmd.ICommand;
 import com.helger.as2.util.CommandTokenizer;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.exception.WrappedOpenAS2Exception;
-import com.helger.as2lib.session.ISession;
+import com.helger.as2lib.session.IAS2Session;
 import com.helger.as2lib.util.IStringMap;
 import com.helger.as2lib.util.StringMap;
 import com.helger.commons.io.streams.NonBlockingBufferedReader;
@@ -84,7 +84,7 @@ public class SocketCommandProcessor extends AbstractCommandProcessor
   {}
 
   @Override
-  public void initDynamicComponent (@Nonnull final ISession aSession, @Nullable final IStringMap aParams) throws OpenAS2Exception
+  public void initDynamicComponent (@Nonnull final IAS2Session aSession, @Nullable final IStringMap aParams) throws OpenAS2Exception
   {
     final StringMap aParameters = aParams == null ? new StringMap () : new StringMap (aParams);
     final String sPort = aParameters.getAttributeAsString (ATTR_PORTID);

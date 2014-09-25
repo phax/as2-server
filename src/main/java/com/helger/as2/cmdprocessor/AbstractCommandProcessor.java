@@ -42,7 +42,7 @@ import com.helger.as2.cmd.ICommand;
 import com.helger.as2.cmd.ICommandRegistry;
 import com.helger.as2lib.IDynamicComponent;
 import com.helger.as2lib.exception.OpenAS2Exception;
-import com.helger.as2lib.session.ISession;
+import com.helger.as2lib.session.IAS2Session;
 import com.helger.as2lib.util.StringMap;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotations.ReturnsMutableCopy;
@@ -65,7 +65,7 @@ public abstract class AbstractCommandProcessor extends StringMap implements ICom
   }
 
   @UnsupportedOperation
-  public ISession getSession ()
+  public IAS2Session getSession ()
   {
     throw new UnsupportedOperationException ("No session available!");
   }

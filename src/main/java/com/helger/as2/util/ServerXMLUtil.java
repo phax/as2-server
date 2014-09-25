@@ -36,11 +36,11 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
-import com.helger.as2.app.session.XMLSession;
+import com.helger.as2.app.session.AS2XMLSession;
 import com.helger.as2lib.IDynamicComponent;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.exception.WrappedOpenAS2Exception;
-import com.helger.as2lib.session.ISession;
+import com.helger.as2lib.session.IAS2Session;
 import com.helger.as2lib.util.StringMap;
 import com.helger.as2lib.util.XMLUtil;
 import com.helger.commons.ValueEnforcer;
@@ -68,7 +68,7 @@ public final class ServerXMLUtil
 
   @Nonnull
   public static IDynamicComponent createComponent (@Nonnull final IMicroElement aElement,
-                                                   @Nonnull final ISession aSession) throws OpenAS2Exception
+                                                   @Nonnull final IAS2Session aSession) throws OpenAS2Exception
   {
     ValueEnforcer.notNull (aElement, "Element");
     ValueEnforcer.notNull (aSession, "Session");
@@ -86,10 +86,10 @@ public final class ServerXMLUtil
 
       // Read all parameters
       final StringMap aParameters = XMLUtil.getAttrsWithLowercaseName (aElement);
-      if (aSession instanceof XMLSession)
+      if (aSession instanceof AS2XMLSession)
       {
         // Replace %home% with session base directory
-        updateDirectories (((XMLSession) aSession).getBaseDirectory (), aParameters);
+        updateDirectories (((AS2XMLSession) aSession).getBaseDirectory (), aParameters);
       }
 
       // Init component
