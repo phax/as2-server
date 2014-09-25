@@ -112,14 +112,14 @@ public class AS2XMLSession extends AS2Session implements ICommandRegistryFactory
   protected void loadCertificates (@Nonnull final IMicroElement aElement) throws OpenAS2Exception
   {
     s_aLogger.info ("  loading certificates");
-    final ICertificateFactory certFx = (ICertificateFactory) ServerXMLUtil.createComponent (aElement, this);
+    final ICertificateFactory certFx = ServerXMLUtil.createComponent (aElement, ICertificateFactory.class, this);
     setCertificateFactory (certFx);
   }
 
   protected void loadCommands (@Nonnull final IMicroElement aElement) throws OpenAS2Exception
   {
     s_aLogger.info ("  loading commands");
-    final ICommandRegistry cmdReg = (ICommandRegistry) ServerXMLUtil.createComponent (aElement, this);
+    final ICommandRegistry cmdReg = ServerXMLUtil.createComponent (aElement, ICommandRegistry.class, this);
     m_aCommandRegistry = cmdReg;
   }
 
@@ -133,8 +133,9 @@ public class AS2XMLSession extends AS2Session implements ICommandRegistryFactory
 
   protected void loadCommandProcessor (@Nonnull final CommandManager aCommandMgr, @Nonnull final IMicroElement aElement) throws OpenAS2Exception
   {
-    final AbstractCommandProcessor aCmdProcesor = (AbstractCommandProcessor) ServerXMLUtil.createComponent (aElement,
-                                                                                                            this);
+    final AbstractCommandProcessor aCmdProcesor = ServerXMLUtil.createComponent (aElement,
+                                                                                 AbstractCommandProcessor.class,
+                                                                                 this);
     aCommandMgr.addProcessor (aCmdProcesor);
     s_aLogger.info ("    loaded command processor " + aCmdProcesor.getName ());
   }
@@ -142,14 +143,14 @@ public class AS2XMLSession extends AS2Session implements ICommandRegistryFactory
   protected void loadPartnerships (final IMicroElement eRootNode) throws OpenAS2Exception
   {
     s_aLogger.info ("  loading partnerships");
-    final IPartnershipFactory partnerFx = (IPartnershipFactory) ServerXMLUtil.createComponent (eRootNode, this);
+    final IPartnershipFactory partnerFx = ServerXMLUtil.createComponent (eRootNode, IPartnershipFactory.class, this);
     setPartnershipFactory (partnerFx);
   }
 
   protected void loadMessageProcessor (final IMicroElement eRootNode) throws OpenAS2Exception
   {
     s_aLogger.info ("  loading message processor");
-    final IMessageProcessor aMsgProcessor = (IMessageProcessor) ServerXMLUtil.createComponent (eRootNode, this);
+    final IMessageProcessor aMsgProcessor = ServerXMLUtil.createComponent (eRootNode, IMessageProcessor.class, this);
     setMessageProcessor (aMsgProcessor);
 
     for (final IMicroElement eModule : eRootNode.getAllChildElements ("module"))
@@ -159,7 +160,7 @@ public class AS2XMLSession extends AS2Session implements ICommandRegistryFactory
   protected void loadProcessorModule (@Nonnull final IMessageProcessor aMsgProcessor,
                                       @Nonnull final IMicroElement eModule) throws OpenAS2Exception
   {
-    final IProcessorModule aProcessorModule = (IProcessorModule) ServerXMLUtil.createComponent (eModule, this);
+    final IProcessorModule aProcessorModule = ServerXMLUtil.createComponent (eModule, IProcessorModule.class, this);
     aMsgProcessor.addModule (aProcessorModule);
     s_aLogger.info ("    loaded processor module " + aProcessorModule.getName ());
   }

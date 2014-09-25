@@ -35,6 +35,7 @@ package com.helger.as2.util;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.helger.as2.app.session.AS2XMLSession;
 import com.helger.as2lib.IDynamicComponent;
@@ -52,25 +53,27 @@ public final class ServerXMLUtil
   private ServerXMLUtil ()
   {}
 
-  public static void updateDirectories (final String baseDirectory, final StringMap attributes) throws OpenAS2Exception
+  private static void _updateDirectories (@Nullable final String sBaseDirectory, @Nonnull final StringMap aAttributes) throws OpenAS2Exception
   {
-    for (final Map.Entry <String, String> attrEntry : attributes)
+    for (final Map.Entry <String, String> attrEntry : aAttributes)
     {
       final String value = attrEntry.getValue ();
       if (value.startsWith ("%home%"))
       {
-        if (baseDirectory == null)
+        if (sBaseDirectory == null)
           throw new OpenAS2Exception ("Base directory isn't set");
-        attributes.setAttribute (attrEntry.getKey (), baseDirectory + value.substring (6));
+        aAttributes.setAttribute (attrEntry.getKey (), sBaseDirectory + value.substring (6));
       }
     }
   }
 
   @Nonnull
-  public static IDynamicComponent createComponent (@Nonnull final IMicroElement aElement,
-                                                   @Nonnull final IAS2Session aSession) throws OpenAS2Exception
+  public static <T extends IDynamicComponent> T createComponent (@Nonnull final IMicroElement aElement,
+                                                                 @Nonnull final Class <T> aClass,
+                                                                 @Nonnull final IAS2Session aSession) throws OpenAS2Exception
   {
     ValueEnforcer.notNull (aElement, "Element");
+    ValueEnforcer.notNull (aClass, "Class");
     ValueEnforcer.notNull (aSession, "Session");
 
     final String sClassName = aElement.getAttribute ("classname");
@@ -80,16 +83,16 @@ public final class ServerXMLUtil
     try
     {
       // Instantiate class
-      final IDynamicComponent aObj = GenericReflection.newInstance (sClassName, IDynamicComponent.class);
+      final T aObj = GenericReflection.newInstance (sClassName, aClass);
       if (aObj == null)
-        throw new OpenAS2Exception ("Failed to instantiate '" + sClassName + "'");
+        throw new OpenAS2Exception ("Failed to instantiate '" + sClassName + "' as " + aClass.getName ());
 
       // Read all parameters
       final StringMap aParameters = XMLUtil.getAttrsWithLowercaseName (aElement);
       if (aSession instanceof AS2XMLSession)
       {
         // Replace %home% with session base directory
-        updateDirectories (((AS2XMLSession) aSession).getBaseDirectory (), aParameters);
+        _updateDirectories (((AS2XMLSession) aSession).getBaseDirectory (), aParameters);
       }
 
       // Init component

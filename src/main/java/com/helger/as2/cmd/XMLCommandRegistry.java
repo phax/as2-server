@@ -59,66 +59,62 @@ public class XMLCommandRegistry extends BaseCommandRegistry
     refresh ();
   }
 
-  public void load (final InputStream in) throws OpenAS2Exception
+  protected void loadCommand (final IMicroElement node, @Nullable final MultiCommand parent) throws OpenAS2Exception
   {
-    final IMicroDocument document = MicroReader.readMicroXML (in);
-    final IMicroElement root = document.getDocumentElement ();
+    final ICommand aCommand = ServerXMLUtil.createComponent (node, ICommand.class, getSession ());
+    if (parent != null)
+      parent.getCommands ().add (aCommand);
+    else
+      addCommand (aCommand);
+  }
+
+  protected void loadMultiCommand (@Nonnull final IMicroElement aElement, @Nullable final MultiCommand parent) throws OpenAS2Exception
+  {
+    final MultiCommand cmd = new MultiCommand ();
+    cmd.initDynamicComponent (getSession (), XMLUtil.getAttrsWithLowercaseName (aElement));
+
+    if (parent != null)
+      parent.getCommands ().add (cmd);
+    else
+      addCommand (cmd);
+
+    for (final IMicroElement aChildElement : aElement.getAllChildElements ())
+    {
+      final String sChildName = aChildElement.getNodeName ();
+
+      if (sChildName.equals ("command"))
+        loadCommand (aChildElement, cmd);
+      else
+        if (sChildName.equals ("multicommand"))
+          loadMultiCommand (aChildElement, cmd);
+        else
+          throw new OpenAS2Exception ("Undefined child tag: " + sChildName);
+    }
+  }
+
+  public void load (@Nonnull final InputStream in) throws OpenAS2Exception
+  {
+    final IMicroDocument aDoc = MicroReader.readMicroXML (in);
+    final IMicroElement eRoot = aDoc.getDocumentElement ();
 
     clearCommands ();
 
-    for (final IMicroElement rootNode : root.getAllChildElements ())
+    for (final IMicroElement eElement : eRoot.getAllChildElements ())
     {
-      final String nodeName = rootNode.getTagName ();
-      if (nodeName.equals ("command"))
-      {
-        loadCommand (rootNode, null);
-      }
+      final String sNodeName = eElement.getTagName ();
+      if (sNodeName.equals ("command"))
+        loadCommand (eElement, null);
       else
-        if (nodeName.equals ("multicommand"))
-        {
-          loadMultiCommand (rootNode, null);
-        }
+        if (sNodeName.equals ("multicommand"))
+          loadMultiCommand (eElement, null);
+        else
+          throw new OpenAS2Exception ("Undefined tag: " + sNodeName);
     }
   }
 
   public void refresh () throws OpenAS2Exception
   {
-    load (FileUtils.getInputStream (getAttributeAsStringRequired (ATTR_FILENAME)));
-  }
-
-  protected void loadCommand (final IMicroElement node, final MultiCommand parent) throws OpenAS2Exception
-  {
-    final ICommand cmd = (ICommand) ServerXMLUtil.createComponent (node, getSession ());
-
-    if (parent != null)
-    {
-      parent.getCommands ().add (cmd);
-    }
-    else
-    {
-      addCommand (cmd);
-    }
-  }
-
-  protected void loadMultiCommand (@Nonnull final IMicroElement node, @Nullable final MultiCommand parent) throws OpenAS2Exception
-  {
-    final MultiCommand cmd = new MultiCommand ();
-    cmd.initDynamicComponent (getSession (), XMLUtil.getAttrsWithLowercaseName (node));
-
-    if (parent != null)
-      parent.getCommands ().add (cmd);
-    else
-      addCommand (cmd);
-
-    for (final IMicroElement childNode : node.getAllChildElements ())
-    {
-      final String sChildName = childNode.getNodeName ();
-
-      if (sChildName.equals ("command"))
-        loadCommand (childNode, cmd);
-      else
-        if (sChildName.equals ("multicommand"))
-          loadMultiCommand (childNode, cmd);
-    }
+    final String sFilename = getAttributeAsStringRequired (ATTR_FILENAME);
+    load (FileUtils.getInputStream (sFilename));
   }
 }

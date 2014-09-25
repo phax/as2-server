@@ -37,6 +37,9 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.helger.as2lib.AbstractDynamicComponent;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotations.ReturnsMutableCopy;
@@ -44,12 +47,15 @@ import com.helger.commons.collections.ContainerHelper;
 
 public class BaseCommandRegistry extends AbstractDynamicComponent implements ICommandRegistry
 {
+  private static final Logger s_aLogger = LoggerFactory.getLogger (BaseCommandRegistry.class);
   private final Map <String, ICommand> m_aCommands = new LinkedHashMap <String, ICommand> ();
 
   public void addCommand (@Nonnull final ICommand aCommand)
   {
     ValueEnforcer.notNull (aCommand, "Command");
     final String sCommandName = aCommand.getName ();
+    if (m_aCommands.containsKey (sCommandName))
+      s_aLogger.warn ("Overwriting command '" + sCommandName + "'");
     m_aCommands.put (sCommandName, aCommand);
   }
 
