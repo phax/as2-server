@@ -37,7 +37,7 @@ import com.helger.as2lib.crypto.ECryptoAlgorithm;
 /**
  * @author oleo Date: May 12, 2010 Time: 5:16:57 PM
  */
-public final class ConnectionSettings
+public final class AS2ConnectionSettings
 {
   public String p12FilePath;
   public String p12FilePassword;

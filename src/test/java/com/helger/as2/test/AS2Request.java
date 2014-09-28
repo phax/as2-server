@@ -48,9 +48,10 @@ import com.helger.commons.io.streams.StreamUtils;
 import com.helger.commons.mime.CMimeType;
 
 /**
- * AS2 test request
+ * This class represents the content of an AS2 client request.
  *
  * @author oleo Date: May 12, 2010 Time: 5:48:26 PM
+ * @author Philip Helger
  */
 public class AS2Request
 {

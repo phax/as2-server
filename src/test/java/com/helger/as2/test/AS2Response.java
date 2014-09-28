@@ -32,9 +32,12 @@
  */
 package com.helger.as2.test;
 
+import javax.annotation.Nonnull;
+
 /**
- * AS2 Test Response
- * 
+ * This class contains the basic content that was received from an AS2 server as
+ * a response.
+ *
  * @author oleo Date: May 12, 2010 Time: 5:53:45 PM
  */
 public class AS2Response
@@ -47,17 +50,20 @@ public class AS2Response
   public String errorDescription;
   public Throwable exception;
 
-  @Override
-  public String toString ()
+  public AS2Response ()
+  {}
+
+  @Nonnull
+  public String getAsString ()
   {
-    final StringBuilder sb = new StringBuilder ();
-    sb.append ('\n');
-    sb.append ("originalId: ").append (originalMessageId).append ('\n');
-    sb.append ("receivedId: ").append (receivedMdnId).append ('\n');
-    sb.append ("disposition: ").append (disposition).append ('\n');
+    final StringBuilder aSB = new StringBuilder ();
+    aSB.append ('\n');
+    aSB.append ("originalId: ").append (originalMessageId).append ('\n');
+    aSB.append ("receivedId: ").append (receivedMdnId).append ('\n');
+    aSB.append ("disposition: ").append (disposition).append ('\n');
     if (isError)
-      sb.append ("errorDescription: ").append (errorDescription).append ('\n');
-    sb.append ("text: ").append (text).append ('\n');
-    return sb.toString ();
+      aSB.append ("errorDescription: ").append (errorDescription).append ('\n');
+    aSB.append ("text: ").append (text).append ('\n');
+    return aSB.toString ();
   }
 }

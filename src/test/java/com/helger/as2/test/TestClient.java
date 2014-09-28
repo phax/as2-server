@@ -75,7 +75,7 @@ public class TestClient
     final boolean DO_ENCRYPT = true;
     final boolean DO_SIGN = true;
 
-    final ConnectionSettings aSettings = new ConnectionSettings ();
+    final AS2ConnectionSettings aSettings = new AS2ConnectionSettings ();
     aSettings.p12FilePath = new ClassPathResource ("config/certs.p12").getAsFile ().getAbsolutePath ();
     aSettings.p12FilePassword = "test";
     aSettings.senderAs2Id = "OpenAS2A";

@@ -59,7 +59,7 @@ public class AS2Client
   private static final Logger s_aLogger = LoggerFactory.getLogger (AS2Client.class);
 
   @Nonnull
-  private static Partnership _buildPartnership (@Nonnull final ConnectionSettings aSettings)
+  private static Partnership _buildPartnership (@Nonnull final AS2ConnectionSettings aSettings)
   {
     final Partnership aPartnership = new Partnership (aSettings.partnershipName);
 
@@ -108,7 +108,7 @@ public class AS2Client
 
   // TODO do object
   // TODO extract interface
-  public static AS2Response sendSynchronous (@Nonnull final ConnectionSettings aSettings,
+  public static AS2Response sendSynchronous (@Nonnull final AS2ConnectionSettings aSettings,
                                              @Nonnull final AS2Request aRequest)
   {
     final AS2Response aResponse = new AS2Response ();
@@ -157,7 +157,7 @@ public class AS2Client
       }
     }
 
-    s_aLogger.info (aResponse.toString ());
+    s_aLogger.info (aResponse.getAsString ());
 
     return aResponse;
   }
@@ -170,7 +170,7 @@ public class AS2Client
    * @return UnsupportedOperationException
    */
   @UnsupportedOperation
-  public AS2Response sendAsync (final ConnectionSettings settings, final AS2Request request)
+  public AS2Response sendAsync (final AS2ConnectionSettings settings, final AS2Request request)
   {
     throw new UnsupportedOperationException ();
     // Response response = null;
@@ -185,7 +185,7 @@ public class AS2Client
    * @return UnsupportedOperationException
    */
   @UnsupportedOperation
-  public AS2Response processAsyncReply (final ConnectionSettings settings, final InputStream stream)
+  public AS2Response processAsyncReply (final AS2ConnectionSettings settings, final InputStream stream)
   {
     throw new UnsupportedOperationException ();
     // Response response = null;
