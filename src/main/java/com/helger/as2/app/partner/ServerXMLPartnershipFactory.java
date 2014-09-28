@@ -39,9 +39,9 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.as2.util.FileMonitor;
 import com.helger.as2.util.IFileMonitorListener;
-import com.helger.as2lib.exception.InvalidParameterException;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.exception.WrappedOpenAS2Exception;
+import com.helger.as2lib.params.InvalidParameterException;
 import com.helger.as2lib.partner.XMLPartnershipFactory;
 
 /**

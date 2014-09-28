@@ -44,14 +44,14 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.as2lib.cert.PKCS12CertificateFactory;
 import com.helger.as2lib.client.AS2Client;
-import com.helger.as2lib.client.AS2ConnectionSettings;
-import com.helger.as2lib.client.AS2Request;
+import com.helger.as2lib.client.AS2ClientSettings;
+import com.helger.as2lib.client.AS2ClientRequest;
 import com.helger.as2lib.crypto.ECryptoAlgorithm;
-import com.helger.as2lib.exception.InvalidParameterException;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.message.AS2Message;
 import com.helger.as2lib.message.IMessage;
 import com.helger.as2lib.message.IMessageMDN;
+import com.helger.as2lib.params.InvalidParameterException;
 import com.helger.as2lib.partner.CPartnershipIDs;
 import com.helger.as2lib.partner.Partnership;
 import com.helger.as2lib.partner.SelfFillingPartnershipFactory;
@@ -78,7 +78,7 @@ public class TestClient
     final boolean DO_ENCRYPT = true;
     final boolean DO_SIGN = true;
 
-    final AS2ConnectionSettings aSettings = new AS2ConnectionSettings ();
+    final AS2ClientSettings aSettings = new AS2ClientSettings ();
     aSettings.setKeyStore (ClassPathResource.getAsFile ("config/certs.p12"), "test");
     aSettings.setSenderData ("OpenAS2A", "email@example.org", "OpenAS2A");
     aSettings.setReceiverData ("OpenAS2B", "OpenAS2B", "http://localhost:10080/HttpReceiver");
@@ -88,7 +88,7 @@ public class TestClient
     // Use the default MDN options
     // Use the default message ID format
 
-    final AS2Request aRequest = new AS2Request ("Test message");
+    final AS2ClientRequest aRequest = new AS2ClientRequest ("Test message");
     aRequest.setData (new File ("src/test/resources/dummy.txt"));
     AS2Client.sendSynchronous (aSettings, aRequest);
   }
