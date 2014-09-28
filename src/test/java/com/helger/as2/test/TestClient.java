@@ -43,6 +43,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.as2lib.cert.PKCS12CertificateFactory;
+import com.helger.as2lib.client.AS2Client;
+import com.helger.as2lib.client.AS2ConnectionSettings;
+import com.helger.as2lib.client.AS2Request;
 import com.helger.as2lib.crypto.ECryptoAlgorithm;
 import com.helger.as2lib.exception.InvalidParameterException;
 import com.helger.as2lib.exception.OpenAS2Exception;
