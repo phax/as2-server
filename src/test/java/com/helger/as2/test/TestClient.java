@@ -44,8 +44,8 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.as2lib.cert.PKCS12CertificateFactory;
 import com.helger.as2lib.client.AS2Client;
-import com.helger.as2lib.client.AS2ClientSettings;
 import com.helger.as2lib.client.AS2ClientRequest;
+import com.helger.as2lib.client.AS2ClientSettings;
 import com.helger.as2lib.crypto.ECryptoAlgorithm;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.message.AS2Message;
@@ -90,7 +90,7 @@ public class TestClient
 
     final AS2ClientRequest aRequest = new AS2ClientRequest ("Test message");
     aRequest.setData (new File ("src/test/resources/dummy.txt"));
-    AS2Client.sendSynchronous (aSettings, aRequest);
+    new AS2Client ().sendSynchronous (aSettings, aRequest);
   }
 
   /**
@@ -258,7 +258,8 @@ public class TestClient
     conn.setRequestProperty (CAS2Header.HEADER_MIME_VERSION, CAS2Header.DEFAULT_MIME_VERSION);
     conn.setRequestProperty (CAS2Header.HEADER_CONTENT_TYPE, msg.getContentType ());
     conn.setRequestProperty (CAS2Header.HEADER_AS2_VERSION, CAS2Header.DEFAULT_AS2_VERSION);
-    conn.setRequestProperty (CAS2Header.HEADER_RECIPIENT_ADDRESS, aPartnership.getAttribute (CPartnershipIDs.PA_AS2_URL));
+    conn.setRequestProperty (CAS2Header.HEADER_RECIPIENT_ADDRESS,
+                             aPartnership.getAttribute (CPartnershipIDs.PA_AS2_URL));
     conn.setRequestProperty (CAS2Header.HEADER_AS2_TO, aPartnership.getReceiverID (CPartnershipIDs.PID_AS2));
     conn.setRequestProperty (CAS2Header.HEADER_AS2_FROM, aPartnership.getSenderID (CPartnershipIDs.PID_AS2));
     conn.setRequestProperty (CAS2Header.HEADER_SUBJECT, msg.getSubject ());
