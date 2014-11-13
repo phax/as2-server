@@ -1,9 +1,12 @@
 #as2-server
 
-The standalone AS2 server component based on [as2-lib](https://github.com/phax/as2-lib).
-It directly works on Sockets and not on Servlets.
-Please see [as2-peppol-servlet](https://github.com/phax/as2-peppol-servlet) for an example how [as2-lib](https://github.com/phax/as2-lib) can be used together with the Servlet specs. 
+The standalone AS2 server component based on **[as2-lib](https://github.com/phax/as2-lib)**.
+It directly works on Sockets and not on Servlets. Please see **[as2-peppol-servlet](https://github.com/phax/as2-peppol-servlet)** for an example how **[as2-lib](https://github.com/phax/as2-lib)** can be used together with the Servlet specs.
+Alternatively a specialized Servlet based server for PEPPOL is available with my **[as2-peppol-server](https://github.com/phax/as2-peppol-server)** project.
 
+This project is licensed under the FreeBSD License.
+
+#Configuration
 Start server: run class `com.helger.as2.app.MainOpenAS2Server`
 
 Startup arguments: src/main/resources/config/config.xml
