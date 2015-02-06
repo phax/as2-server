@@ -68,13 +68,13 @@ public class StreamCommandProcessor extends AbstractCommandProcessor
   public static final String COMMAND_ERROR = "Error executing command";
   public static final String EXIT_COMMAND = "exit";
   public static final String PROMPT = "AS2>";
-  private final BufferedReader reader;
-  private final BufferedWriter writer;
+  private final BufferedReader m_aReader;
+  private final BufferedWriter m_aWriter;
 
   public StreamCommandProcessor ()
   {
-    reader = new BufferedReader (new InputStreamReader (System.in));
-    writer = new BufferedWriter (new OutputStreamWriter (System.out));
+    m_aReader = new BufferedReader (new InputStreamReader (System.in));
+    m_aWriter = new BufferedWriter (new OutputStreamWriter (System.out));
   }
 
   public void initDynamicComponent (@Nonnull final IAS2Session session, @Nullable final IStringMap parameters) throws OpenAS2Exception
@@ -83,13 +83,13 @@ public class StreamCommandProcessor extends AbstractCommandProcessor
   @Nonnull
   public BufferedReader getReader ()
   {
-    return reader;
+    return m_aReader;
   }
 
   @Nonnull
   public BufferedWriter getWriter ()
   {
-    return writer;
+    return m_aWriter;
   }
 
   @Override
