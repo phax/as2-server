@@ -43,7 +43,7 @@ import org.slf4j.LoggerFactory;
 import com.helger.as2lib.AbstractDynamicComponent;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotations.ReturnsMutableCopy;
-import com.helger.commons.collections.ContainerHelper;
+import com.helger.commons.collections.CollectionHelper;
 
 public class BaseCommandRegistry extends AbstractDynamicComponent implements ICommandRegistry
 {
@@ -68,6 +68,6 @@ public class BaseCommandRegistry extends AbstractDynamicComponent implements ICo
   @ReturnsMutableCopy
   public Map <String, ICommand> getAllCommands ()
   {
-    return ContainerHelper.newOrderedMap (m_aCommands);
+    return CollectionHelper.newOrderedMap (m_aCommands);
   }
 }

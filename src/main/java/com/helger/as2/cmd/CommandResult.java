@@ -41,7 +41,7 @@ import javax.annotation.concurrent.NotThreadSafe;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotations.ReturnsMutableCopy;
-import com.helger.commons.collections.ContainerHelper;
+import com.helger.commons.collections.CollectionHelper;
 import com.helger.commons.microdom.IMicroContainer;
 import com.helger.commons.microdom.impl.MicroContainer;
 import com.helger.commons.microdom.serialize.MicroWriter;
@@ -91,7 +91,7 @@ public final class CommandResult
   @ReturnsMutableCopy
   public List <Serializable> getAllResults ()
   {
-    return ContainerHelper.newList (m_aResults);
+    return CollectionHelper.newList (m_aResults);
   }
 
   @Nonnull

@@ -47,7 +47,7 @@ import com.helger.as2lib.util.StringMap;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotations.ReturnsMutableCopy;
 import com.helger.commons.annotations.UnsupportedOperation;
-import com.helger.commons.collections.ContainerHelper;
+import com.helger.commons.collections.CollectionHelper;
 import com.helger.commons.lang.CGStringHelper;
 
 public abstract class AbstractCommandProcessor extends StringMap implements ICommandProcessor, IDynamicComponent, Runnable
@@ -77,7 +77,7 @@ public abstract class AbstractCommandProcessor extends StringMap implements ICom
   @ReturnsMutableCopy
   public Map <String, ICommand> getAllCommands ()
   {
-    return ContainerHelper.newOrderedMap (m_aCommands);
+    return CollectionHelper.newOrderedMap (m_aCommands);
   }
 
   @Nullable
