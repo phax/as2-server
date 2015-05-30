@@ -66,12 +66,12 @@ import com.helger.commons.io.resource.ClassPathResource;
 /**
  * @author oleo Date: May 4, 2010 Time: 6:56:31 PM
  */
-public class TestClient
+public class MainTestClient
 {
   // Message msg = new AS2Message();
   // getSession().getProcessor().handle(SenderModule.DO_SEND, msg, null);
 
-  private static final Logger s_aLogger = LoggerFactory.getLogger (TestClient.class);
+  private static final Logger s_aLogger = LoggerFactory.getLogger (MainTestClient.class);
 
   public static void main (final String [] args)
   {
