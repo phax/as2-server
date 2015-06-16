@@ -46,7 +46,8 @@ import com.helger.as2lib.cert.PKCS12CertificateFactory;
 import com.helger.as2lib.client.AS2Client;
 import com.helger.as2lib.client.AS2ClientRequest;
 import com.helger.as2lib.client.AS2ClientSettings;
-import com.helger.as2lib.crypto.ECryptoAlgorithm;
+import com.helger.as2lib.crypto.ECryptoAlgorithmCrypt;
+import com.helger.as2lib.crypto.ECryptoAlgorithmSign;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.message.AS2Message;
 import com.helger.as2lib.message.IMessage;
@@ -83,8 +84,8 @@ public class MainTestClient
     aSettings.setSenderData ("OpenAS2A", "email@example.org", "OpenAS2A");
     aSettings.setReceiverData ("OpenAS2B", "OpenAS2B", "http://localhost:10080/HttpReceiver");
     aSettings.setPartnershipName ("Partnership name");
-    aSettings.setEncryptAndSign (DO_ENCRYPT ? ECryptoAlgorithm.CRYPT_3DES : null,
-                                 DO_SIGN ? ECryptoAlgorithm.DIGEST_SHA1 : null);
+    aSettings.setEncryptAndSign (DO_ENCRYPT ? ECryptoAlgorithmCrypt.CRYPT_3DES : null,
+                                 DO_SIGN ? ECryptoAlgorithmSign.DIGEST_SHA1 : null);
     // Use the default MDN options
     // Use the default message ID format
 
@@ -126,8 +127,8 @@ public class MainTestClient
     aPartnership.setAttribute (CPartnershipIDs.PA_AS2_MDN_OPTIONS,
                                "signed-receipt-protocol=optional, pkcs7-signature; signed-receipt-micalg=optional, sha1");
 
-    aPartnership.setAttribute (CPartnershipIDs.PA_ENCRYPT, ECryptoAlgorithm.CRYPT_3DES.getID ());
-    aPartnership.setAttribute (CPartnershipIDs.PA_SIGN, ECryptoAlgorithm.DIGEST_SHA1.getID ());
+    aPartnership.setAttribute (CPartnershipIDs.PA_ENCRYPT, ECryptoAlgorithmCrypt.CRYPT_3DES.getID ());
+    aPartnership.setAttribute (CPartnershipIDs.PA_SIGN, ECryptoAlgorithmSign.DIGEST_SHA1.getID ());
     aPartnership.setAttribute (CPartnershipIDs.PA_PROTOCOL, "as2");
 
     aPartnership.setAttribute (CPartnershipIDs.PA_AS2_RECEIPT_OPTION, null);
