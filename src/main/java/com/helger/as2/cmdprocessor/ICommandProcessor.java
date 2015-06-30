@@ -39,7 +39,7 @@ import javax.annotation.Nonnull;
 import com.helger.as2.cmd.ICommand;
 import com.helger.as2.cmd.ICommandRegistry;
 import com.helger.as2lib.exception.OpenAS2Exception;
-import com.helger.commons.annotations.ReturnsMutableCopy;
+import com.helger.commons.annotation.ReturnsMutableCopy;
 
 public interface ICommandProcessor
 {

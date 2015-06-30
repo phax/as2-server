@@ -37,7 +37,7 @@ import java.util.regex.Matcher;
 import javax.annotation.Nonnull;
 
 import com.helger.commons.charset.CCharset;
-import com.helger.commons.io.streams.NonBlockingByteArrayOutputStream;
+import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
 import com.helger.commons.regex.RegExHelper;
 
 /**

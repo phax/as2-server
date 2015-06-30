@@ -55,7 +55,7 @@ import com.helger.as2lib.processor.IMessageProcessor;
 import com.helger.as2lib.processor.module.IProcessorModule;
 import com.helger.as2lib.session.AS2Session;
 import com.helger.as2lib.util.XMLUtil;
-import com.helger.commons.io.file.FileUtils;
+import com.helger.commons.io.file.FileHelper;
 import com.helger.commons.microdom.IMicroDocument;
 import com.helger.commons.microdom.IMicroElement;
 import com.helger.commons.microdom.serialize.MicroReader;
@@ -87,7 +87,7 @@ public class AS2ServerXMLSession extends AS2Session implements ICommandRegistryF
   public AS2ServerXMLSession (@Nonnull final File aFile) throws OpenAS2Exception
   {
     m_sBaseDirectory = aFile.getParentFile ().getAbsolutePath ();
-    load (FileUtils.getInputStream (aFile));
+    load (FileHelper.getInputStream (aFile));
   }
 
   @Nonnull
@@ -133,7 +133,8 @@ public class AS2ServerXMLSession extends AS2Session implements ICommandRegistryF
       loadCommandProcessor (m_aCmdManager, processor);
   }
 
-  protected void loadCommandProcessor (@Nonnull final CommandManager aCommandMgr, @Nonnull final IMicroElement aElement) throws OpenAS2Exception
+  protected void loadCommandProcessor (@Nonnull final CommandManager aCommandMgr,
+                                       @Nonnull final IMicroElement aElement) throws OpenAS2Exception
   {
     final AbstractCommandProcessor aCmdProcesor = XMLUtil.createComponent (aElement,
                                                                            AbstractCommandProcessor.class,

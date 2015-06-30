@@ -34,7 +34,7 @@ package com.helger.as2.cmd;
 
 import javax.annotation.Nonnull;
 
-import com.helger.commons.annotations.Nonempty;
+import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.state.ISuccessIndicator;
 
 public enum ECommandResultType implements ISuccessIndicator

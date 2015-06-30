@@ -45,10 +45,10 @@ import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.session.IAS2Session;
 import com.helger.as2lib.util.StringMap;
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotations.ReturnsMutableCopy;
-import com.helger.commons.annotations.UnsupportedOperation;
-import com.helger.commons.collections.CollectionHelper;
-import com.helger.commons.lang.CGStringHelper;
+import com.helger.commons.annotation.ReturnsMutableCopy;
+import com.helger.commons.annotation.UnsupportedOperation;
+import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.lang.ClassHelper;
 
 public abstract class AbstractCommandProcessor extends StringMap implements ICommandProcessor, IDynamicComponent, Runnable
 {
@@ -61,7 +61,7 @@ public abstract class AbstractCommandProcessor extends StringMap implements ICom
   @Nullable
   public String getName ()
   {
-    return CGStringHelper.getClassLocalName (this);
+    return ClassHelper.getClassLocalName (this);
   }
 
   @UnsupportedOperation

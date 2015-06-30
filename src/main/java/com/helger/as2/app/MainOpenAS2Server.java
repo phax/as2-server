@@ -45,8 +45,8 @@ import com.helger.as2.cmd.ICommandRegistry;
 import com.helger.as2.cmdprocessor.AbstractCommandProcessor;
 import com.helger.as2lib.CAS2Info;
 import com.helger.as2lib.exception.OpenAS2Exception;
-import com.helger.commons.collections.ArrayHelper;
-import com.helger.commons.lang.CGStringHelper;
+import com.helger.commons.collection.ArrayHelper;
+import com.helger.commons.lang.ClassHelper;
 import com.helger.commons.string.StringHelper;
 
 /**
@@ -99,7 +99,7 @@ public class MainOpenAS2Server
         s_aLogger.info ("Loading Command Processor " + cmd.getClass ().getName () + "");
         cmd.init ();
         cmd.addCommands (aCommandRegistry);
-        new Thread (cmd, CGStringHelper.getClassLocalName (cmd)).start ();
+        new Thread (cmd, ClassHelper.getClassLocalName (cmd)).start ();
       }
 
       // enter the command processing loop

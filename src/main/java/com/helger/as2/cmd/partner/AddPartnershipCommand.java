@@ -40,7 +40,7 @@ import com.helger.as2lib.partner.Partnership;
 import com.helger.as2lib.partner.XMLPartnershipFactory;
 import com.helger.commons.microdom.IMicroDocument;
 import com.helger.commons.microdom.IMicroElement;
-import com.helger.commons.microdom.impl.MicroDocument;
+import com.helger.commons.microdom.MicroDocument;
 
 /**
  * adds a new partnership entry in partneship store

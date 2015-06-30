@@ -52,17 +52,17 @@ import com.helger.as2lib.exception.WrappedOpenAS2Exception;
 import com.helger.as2lib.session.IAS2Session;
 import com.helger.as2lib.util.IStringMap;
 import com.helger.as2lib.util.StringMap;
-import com.helger.commons.io.streams.NonBlockingBufferedReader;
-import com.helger.commons.io.streams.NonBlockingBufferedWriter;
-import com.helger.commons.io.streams.StreamUtils;
+import com.helger.commons.io.socket.SocketHelper;
+import com.helger.commons.io.stream.NonBlockingBufferedReader;
+import com.helger.commons.io.stream.NonBlockingBufferedWriter;
 import com.helger.commons.string.StringHelper;
 
 /**
  * actual socket command processor takes commands from socket/port and passes
- * them to the OpenAS2Server message format <command userid="abc" pasword="xyz">
- * the actual command </command> when inited the valid userid and password is
- * passed, then as each command is processed the processCommand method verifies
- * the two fields correctness
+ * them to the OpenAS2Server message format
+ * <command userid="abc" pasword="xyz"> the actual command </command> when
+ * inited the valid userid and password is passed, then as each command is
+ * processed the processCommand method verifies the two fields correctness
  *
  * @author joseph mcverry
  */
@@ -84,7 +84,8 @@ public class SocketCommandProcessor extends AbstractCommandProcessor
   {}
 
   @Override
-  public void initDynamicComponent (@Nonnull final IAS2Session aSession, @Nullable final IStringMap aParams) throws OpenAS2Exception
+  public void initDynamicComponent (@Nonnull final IAS2Session aSession,
+                                    @Nullable final IStringMap aParams) throws OpenAS2Exception
   {
     final StringMap aParameters = aParams == null ? new StringMap () : new StringMap (aParams);
     final String sPort = aParameters.getAttributeAsString (ATTR_PORTID);
@@ -207,7 +208,7 @@ public class SocketCommandProcessor extends AbstractCommandProcessor
     }
     finally
     {
-      StreamUtils.close (socket);
+      SocketHelper.close (socket);
     }
   }
 

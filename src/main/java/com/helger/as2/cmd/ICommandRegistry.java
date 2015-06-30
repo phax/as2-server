@@ -37,7 +37,7 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 
 import com.helger.as2lib.IDynamicComponent;
-import com.helger.commons.annotations.ReturnsMutableCopy;
+import com.helger.commons.annotation.ReturnsMutableCopy;
 
 public interface ICommandRegistry extends IDynamicComponent
 {
