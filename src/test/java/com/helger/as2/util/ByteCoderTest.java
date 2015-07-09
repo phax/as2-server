@@ -37,9 +37,11 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 /**
+ * Test class for class {@link ByteCoder}
+ *
  * @author joseph mcverry
  */
-public class ByteCoderTest
+public final class ByteCoderTest
 {
   @Test
   public void test ()
