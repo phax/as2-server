@@ -26,20 +26,13 @@ No database or additional software is needed to exchange AS2 messages!
 To run this server stand-alone from the source build, perform the following steps.
 In the below commands `x.y.z` denotes the effective version number
 
-1. build the binary artefacts using Apache Maven 3.x
-```
-mvn clean package
-```
+1. build the binary artefacts using Apache Maven 3.x: `mvn clean package`
 2. The resulting JAR file is than located at `target/as2-server-x.y.z-SNAPSHOT.jar`
-3. On Unix/Linux systems run the AS2 server using the following command:
-```
-java -cp "target/as2-server-x.y.z-SNAPSHOT.jar:target/dependencies/*" com.helger.as2.app.MainOpenAS2Server src/main/resources/config/config.xml
-```
-whereas `src/main/resources/config/config.xml` is the path to the configuration file to be used and may be changed.
-4. On Windows systems run the AS2 server using the following command (maintain the quotes as they are!):
-```
-java -cp "target/as2-server-x.y.z-SNAPSHOT.jar;target/dependencies/*" com.helger.as2.app.MainOpenAS2Server src/main/resources/config/config.xml
-```
+3. Launch the server - `src/main/resources/config/config.xml` is the path to the configuration file to be used and may be changed. 
+  1. On Unix/Linux systems run the AS2 server using the following command (on one line): `java -cp "target/as2-server-x.y.z-SNAPSHOT.jar:target/dependencies/*" com.helger.as2.app.MainOpenAS2Server src/main/resources/config/config.xml
+`
+  2. On Windows systems run the AS2 server using the following command (on one line; maintain the quotes as they are!): `
+java -cp "target/as2-server-x.y.z-SNAPSHOT.jar;target/dependencies/*" com.helger.as2.app.MainOpenAS2Server src/main/resources/config/config.xml`
 
 ---
 
