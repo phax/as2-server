@@ -12,13 +12,34 @@ This project is licensed under the FreeBSD License.
 #Configuration
 Start server: run class `com.helger.as2.app.MainOpenAS2Server`
 
-Startup arguments (required): src/main/resources/config/config.xml
+Startup arguments (required): `src/main/resources/config/config.xml`
+This configuration file should be the starting point for your own customizations. You may simple copy the file to a different location and provide the absolute path to it instead of the example given above. 
 
-Waits for incoming AS2 messages on http://localhost:10080/HttpReceiver
+Waits for incoming AS2 messages on `http://localhost:10080/HttpReceiver`
+Note: the port for the incoming messages can be configured in the configuration file.
 
 Than run `com.helger.as2.test.TestClient` as a Java main application to perform a simple AS2 transmission.
 
 No database or additional software is needed to exchange AS2 messages!
+
+#Building and running from source
+To run this server stand-alone from the source build, perform the following steps.
+In the below commands `x.y.z` denotes the effective version number
+
+1. build the binary artefacts using Apache Maven 3.x
+```
+mvn clean package
+```
+2. The resulting JAR file is than located at `target/as2-server-x.y.z-SNAPSHOT.jar`
+3. On Unix/Linux systems run the AS2 server using the following command:
+```
+java -cp "target/as2-server-x.y.z-SNAPSHOT.jar:target/dependencies/*" com.helger.as2.app.MainOpenAS2Server src/main/resources/config/config.xml
+```
+whereas `src/main/resources/config/config.xml` is the path to the configuration file to be used and may be changed.
+4. On Windows systems run the AS2 server using the following command (maintain the quotes as they are!):
+```
+java -cp "target/as2-server-x.y.z-SNAPSHOT.jar;target/dependencies/*" com.helger.as2.app.MainOpenAS2Server src/main/resources/config/config.xml
+```
 
 ---
 
