@@ -46,7 +46,7 @@ import com.helger.commons.xml.serialize.read.SAXReaderSettings;
 
 /**
  * used to parse commands from the socket command processor message format
- * <command userid="abc" pasword="xyz"> the actual command </command>
+ * &lt;command userid="abc" pasword="xyz"&gt; the actual command&lt;/command&gt;
  *
  * @author joseph mcverry
  */
@@ -74,10 +74,11 @@ public class SocketCommandParser extends DefaultHandler
 
     if (sInLine != null)
     {
-      SAXReader.readXMLSAX (sInLine, new SAXReaderSettings ().setEntityResolver (this)
-                                                             .setDTDHandler (this)
-                                                             .setContentHandler (this)
-                                                             .setErrorHandler (this));
+      SAXReader.readXMLSAX (sInLine,
+                            new SAXReaderSettings ().setEntityResolver (this)
+                                                    .setDTDHandler (this)
+                                                    .setContentHandler (this)
+                                                    .setErrorHandler (this));
     }
   }
 
@@ -110,6 +111,18 @@ public class SocketCommandParser extends DefaultHandler
     }
   }
 
+  @Override
+  public void endElement (final String sURI, final String sLocalName, @Nonnull final String sQName) throws SAXException
+  {
+    if (sQName.equals ("command"))
+    {
+      m_sCommandText = m_aContents.toString ();
+      m_aContents.reset ();
+    }
+    else
+      m_aContents.flush ();
+  }
+
   public String getCommandText ()
   {
     return m_sCommandText;
@@ -123,17 +136,5 @@ public class SocketCommandParser extends DefaultHandler
   public String getUserid ()
   {
     return m_sUserID;
-  }
-
-  @Override
-  public void endElement (final String sURI, final String sLocalName, @Nonnull final String sQName) throws SAXException
-  {
-    if (sQName.equals ("command"))
-    {
-      m_sCommandText = m_aContents.toString ();
-      m_aContents.reset ();
-    }
-    else
-      m_aContents.flush ();
   }
 }
