@@ -9,6 +9,16 @@ Versions >= 2.0.0 are compatible with ph-commons >= 6.0.
 
 This project is licensed under the FreeBSD License.
 
+#Maven usage
+Add the following to your pom.xml to use this artifact:
+```
+<dependency>
+  <groupId>com.helger</groupId>
+  <artifactId>as2-server</artifactId>
+  <version>2.0.1</version>
+</dependency>
+```
+
 #Configuration
 Start server: run class `com.helger.as2.app.MainOpenAS2Server`
 
