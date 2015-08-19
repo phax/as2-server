@@ -49,6 +49,7 @@ import com.helger.as2lib.client.AS2ClientRequest;
 import com.helger.as2lib.client.AS2ClientSettings;
 import com.helger.as2lib.crypto.ECryptoAlgorithmCrypt;
 import com.helger.as2lib.crypto.ECryptoAlgorithmSign;
+import com.helger.as2lib.disposition.DispositionOptions;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.message.AS2Message;
 import com.helger.as2lib.message.IMessage;
@@ -135,7 +136,6 @@ public class MainTestClient
     // Received-content-MIC
     // original-message-id
 
-    //
     final String pidSenderEmail = "email";
     final String pidAs2 = "GWTESTFM2i";
     final String pidSenderAs2 = "Sender";
@@ -154,13 +154,18 @@ public class MainTestClient
     aPartnership.setReceiverX509Alias (receiverKey);
 
     aPartnership.setAttribute (CPartnershipIDs.PA_AS2_URL, paAs2Url);
-    // partnership.setAttribute(AS2Partnership.PA_AS2_MDN_TO,"http://localhost:10080");
+    if (false)
+      aPartnership.setAttribute (CPartnershipIDs.PA_AS2_MDN_TO, "http://localhost:10080");
     aPartnership.setAttribute (CPartnershipIDs.PA_AS2_MDN_OPTIONS,
-                               "signed-receipt-protocol=optional, pkcs7-signature; signed-receipt-micalg=optional, sha1");
+                               new DispositionOptions ().setProtocolImportance (DispositionOptions.IMPORTANCE_OPTIONAL)
+                                                        .setProtocol (DispositionOptions.PROTOCOL_PKCS7_SIGNATURE)
+                                                        .setMICAlgImportance (DispositionOptions.IMPORTANCE_OPTIONAL)
+                                                        .setMICAlg (ECryptoAlgorithmSign.DIGEST_SHA1)
+                                                        .getAsString ());
 
     aPartnership.setAttribute (CPartnershipIDs.PA_ENCRYPT, ECryptoAlgorithmCrypt.CRYPT_3DES.getID ());
     aPartnership.setAttribute (CPartnershipIDs.PA_SIGN, ECryptoAlgorithmSign.DIGEST_SHA1.getID ());
-    aPartnership.setAttribute (CPartnershipIDs.PA_PROTOCOL, "as2");
+    aPartnership.setAttribute (CPartnershipIDs.PA_PROTOCOL, AS2Message.PROTOCOL_AS2);
 
     aPartnership.setAttribute (CPartnershipIDs.PA_AS2_RECEIPT_OPTION, null);
 
@@ -271,7 +276,6 @@ public class MainTestClient
     catch (final InvalidParameterException rpe)
     {
       rpe.addSource (OpenAS2Exception.SOURCE_MESSAGE, aMsg);
-
     }
   }
 
@@ -299,18 +303,18 @@ public class MainTestClient
     if (sDispTo != null)
       aConn.setRequestProperty (CAS2Header.HEADER_DISPOSITION_NOTIFICATION_TO, sDispTo);
 
-    final String dispOptions = aPartnership.getAttribute (CPartnershipIDs.PA_AS2_MDN_OPTIONS);
-    if (dispOptions != null)
-      aConn.setRequestProperty (CAS2Header.HEADER_DISPOSITION_NOTIFICATION_OPTIONS, dispOptions);
+    final String sDispOptions = aPartnership.getAttribute (CPartnershipIDs.PA_AS2_MDN_OPTIONS);
+    if (sDispOptions != null)
+      aConn.setRequestProperty (CAS2Header.HEADER_DISPOSITION_NOTIFICATION_OPTIONS, sDispOptions);
 
     // Asynch MDN 2007-03-12
-    final String receiptOption = aPartnership.getAttribute (CPartnershipIDs.PA_AS2_RECEIPT_OPTION);
-    if (receiptOption != null)
-      aConn.setRequestProperty (CAS2Header.HEADER_RECEIPT_DELIVERY_OPTION, receiptOption);
+    final String sReceiptOption = aPartnership.getAttribute (CPartnershipIDs.PA_AS2_RECEIPT_OPTION);
+    if (sReceiptOption != null)
+      aConn.setRequestProperty (CAS2Header.HEADER_RECEIPT_DELIVERY_OPTION, sReceiptOption);
 
     // As of 2007-06-01
-    final String contentDisp = aMsg.getContentDisposition ();
-    if (contentDisp != null)
-      aConn.setRequestProperty (CAS2Header.HEADER_CONTENT_DISPOSITION, contentDisp);
+    final String sContentDisp = aMsg.getContentDisposition ();
+    if (sContentDisp != null)
+      aConn.setRequestProperty (CAS2Header.HEADER_CONTENT_DISPOSITION, sContentDisp);
   }
 }
