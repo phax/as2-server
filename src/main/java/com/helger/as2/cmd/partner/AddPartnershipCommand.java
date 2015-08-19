@@ -113,9 +113,11 @@ public class AddPartnershipCommand extends AbstractAliasedPartnershipsCommand
 
     }
 
-    final Partnership aPartnership = ((XMLPartnershipFactory) partFx).loadPartnership (root,
-                                                                                       partFx.getPartnerMap (),
-                                                                                       partFx.getPartnershipMap ());
+    final Partnership aPartnership = ((XMLPartnershipFactory) partFx).loadPartnership (root, partFx.getPartnerMap ());
+    if (partFx.getPartnershipMap ().getPartnershipByName (aPartnership.getName ()) != null)
+      return new CommandResult (ECommandResultType.TYPE_ERROR,
+                                "A partnership with name '" + aPartnership.getName () + "' is already present!");
+
     // add the partnership to the list of available partnerships
     partFx.addPartnership (aPartnership);
 

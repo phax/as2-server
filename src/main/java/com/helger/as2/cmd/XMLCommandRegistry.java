@@ -77,7 +77,7 @@ public class XMLCommandRegistry extends BaseCommandRegistry
                                    @Nullable final MultiCommand parent) throws OpenAS2Exception
   {
     final MultiCommand cmd = new MultiCommand ();
-    cmd.initDynamicComponent (getSession (), XMLHelper.getAttrsWithLowercaseName (aCommand));
+    cmd.initDynamicComponent (getSession (), XMLHelper.getAllAttrsWithLowercaseName (aCommand));
 
     if (parent != null)
       parent.getCommands ().add (cmd);

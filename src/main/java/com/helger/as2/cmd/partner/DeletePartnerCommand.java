@@ -32,6 +32,8 @@
  */
 package com.helger.as2.cmd.partner;
 
+import javax.annotation.Nonnull;
+
 import com.helger.as2.cmd.CommandResult;
 import com.helger.as2.cmd.ECommandResultType;
 import com.helger.as2lib.exception.OpenAS2Exception;
@@ -64,39 +66,25 @@ public class DeletePartnerCommand extends AbstractAliasedPartnershipsCommand
   }
 
   @Override
-  public CommandResult execute (final IPartnershipFactory partFx, final Object [] params) throws OpenAS2Exception
+  public CommandResult execute (@Nonnull final IPartnershipFactory partFx,
+                                final Object [] aParams) throws OpenAS2Exception
   {
-    if (params.length < 1)
-    {
+    if (aParams.length < 1)
       return new CommandResult (ECommandResultType.TYPE_INVALID_PARAM_COUNT, getUsage ());
-    }
 
-    final String name = params[0].toString ();
+    final String sName = aParams[0].toString ();
 
-    boolean found = false;
-    for (final String partName : partFx.getAllPartnerNames ())
-      if (partName.equals (name))
-      {
-        found = true;
-        break;
-      }
+    if (!partFx.getAllPartnerNames ().contains (sName))
+      return new CommandResult (ECommandResultType.TYPE_ERROR, "Unknown partner name '" + sName + "'");
 
-    if (!found)
-      return new CommandResult (ECommandResultType.TYPE_ERROR, "Unknown partner name");
-
-    boolean partnershipFound = false;
     for (final Partnership aPartnership : partFx.getAllPartnerships ())
-      if (aPartnership.containsReceiverID (name) || aPartnership.containsSenderID (name))
+      if (aPartnership.containsReceiverID (sName) || aPartnership.containsSenderID (sName))
       {
-        partnershipFound = true;
-        break;
+        return new CommandResult (ECommandResultType.TYPE_ERROR,
+                                  "Can not delete partner '" + sName + "'; it is tied to some partnerships");
       }
 
-    if (partnershipFound)
-      return new CommandResult (ECommandResultType.TYPE_ERROR,
-                                "Can not delete partner; it is tied to some partnerships");
-
-    partFx.removePartner (name);
+    partFx.removePartner (sName);
     return new CommandResult (ECommandResultType.TYPE_OK);
   }
 }

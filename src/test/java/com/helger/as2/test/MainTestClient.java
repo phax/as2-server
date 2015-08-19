@@ -146,13 +146,14 @@ public class MainTestClient
     final AS2SenderModule aTestSender = new AS2SenderModule ();
 
     final Partnership aPartnership = new Partnership ("partnership name");
-    aPartnership.setAttribute (CPartnershipIDs.PA_AS2_URL, paAs2Url);
-    aPartnership.setReceiverID (CPartnershipIDs.PID_AS2, pidAs2);
-    aPartnership.setReceiverID (CPartnershipIDs.PID_X509_ALIAS, receiverKey);
-    aPartnership.setSenderID (CPartnershipIDs.PID_AS2, pidSenderAs2);
-    aPartnership.setSenderID (CPartnershipIDs.PID_X509_ALIAS, senderKey);
-    aPartnership.setSenderID (CPartnershipIDs.PID_EMAIL, pidSenderEmail);
+    aPartnership.setSenderAS2ID (pidSenderAs2);
+    aPartnership.setSenderX509Alias (senderKey);
+    aPartnership.setSenderEmail (pidSenderEmail);
 
+    aPartnership.setReceiverAS2ID (pidAs2);
+    aPartnership.setReceiverX509Alias (receiverKey);
+
+    aPartnership.setAttribute (CPartnershipIDs.PA_AS2_URL, paAs2Url);
     // partnership.setAttribute(AS2Partnership.PA_AS2_MDN_TO,"http://localhost:10080");
     aPartnership.setAttribute (CPartnershipIDs.PA_AS2_MDN_OPTIONS,
                                "signed-receipt-protocol=optional, pkcs7-signature; signed-receipt-micalg=optional, sha1");
@@ -163,7 +164,7 @@ public class MainTestClient
 
     aPartnership.setAttribute (CPartnershipIDs.PA_AS2_RECEIPT_OPTION, null);
 
-    s_aLogger.info ("ALIAS: " + aPartnership.getSenderID (CPartnershipIDs.PID_X509_ALIAS));
+    s_aLogger.info ("ALIAS: " + aPartnership.getSenderX509Alias ());
 
     final IMessage aMsg = new AS2Message ();
     aMsg.setContentType ("application/xml");
@@ -247,31 +248,29 @@ public class MainTestClient
     // logger.info(reply.getData().getRawInputStream().toString());
   }
 
-  protected static void checkRequired (final IMessage msg)
+  protected static void checkRequired (final IMessage aMsg)
   {
-    final Partnership partnership = msg.getPartnership ();
+    final Partnership aPartnership = aMsg.getPartnership ();
 
     try
     {
-      InvalidParameterException.checkValue (msg, "ContentType", msg.getContentType ());
-      InvalidParameterException.checkValue (msg,
+      InvalidParameterException.checkValue (aMsg, "ContentType", aMsg.getContentType ());
+      InvalidParameterException.checkValue (aMsg,
                                             "Attribute: " + CPartnershipIDs.PA_AS2_URL,
-                                            partnership.getAttribute (CPartnershipIDs.PA_AS2_URL));
-      InvalidParameterException.checkValue (msg,
+                                            aPartnership.getAttribute (CPartnershipIDs.PA_AS2_URL));
+      InvalidParameterException.checkValue (aMsg,
                                             "Receiver: " + CPartnershipIDs.PID_AS2,
-                                            partnership.getReceiverID (CPartnershipIDs.PID_AS2));
-      InvalidParameterException.checkValue (msg,
-                                            "Sender: " + CPartnershipIDs.PID_AS2,
-                                            partnership.getSenderID (CPartnershipIDs.PID_AS2));
-      InvalidParameterException.checkValue (msg, "Subject", msg.getSubject ());
-      InvalidParameterException.checkValue (msg,
+                                            aPartnership.getReceiverAS2ID ());
+      InvalidParameterException.checkValue (aMsg, "Sender: " + CPartnershipIDs.PID_AS2, aPartnership.getSenderAS2ID ());
+      InvalidParameterException.checkValue (aMsg, "Subject", aMsg.getSubject ());
+      InvalidParameterException.checkValue (aMsg,
                                             "Sender: " + CPartnershipIDs.PID_EMAIL,
-                                            partnership.getSenderID (CPartnershipIDs.PID_EMAIL));
-      InvalidParameterException.checkValue (msg, "Message Data", msg.getData ());
+                                            aPartnership.getSenderEmail ());
+      InvalidParameterException.checkValue (aMsg, "Message Data", aMsg.getData ());
     }
     catch (final InvalidParameterException rpe)
     {
-      rpe.addSource (OpenAS2Exception.SOURCE_MESSAGE, msg);
+      rpe.addSource (OpenAS2Exception.SOURCE_MESSAGE, aMsg);
 
     }
   }
@@ -291,10 +290,10 @@ public class MainTestClient
     aConn.setRequestProperty (CAS2Header.HEADER_AS2_VERSION, CAS2Header.DEFAULT_AS2_VERSION);
     aConn.setRequestProperty (CAS2Header.HEADER_RECIPIENT_ADDRESS,
                               aPartnership.getAttribute (CPartnershipIDs.PA_AS2_URL));
-    aConn.setRequestProperty (CAS2Header.HEADER_AS2_TO, aPartnership.getReceiverID (CPartnershipIDs.PID_AS2));
-    aConn.setRequestProperty (CAS2Header.HEADER_AS2_FROM, aPartnership.getSenderID (CPartnershipIDs.PID_AS2));
+    aConn.setRequestProperty (CAS2Header.HEADER_AS2_TO, aPartnership.getReceiverAS2ID ());
+    aConn.setRequestProperty (CAS2Header.HEADER_AS2_FROM, aPartnership.getSenderAS2ID ());
     aConn.setRequestProperty (CAS2Header.HEADER_SUBJECT, aMsg.getSubject ());
-    aConn.setRequestProperty (CAS2Header.HEADER_FROM, aPartnership.getSenderID (CPartnershipIDs.PID_EMAIL));
+    aConn.setRequestProperty (CAS2Header.HEADER_FROM, aPartnership.getSenderEmail ());
 
     final String sDispTo = aPartnership.getAttribute (CPartnershipIDs.PA_AS2_MDN_TO);
     if (sDispTo != null)
