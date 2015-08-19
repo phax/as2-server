@@ -65,6 +65,35 @@ import com.helger.as2lib.util.StringMap;
 import com.helger.commons.io.resource.ClassPathResource;
 
 /**
+ * <pre>
+  * &lt;partnerships&gt;
+  *  &lt;partner name="OpenAS2A" as2_id="OpenAS2A" x509_alias="OpenAS2A" email="OpenAS2 A email"/&gt;
+  *  &lt;partner name="OpenAS2B" as2_id="OpenAS2B" x509_alias="OpenAS2B" email="OpenAS2 B email"/&gt;
+  *  &lt;partnership name="OpenAS2A-OpenAS2B"&gt;
+  *     &lt;sender name="OpenAS2A"/&gt;
+  *     &lt;receiver name="OpenAS2B"/&gt;
+  *     &lt;attribute name="protocol" value="as2"/&gt;
+  *     &lt;attribute name="subject" value="From OpenAS2A to OpenAS2B"/&gt;
+  *     &lt;attribute name="as2_url" value="http://localhost:10080"/&gt;
+  *     &lt;attribute name="as2_mdn_to" value="http://localhost:10080"/&gt;
+  *     &lt;attribute name="as2_mdn_options" value="signed-receipt-protocol=optional, pkcs7-signature; signed-receipt-micalg=optional, sha1" /&gt;
+  *     &lt;attribute name="encrypt" value="3des"/&gt;
+  *     &lt;attribute name="sign" value="md5"/&gt;
+  *   &lt;/partnership&gt;
+  *   &lt;partnership name="OpenAS2B-OpenAS2A"&gt;
+  *     &lt;sender name="OpenAS2B"/&gt;
+  *     &lt;receiver name="OpenAS2A"/&gt;
+  *     &lt;attribute name="protocol" value="as2"/&gt;
+  *     &lt;attribute name="subject" value="From OpenAS2B to OpenAS2A"/&gt;
+  *     &lt;attribute name="as2_url" value="http://localhost:10080"/&gt;
+  *     &lt;attribute name="as2_mdn_to" value="http://localhost:10080"/&gt;
+  *     &lt;attribute name="as2_mdn_options" value="signed-receipt-protocol=optional, pkcs7-signature; signed-receipt-micalg=optional, sha1" /&gt;
+  *     &lt;attribute name="encrypt" value="3des"/&gt;
+  *     &lt;attribute name="sign" value="sha1"/&gt;
+  *   &lt;/partnership&gt;
+  * &lt;/partnerships&gt;
+ * </pre>
+ *
  * @author oleo Date: May 4, 2010 Time: 6:56:31 PM
  */
 public class MainTestClient
@@ -284,28 +313,4 @@ public class MainTestClient
     if (contentDisp != null)
       conn.setRequestProperty (CAS2Header.HEADER_CONTENT_DISPOSITION, contentDisp);
   }
-
-  /*
-   * <partnerships> <partner name="OpenAS2A" as2_id="OpenAS2A"
-   * x509_alias="OpenAS2A" email="OpenAS2 A email"/> <partner name="OpenAS2B"
-   * as2_id="OpenAS2B" x509_alias="OpenAS2B" email="OpenAS2 A email"/>
-   * <partnership name="OpenAS2A-OpenAS2B"> <sender name="OpenAS2A"/> <receiver
-   * name="OpenAS2B"/> <attribute name="protocol" value="as2"/> <attribute
-   * name="subject" value="From OpenAS2A to OpenAS2B"/> <attribute
-   * name="as2_url" value="http://localhost:10080"/> <attribute
-   * name="as2_mdn_to" value="http://localhost:10080"/> <attribute
-   * name="as2_mdn_options" value=
-   * "signed-receipt-protocol=optional, pkcs7-signature; signed-receipt-micalg=optional, sha1"
-   * /> <attribute name="encrypt" value="3des"/> <attribute name="sign"
-   * value="md5"/> </partnership> <partnership name="OpenAS2B-OpenAS2A"> <sender
-   * name="OpenAS2B"/> <receiver name="OpenAS2A"/> <attribute name="protocol"
-   * value="as2"/> <attribute name="subject" value="From OpenAS2B to OpenAS2A"/>
-   * <attribute name="as2_url" value="http://localhost:10080"/> <attribute
-   * name="as2_mdn_to" value="http://localhost:10080"/> <attribute
-   * name="as2_mdn_options" value=
-   * "signed-receipt-protocol=optional, pkcs7-signature; signed-receipt-micalg=optional, sha1"
-   * /> <attribute name="encrypt" value="3des"/> <attribute name="sign"
-   * value="sha1"/> </partnership> </partnerships>
-   */
-
 }
