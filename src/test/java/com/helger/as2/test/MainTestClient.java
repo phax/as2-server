@@ -36,6 +36,7 @@ import java.io.File;
 import java.net.HttpURLConnection;
 import java.util.Enumeration;
 
+import javax.annotation.Nonnull;
 import javax.mail.Header;
 import javax.mail.internet.MimeBodyPart;
 
@@ -60,7 +61,7 @@ import com.helger.as2lib.processor.sender.AS2SenderModule;
 import com.helger.as2lib.processor.sender.IProcessorSenderModule;
 import com.helger.as2lib.session.AS2Session;
 import com.helger.as2lib.util.CAS2Header;
-import com.helger.as2lib.util.DateUtil;
+import com.helger.as2lib.util.DateHelper;
 import com.helger.as2lib.util.StringMap;
 import com.helger.commons.io.resource.ClassPathResource;
 
@@ -275,42 +276,42 @@ public class MainTestClient
     }
   }
 
-  protected void updateHttpHeaders (final HttpURLConnection conn, final IMessage msg)
+  protected void updateHttpHeaders (@Nonnull final HttpURLConnection aConn, @Nonnull final IMessage aMsg)
   {
-    final Partnership aPartnership = msg.getPartnership ();
+    final Partnership aPartnership = aMsg.getPartnership ();
 
-    conn.setRequestProperty (CAS2Header.HEADER_CONNECTION, CAS2Header.DEFAULT_CONNECTION);
-    conn.setRequestProperty (CAS2Header.HEADER_USER_AGENT, CAS2Header.DEFAULT_USER_AGENT);
+    aConn.setRequestProperty (CAS2Header.HEADER_CONNECTION, CAS2Header.DEFAULT_CONNECTION);
+    aConn.setRequestProperty (CAS2Header.HEADER_USER_AGENT, CAS2Header.DEFAULT_USER_AGENT);
 
-    conn.setRequestProperty (CAS2Header.HEADER_DATE, DateUtil.getFormattedDateNow (CAS2Header.DEFAULT_DATE_FORMAT));
-    conn.setRequestProperty (CAS2Header.HEADER_MESSAGE_ID, msg.getMessageID ());
+    aConn.setRequestProperty (CAS2Header.HEADER_DATE, DateHelper.getFormattedDateNow (CAS2Header.DEFAULT_DATE_FORMAT));
+    aConn.setRequestProperty (CAS2Header.HEADER_MESSAGE_ID, aMsg.getMessageID ());
     // make sure this is the encoding used in the msg, run TBF1
-    conn.setRequestProperty (CAS2Header.HEADER_MIME_VERSION, CAS2Header.DEFAULT_MIME_VERSION);
-    conn.setRequestProperty (CAS2Header.HEADER_CONTENT_TYPE, msg.getContentType ());
-    conn.setRequestProperty (CAS2Header.HEADER_AS2_VERSION, CAS2Header.DEFAULT_AS2_VERSION);
-    conn.setRequestProperty (CAS2Header.HEADER_RECIPIENT_ADDRESS,
-                             aPartnership.getAttribute (CPartnershipIDs.PA_AS2_URL));
-    conn.setRequestProperty (CAS2Header.HEADER_AS2_TO, aPartnership.getReceiverID (CPartnershipIDs.PID_AS2));
-    conn.setRequestProperty (CAS2Header.HEADER_AS2_FROM, aPartnership.getSenderID (CPartnershipIDs.PID_AS2));
-    conn.setRequestProperty (CAS2Header.HEADER_SUBJECT, msg.getSubject ());
-    conn.setRequestProperty (CAS2Header.HEADER_FROM, aPartnership.getSenderID (CPartnershipIDs.PID_EMAIL));
+    aConn.setRequestProperty (CAS2Header.HEADER_MIME_VERSION, CAS2Header.DEFAULT_MIME_VERSION);
+    aConn.setRequestProperty (CAS2Header.HEADER_CONTENT_TYPE, aMsg.getContentType ());
+    aConn.setRequestProperty (CAS2Header.HEADER_AS2_VERSION, CAS2Header.DEFAULT_AS2_VERSION);
+    aConn.setRequestProperty (CAS2Header.HEADER_RECIPIENT_ADDRESS,
+                              aPartnership.getAttribute (CPartnershipIDs.PA_AS2_URL));
+    aConn.setRequestProperty (CAS2Header.HEADER_AS2_TO, aPartnership.getReceiverID (CPartnershipIDs.PID_AS2));
+    aConn.setRequestProperty (CAS2Header.HEADER_AS2_FROM, aPartnership.getSenderID (CPartnershipIDs.PID_AS2));
+    aConn.setRequestProperty (CAS2Header.HEADER_SUBJECT, aMsg.getSubject ());
+    aConn.setRequestProperty (CAS2Header.HEADER_FROM, aPartnership.getSenderID (CPartnershipIDs.PID_EMAIL));
 
     final String sDispTo = aPartnership.getAttribute (CPartnershipIDs.PA_AS2_MDN_TO);
     if (sDispTo != null)
-      conn.setRequestProperty (CAS2Header.HEADER_DISPOSITION_NOTIFICATION_TO, sDispTo);
+      aConn.setRequestProperty (CAS2Header.HEADER_DISPOSITION_NOTIFICATION_TO, sDispTo);
 
     final String dispOptions = aPartnership.getAttribute (CPartnershipIDs.PA_AS2_MDN_OPTIONS);
     if (dispOptions != null)
-      conn.setRequestProperty (CAS2Header.HEADER_DISPOSITION_NOTIFICATION_OPTIONS, dispOptions);
+      aConn.setRequestProperty (CAS2Header.HEADER_DISPOSITION_NOTIFICATION_OPTIONS, dispOptions);
 
     // Asynch MDN 2007-03-12
     final String receiptOption = aPartnership.getAttribute (CPartnershipIDs.PA_AS2_RECEIPT_OPTION);
     if (receiptOption != null)
-      conn.setRequestProperty (CAS2Header.HEADER_RECEIPT_DELIVERY_OPTION, receiptOption);
+      aConn.setRequestProperty (CAS2Header.HEADER_RECEIPT_DELIVERY_OPTION, receiptOption);
 
     // As of 2007-06-01
-    final String contentDisp = msg.getContentDisposition ();
+    final String contentDisp = aMsg.getContentDisposition ();
     if (contentDisp != null)
-      conn.setRequestProperty (CAS2Header.HEADER_CONTENT_DISPOSITION, contentDisp);
+      aConn.setRequestProperty (CAS2Header.HEADER_CONTENT_DISPOSITION, contentDisp);
   }
 }

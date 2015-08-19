@@ -41,7 +41,7 @@ import com.helger.as2.app.session.AS2ServerXMLSession;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.session.IAS2Session;
 import com.helger.as2lib.util.IStringMap;
-import com.helger.as2lib.util.XMLUtil;
+import com.helger.as2lib.util.XMLHelper;
 import com.helger.commons.io.file.FileHelper;
 import com.helger.commons.microdom.IMicroDocument;
 import com.helger.commons.microdom.IMicroElement;
@@ -66,7 +66,7 @@ public class XMLCommandRegistry extends BaseCommandRegistry
     final IAS2Session aSession = getSession ();
     final String sBaseDirectory = aSession instanceof AS2ServerXMLSession ? ((AS2ServerXMLSession) aSession).getBaseDirectory ()
                                                                           : null;
-    final ICommand aCommand = XMLUtil.createComponent (eCommand, ICommand.class, aSession, sBaseDirectory);
+    final ICommand aCommand = XMLHelper.createComponent (eCommand, ICommand.class, aSession, sBaseDirectory);
     if (aParent != null)
       aParent.getCommands ().add (aCommand);
     else
@@ -77,7 +77,7 @@ public class XMLCommandRegistry extends BaseCommandRegistry
                                    @Nullable final MultiCommand parent) throws OpenAS2Exception
   {
     final MultiCommand cmd = new MultiCommand ();
-    cmd.initDynamicComponent (getSession (), XMLUtil.getAttrsWithLowercaseName (aCommand));
+    cmd.initDynamicComponent (getSession (), XMLHelper.getAttrsWithLowercaseName (aCommand));
 
     if (parent != null)
       parent.getCommands ().add (cmd);

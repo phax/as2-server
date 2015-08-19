@@ -54,7 +54,7 @@ import com.helger.as2lib.partner.IPartnershipFactory;
 import com.helger.as2lib.processor.IMessageProcessor;
 import com.helger.as2lib.processor.module.IProcessorModule;
 import com.helger.as2lib.session.AS2Session;
-import com.helger.as2lib.util.XMLUtil;
+import com.helger.as2lib.util.XMLHelper;
 import com.helger.commons.io.file.FileHelper;
 import com.helger.commons.microdom.IMicroDocument;
 import com.helger.commons.microdom.IMicroElement;
@@ -111,7 +111,7 @@ public class AS2ServerXMLSession extends AS2Session implements ICommandRegistryF
   protected void loadCertificates (@Nonnull final IMicroElement aElement) throws OpenAS2Exception
   {
     s_aLogger.info ("  loading certificates");
-    final ICertificateFactory certFx = XMLUtil.createComponent (aElement,
+    final ICertificateFactory certFx = XMLHelper.createComponent (aElement,
                                                                 ICertificateFactory.class,
                                                                 this,
                                                                 m_sBaseDirectory);
@@ -121,7 +121,7 @@ public class AS2ServerXMLSession extends AS2Session implements ICommandRegistryF
   protected void loadCommands (@Nonnull final IMicroElement aElement) throws OpenAS2Exception
   {
     s_aLogger.info ("  loading commands");
-    final ICommandRegistry cmdReg = XMLUtil.createComponent (aElement, ICommandRegistry.class, this, m_sBaseDirectory);
+    final ICommandRegistry cmdReg = XMLHelper.createComponent (aElement, ICommandRegistry.class, this, m_sBaseDirectory);
     m_aCommandRegistry = cmdReg;
   }
 
@@ -136,7 +136,7 @@ public class AS2ServerXMLSession extends AS2Session implements ICommandRegistryF
   protected void loadCommandProcessor (@Nonnull final CommandManager aCommandMgr,
                                        @Nonnull final IMicroElement aElement) throws OpenAS2Exception
   {
-    final AbstractCommandProcessor aCmdProcesor = XMLUtil.createComponent (aElement,
+    final AbstractCommandProcessor aCmdProcesor = XMLHelper.createComponent (aElement,
                                                                            AbstractCommandProcessor.class,
                                                                            this,
                                                                            m_sBaseDirectory);
@@ -147,7 +147,7 @@ public class AS2ServerXMLSession extends AS2Session implements ICommandRegistryF
   protected void loadPartnerships (final IMicroElement eRootNode) throws OpenAS2Exception
   {
     s_aLogger.info ("  loading partnerships");
-    final IPartnershipFactory partnerFx = XMLUtil.createComponent (eRootNode,
+    final IPartnershipFactory partnerFx = XMLHelper.createComponent (eRootNode,
                                                                    IPartnershipFactory.class,
                                                                    this,
                                                                    m_sBaseDirectory);
@@ -157,7 +157,7 @@ public class AS2ServerXMLSession extends AS2Session implements ICommandRegistryF
   protected void loadMessageProcessor (final IMicroElement eRootNode) throws OpenAS2Exception
   {
     s_aLogger.info ("  loading message processor");
-    final IMessageProcessor aMsgProcessor = XMLUtil.createComponent (eRootNode,
+    final IMessageProcessor aMsgProcessor = XMLHelper.createComponent (eRootNode,
                                                                      IMessageProcessor.class,
                                                                      this,
                                                                      m_sBaseDirectory);
@@ -170,7 +170,7 @@ public class AS2ServerXMLSession extends AS2Session implements ICommandRegistryF
   protected void loadProcessorModule (@Nonnull final IMessageProcessor aMsgProcessor,
                                       @Nonnull final IMicroElement eModule) throws OpenAS2Exception
   {
-    final IProcessorModule aProcessorModule = XMLUtil.createComponent (eModule,
+    final IProcessorModule aProcessorModule = XMLHelper.createComponent (eModule,
                                                                        IProcessorModule.class,
                                                                        this,
                                                                        m_sBaseDirectory);

@@ -47,7 +47,7 @@ import com.helger.as2.cmd.ECommandResultType;
 import com.helger.as2lib.cert.IAliasedCertificateFactory;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.exception.WrappedOpenAS2Exception;
-import com.helger.as2lib.util.AS2Util;
+import com.helger.as2lib.util.AS2Helper;
 
 public class ImportCertCommand extends AbstractAliasedCertCommand
 {
@@ -141,7 +141,7 @@ public class ImportCertCommand extends AbstractAliasedCertCommand
                                             final String filename,
                                             final String password) throws Exception
   {
-    final KeyStore ks = AS2Util.getCryptoHelper ().createNewKeyStore ();
+    final KeyStore ks = AS2Helper.getCryptoHelper ().createNewKeyStore ();
     ks.load (new FileInputStream (filename), password.toCharArray ());
 
     final Enumeration <String> aliases = ks.aliases ();
