@@ -42,11 +42,11 @@ In the below commands `x.y.z` denotes the effective version number
 3. Launch the server (note: `src/main/resources/config/config.xml` is the path to the configuration file to be used and may be changed): 
   1. On Unix/Linux systems run the AS2 server using the following command (on one line):
   
-     `java -cp "standalone/*" com.helger.as2.app.MainOpenAS2Server src/main/resources/config/config.xml`
+     `java -cp "standalone/*" com.helger.as2.app.MainOpenAS2Server standalone/config.xml`
 `
   2. On Windows systems run the AS2 server using the following command (on one line) or execute the `run.cmd` file:
   
-     `"%JAVA_HOME%\bin\java" -cp "standalone/*" com.helger.as2.app.MainOpenAS2Server src/main/resources/config/config.xml`
+     `"%JAVA_HOME%\bin\java" -cp "standalone/*" com.helger.as2.app.MainOpenAS2Server standalone/config/config.xml`
 
 ---
 

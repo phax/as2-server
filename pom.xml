@@ -98,11 +98,11 @@
       </properties>
       <build>
         <plugins>
-          <!-- Copy all runtime dependencies to the target folder -->
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-dependency-plugin</artifactId>
             <executions>
+              <!-- Copy all runtime dependencies to the standalone folder -->
               <execution>
                 <id>copy-dependencies</id>
                 <phase>package</phase>
@@ -116,8 +116,9 @@
                   <includeScope>runtime</includeScope>
                 </configuration>
               </execution>
+              <!-- Copy the JAR file created by this build into the standalone folder -->
               <execution>
-                <id>copy</id>
+                <id>copy-this</id>
                 <phase>install</phase>
                 <goals>
                   <goal>copy</goal>
@@ -137,7 +138,30 @@
                 </configuration>
               </execution>
             </executions>
-          </plugin>      
+          </plugin>
+          <!-- Copy the configuration to the standalone folder -->      
+          <plugin>
+            <artifactId>maven-resources-plugin</artifactId>
+            <version>2.7</version>
+            <executions>
+              <execution>
+                <id>copy-resources</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>copy-resources</goal>
+                </goals>
+                <configuration>
+                  <outputDirectory>${standalone.output.dir}/config</outputDirectory>
+                  <resources>          
+                    <resource>
+                      <directory>src/main/resources/config</directory>
+                      <filtering>false</filtering>
+                    </resource>
+                  </resources>              
+                </configuration>            
+              </execution>
+            </executions>
+          </plugin>
         </plugins>
       </build>
     </profile>
