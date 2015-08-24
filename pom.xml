@@ -152,6 +152,7 @@
                 </goals>
                 <configuration>
                   <outputDirectory>${standalone.output.dir}/config</outputDirectory>
+                  <overwrite>false</overwrite>
                   <resources>          
                     <resource>
                       <directory>src/main/resources/config</directory>
