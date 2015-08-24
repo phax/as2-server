@@ -36,10 +36,10 @@ No database or additional software is needed to exchange AS2 messages!
 To run this server stand-alone from the source build, perform the following steps.
 In the below commands `x.y.z` denotes the effective version number
 
-1. build the binary artefacts using Apache Maven 3.x: `mvn clean package`
+1. build the binary artefacts using Apache Maven 3.x: `mvn clean package -Pwithdep` (selects the profile "withdep" which means "with dependencies")
   1. If this fails than potentially because a SNAPSHOT version of `as2-lib` is referenced. In that case check out the [as2-lib](https://github.com/phax/as2-lib/) project as well, run `mvn clean install` on as2-lib and go back to the first step on this project. 
 2. The resulting JAR file is than located at `target/as2-server-x.y.z-SNAPSHOT.jar`
-3. Launch the server - `src/main/resources/config/config.xml` is the path to the configuration file to be used and may be changed. 
+3. Launch the server (note: `src/main/resources/config/config.xml` is the path to the configuration file to be used and may be changed): 
   1. On Unix/Linux systems run the AS2 server using the following command (on one line):
   
      `java -cp "target/as2-server-x.y.z-SNAPSHOT.jar:target/dependencies/*" com.helger.as2.app.MainOpenAS2Server src/main/resources/config/config.xml`
