@@ -93,8 +93,12 @@
   <profiles>
     <profile>
       <id>withdep</id>
+      <properties>
+        <standalone.output.dir>${project.basedir}/standalone</standalone.output.dir>
+      </properties>
       <build>
         <plugins>
+          <!-- Copy all runtime dependencies to the target folder -->
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-dependency-plugin</artifactId>
@@ -106,10 +110,30 @@
                   <goal>copy-dependencies</goal>
                 </goals>
                 <configuration>
-                  <outputDirectory>${project.build.directory}/dependencies</outputDirectory>
+                  <outputDirectory>${standalone.output.dir}</outputDirectory>
                   <overWriteReleases>false</overWriteReleases>
-                  <overWriteSnapshots>false</overWriteSnapshots>
-                  <overWriteIfNewer>true</overWriteIfNewer>
+                  <overWriteSnapshots>true</overWriteSnapshots>
+                  <includeScope>runtime</includeScope>
+                </configuration>
+              </execution>
+              <execution>
+                <id>copy</id>
+                <phase>install</phase>
+                <goals>
+                  <goal>copy</goal>
+                </goals>
+                <configuration>
+                  <outputDirectory>${standalone.output.dir}</outputDirectory>
+                  <stripVersion>true</stripVersion>
+                  <artifactItems>
+                    <artifactItem>
+                      <groupId>${project.groupId}</groupId>
+                      <artifactId>${project.artifactId}</artifactId>
+                      <version>${project.version}</version>
+                      <type>${project.packaging}</type>
+                      <overWrite>true</overWrite>
+                    </artifactItem>
+                  </artifactItems>
                 </configuration>
               </execution>
             </executions>
