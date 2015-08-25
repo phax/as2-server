@@ -44,7 +44,7 @@
 		<attribute name="subject" value="From OpenAS2A to OpenAS2B"/>
 		<attribute name="as2_url" value="http://localhost:10080"/>
 		<attribute name="as2_mdn_to" value="http://localhost:10080"/>
-		<attribute name="as2_mdn_options" value="signed-receipt-protocol=optional, pkcs7-signature; signed-receipt-micalg=optional, sha1"/>
+		<attribute name="as2_mdn_options" value="signed-receipt-protocol=optional, pkcs7-signature; signed-receipt-micalg=optional, md5"/>
 		<attribute name="encrypt" value="3des"/>
 		<attribute name="sign" value="md5"/>
 	</partnership>
