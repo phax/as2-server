@@ -37,7 +37,7 @@ import javax.annotation.Nonnull;
 import com.helger.as2.cmd.CommandResult;
 import com.helger.as2.cmd.ECommandResultType;
 import com.helger.as2lib.exception.OpenAS2Exception;
-import com.helger.as2lib.partner.IPartnershipFactory;
+import com.helger.as2lib.partner.IPartnershipFactoryWithPartners;
 import com.helger.as2lib.partner.Partnership;
 
 /**
@@ -66,7 +66,7 @@ public class DeletePartnerCommand extends AbstractAliasedPartnershipsCommand
   }
 
   @Override
-  public CommandResult execute (@Nonnull final IPartnershipFactory partFx,
+  public CommandResult execute (@Nonnull final IPartnershipFactoryWithPartners partFx,
                                 final Object [] aParams) throws OpenAS2Exception
   {
     if (aParams.length < 1)
