@@ -113,8 +113,10 @@ public class AddPartnershipCommand extends AbstractAliasedPartnershipsCommand
 
     }
 
-    final Partnership aPartnership = ((XMLPartnershipFactory) partFx).loadPartnership (root, partFx.getPartnerMap ());
-    if (partFx.getPartnershipMap ().getPartnershipByName (aPartnership.getName ()) != null)
+    final XMLPartnershipFactory aXMLPartnershipFactory = (XMLPartnershipFactory) partFx;
+    final Partnership aPartnership = aXMLPartnershipFactory.loadPartnership (root,
+                                                                             aXMLPartnershipFactory.getPartnerMap ());
+    if (aXMLPartnershipFactory.getPartnershipByName (aPartnership.getName ()) != null)
       return new CommandResult (ECommandResultType.TYPE_ERROR,
                                 "A partnership with name '" + aPartnership.getName () + "' is already present!");
 
