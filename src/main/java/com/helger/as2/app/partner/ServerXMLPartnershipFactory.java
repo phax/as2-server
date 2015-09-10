@@ -42,7 +42,7 @@ import com.helger.as2.util.IFileMonitorListener;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.exception.WrappedOpenAS2Exception;
 import com.helger.as2lib.params.InvalidParameterException;
-import com.helger.as2lib.partner.XMLPartnershipFactory;
+import com.helger.as2lib.partner.xml.XMLPartnershipFactory;
 
 /**
  * original author unknown this release added logic to store partnerships and

@@ -35,8 +35,8 @@ package com.helger.as2.cmd.partner;
 import com.helger.as2.cmd.CommandResult;
 import com.helger.as2.cmd.ECommandResultType;
 import com.helger.as2lib.exception.OpenAS2Exception;
-import com.helger.as2lib.partner.IPartnershipFactoryWithPartners;
-import com.helger.as2lib.util.IStringMap;
+import com.helger.as2lib.partner.xml.IPartner;
+import com.helger.as2lib.partner.xml.IPartnershipFactoryWithPartners;
 
 /**
  * view the partner entries in the partnership store
@@ -71,7 +71,7 @@ public class ViewPartnerCommand extends AbstractAliasedPartnershipsCommand
       return new CommandResult (ECommandResultType.TYPE_INVALID_PARAM_COUNT, getUsage ());
 
     final String name = params[0].toString ();
-    final IStringMap aPartner = partFx.getPartnerOfName (name);
+    final IPartner aPartner = partFx.getPartnerOfName (name);
     if (aPartner != null)
     {
       final String out = name + "\n" + aPartner.toString ();

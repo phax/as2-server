@@ -35,7 +35,7 @@ package com.helger.as2.cmd.partner;
 import com.helger.as2.cmd.CommandResult;
 import com.helger.as2.cmd.ECommandResultType;
 import com.helger.as2lib.exception.OpenAS2Exception;
-import com.helger.as2lib.partner.IPartnershipFactoryWithPartners;
+import com.helger.as2lib.partner.xml.IPartnershipFactoryWithPartners;
 
 /**
  * list partnerships in partnership store by names

@@ -37,8 +37,8 @@ import javax.annotation.Nonnull;
 import com.helger.as2.cmd.CommandResult;
 import com.helger.as2.cmd.ECommandResultType;
 import com.helger.as2lib.exception.OpenAS2Exception;
-import com.helger.as2lib.partner.IPartnershipFactoryWithPartners;
 import com.helger.as2lib.partner.Partnership;
+import com.helger.as2lib.partner.xml.IPartnershipFactoryWithPartners;
 
 /**
  * removes a partner entry in partnership store
