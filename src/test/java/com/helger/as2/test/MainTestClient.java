@@ -226,8 +226,7 @@ public class MainTestClient
 
     s_aLogger.info ("is requesting  MDN?: " + aMsg.isRequestingMDN ());
     s_aLogger.info ("is async MDN?: " + aMsg.isRequestingAsynchMDN ());
-    s_aLogger.info ("is rule to recieve MDN active?: " +
-                    aMsg.getPartnership ().getAttribute (CPartnershipIDs.PA_AS2_RECEIPT_OPTION));
+    s_aLogger.info ("is rule to receive MDN active?: " + aMsg.getPartnership ().getAS2ReceiptOption ());
 
     aTestSender.handle (IProcessorSenderModule.DO_SEND, aMsg, null);
     s_aLogger.info ("MDN is " + aMsg.getMDN ().toString ());
@@ -262,7 +261,7 @@ public class MainTestClient
       InvalidParameterException.checkValue (aMsg, "ContentType", aMsg.getContentType ());
       InvalidParameterException.checkValue (aMsg,
                                             "Attribute: " + CPartnershipIDs.PA_AS2_URL,
-                                            aPartnership.getAttribute (CPartnershipIDs.PA_AS2_URL));
+                                            aPartnership.getAS2URL ());
       InvalidParameterException.checkValue (aMsg,
                                             "Receiver: " + CPartnershipIDs.PID_AS2,
                                             aPartnership.getReceiverAS2ID ());
@@ -292,23 +291,22 @@ public class MainTestClient
     aConn.setRequestProperty (CAS2Header.HEADER_MIME_VERSION, CAS2Header.DEFAULT_MIME_VERSION);
     aConn.setRequestProperty (CAS2Header.HEADER_CONTENT_TYPE, aMsg.getContentType ());
     aConn.setRequestProperty (CAS2Header.HEADER_AS2_VERSION, CAS2Header.DEFAULT_AS2_VERSION);
-    aConn.setRequestProperty (CAS2Header.HEADER_RECIPIENT_ADDRESS,
-                              aPartnership.getAttribute (CPartnershipIDs.PA_AS2_URL));
+    aConn.setRequestProperty (CAS2Header.HEADER_RECIPIENT_ADDRESS, aPartnership.getAS2URL ());
     aConn.setRequestProperty (CAS2Header.HEADER_AS2_TO, aPartnership.getReceiverAS2ID ());
     aConn.setRequestProperty (CAS2Header.HEADER_AS2_FROM, aPartnership.getSenderAS2ID ());
     aConn.setRequestProperty (CAS2Header.HEADER_SUBJECT, aMsg.getSubject ());
     aConn.setRequestProperty (CAS2Header.HEADER_FROM, aPartnership.getSenderEmail ());
 
-    final String sDispTo = aPartnership.getAttribute (CPartnershipIDs.PA_AS2_MDN_TO);
+    final String sDispTo = aPartnership.getAS2MDNTo ();
     if (sDispTo != null)
       aConn.setRequestProperty (CAS2Header.HEADER_DISPOSITION_NOTIFICATION_TO, sDispTo);
 
-    final String sDispOptions = aPartnership.getAttribute (CPartnershipIDs.PA_AS2_MDN_OPTIONS);
+    final String sDispOptions = aPartnership.getAS2MDNOptions ();
     if (sDispOptions != null)
       aConn.setRequestProperty (CAS2Header.HEADER_DISPOSITION_NOTIFICATION_OPTIONS, sDispOptions);
 
     // Asynch MDN 2007-03-12
-    final String sReceiptOption = aPartnership.getAttribute (CPartnershipIDs.PA_AS2_RECEIPT_OPTION);
+    final String sReceiptOption = aPartnership.getAS2ReceiptOption ();
     if (sReceiptOption != null)
       aConn.setRequestProperty (CAS2Header.HEADER_RECEIPT_DELIVERY_OPTION, sReceiptOption);
 
