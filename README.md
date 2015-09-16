@@ -9,6 +9,11 @@ Versions >= 2.0.0 are compatible with ph-commons >= 6.0.
 
 This project is licensed under the FreeBSD License.
 
+#New and noteworthy
+
+  * Version 2.2.0
+    * Extended the configuration file with the attribute "CryptoVerifyUseCertificateInBodyPart"
+
 #Maven usage
 Add the following to your pom.xml to use this artifact:
 ```
