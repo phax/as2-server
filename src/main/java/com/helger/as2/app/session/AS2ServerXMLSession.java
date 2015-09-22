@@ -68,6 +68,7 @@ import com.helger.commons.string.StringParser;
  */
 public class AS2ServerXMLSession extends AS2Session implements ICommandRegistryFactory
 {
+  public static final String ATTR_CRYPTO_VERIFY_USE_CERTIFICATE_IN_BODY_PART = "CryptoVerifyUseCertificateInBodyPart";
   public static final String EL_CERTIFICATES = "certificates";
   public static final String EL_CMDPROCESSOR = "commandProcessors";
   public static final String EL_PROCESSOR = "processor";
@@ -208,7 +209,7 @@ public class AS2ServerXMLSession extends AS2Session implements ICommandRegistryF
               else
                 throw new OpenAS2Exception ("Undefined tag: " + sNodeName);
 
-      final String sCryptoVerifyUseCertificateInBodyPart = eRootChild.getAttributeValue ("CryptoVerifyUseCertificateInBodyPart");
+      final String sCryptoVerifyUseCertificateInBodyPart = eRootChild.getAttributeValue (ATTR_CRYPTO_VERIFY_USE_CERTIFICATE_IN_BODY_PART);
       if (sCryptoVerifyUseCertificateInBodyPart != null)
         setCryptoVerifyUseCertificateInBodyPart (StringParser.parseBool (sCryptoVerifyUseCertificateInBodyPart,
                                                                          DEFAULT_CRYPTO_VERIFY_USE_CERTIFICATE_IN_BODY_PART));
