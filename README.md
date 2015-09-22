@@ -12,7 +12,7 @@ This project is licensed under the FreeBSD License.
 #New and noteworthy
 
   * Version 2.2.0
-    * Extended the configuration file with the attribute "CryptoVerifyUseCertificateInBodyPart"
+    * Extended the configuration file with the attribute `CryptoVerifyUseCertificateInBodyPart` to define whether a certificate passed in the signed MIME body part shall be used to verify the signature (when `true`) or whether to always use the certificate provided in the partnership (when `false`). By default the value is `true`.
 
 #Maven usage
 Add the following to your pom.xml to use this artifact:
