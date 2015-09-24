@@ -65,10 +65,12 @@ import com.helger.commons.string.StringParser;
  * original author unknown in this release added command registry methods
  *
  * @author joseph mcverry
+ * @author Philip Helger
  */
 public class AS2ServerXMLSession extends AS2Session implements ICommandRegistryFactory
 {
   public static final String ATTR_CRYPTO_VERIFY_USE_CERTIFICATE_IN_BODY_PART = "CryptoVerifyUseCertificateInBodyPart";
+  public static final String ATTR_CRYPTO_SIGN_INCLUDE_CERTIFICATE_IN_BODY_PART = "CryptoSignIncludeCertificateInBodyPart";
   public static final String EL_CERTIFICATES = "certificates";
   public static final String EL_CMDPROCESSOR = "commandProcessors";
   public static final String EL_PROCESSOR = "processor";
@@ -209,10 +211,16 @@ public class AS2ServerXMLSession extends AS2Session implements ICommandRegistryF
               else
                 throw new OpenAS2Exception ("Undefined tag: " + sNodeName);
 
+      // Special global attributes
       final String sCryptoVerifyUseCertificateInBodyPart = eRootChild.getAttributeValue (ATTR_CRYPTO_VERIFY_USE_CERTIFICATE_IN_BODY_PART);
       if (sCryptoVerifyUseCertificateInBodyPart != null)
         setCryptoVerifyUseCertificateInBodyPart (StringParser.parseBool (sCryptoVerifyUseCertificateInBodyPart,
                                                                          DEFAULT_CRYPTO_VERIFY_USE_CERTIFICATE_IN_BODY_PART));
+
+      final String sCryptoSignIncludeCertificateInBodyPart = eRootChild.getAttributeValue (ATTR_CRYPTO_SIGN_INCLUDE_CERTIFICATE_IN_BODY_PART);
+      if (sCryptoSignIncludeCertificateInBodyPart != null)
+        setCryptoSignIncludeCertificateInBodyPart (StringParser.parseBool (sCryptoSignIncludeCertificateInBodyPart,
+                                                                           DEFAULT_CRYPTO_SIGN_INCLUDE_CERTIFICATE_IN_BODY_PART));
     }
   }
 }
