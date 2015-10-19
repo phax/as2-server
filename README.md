@@ -11,7 +11,10 @@ This project is licensed under the FreeBSD License.
 
 #New and noteworthy
 
+  * Version 2.2.2 - 2015-10-19
+    * Updated to Bouncy Castle 1.53
   * Version 2.2.1 - 2015-10-08
+    * Updated to as2-lib 2.2.1
   * Version 2.2.0
     * Extended the configuration file with the attribute `CryptoVerifyUseCertificateInBodyPart` to define whether a certificate passed in the signed MIME body part shall be used to verify the signature (when `true`) or whether to always use the certificate provided in the partnership (when `false`). By default the value is `true`.
     * Extended the configuration file with the attribute `CryptoSignIncludeCertificateInBodyPart` to define whether the certificate used for signing should be included in the signed MIME body part (when `true`) or not to include it (when `false`). By default the value is `true`. This is the sending counter part of `CryptoVerifyUseCertificateInBodyPart`
@@ -22,7 +25,7 @@ Add the following to your pom.xml to use this artifact:
 <dependency>
   <groupId>com.helger</groupId>
   <artifactId>as2-server</artifactId>
-  <version>2.2.1</version>
+  <version>2.2.2</version>
 </dependency>
 ```
 
