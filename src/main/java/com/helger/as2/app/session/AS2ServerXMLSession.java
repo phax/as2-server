@@ -115,20 +115,14 @@ public class AS2ServerXMLSession extends AS2Session implements ICommandRegistryF
   protected void loadCertificates (@Nonnull final IMicroElement aElement) throws OpenAS2Exception
   {
     s_aLogger.info ("  loading certificates");
-    final ICertificateFactory certFx = XMLHelper.createComponent (aElement,
-                                                                  ICertificateFactory.class,
-                                                                  this,
-                                                                  m_sBaseDirectory);
+    final ICertificateFactory certFx = XMLHelper.createComponent (aElement, ICertificateFactory.class, this, m_sBaseDirectory);
     setCertificateFactory (certFx);
   }
 
   protected void loadCommands (@Nonnull final IMicroElement aElement) throws OpenAS2Exception
   {
     s_aLogger.info ("  loading commands");
-    final ICommandRegistry cmdReg = XMLHelper.createComponent (aElement,
-                                                               ICommandRegistry.class,
-                                                               this,
-                                                               m_sBaseDirectory);
+    final ICommandRegistry cmdReg = XMLHelper.createComponent (aElement, ICommandRegistry.class, this, m_sBaseDirectory);
     m_aCommandRegistry = cmdReg;
   }
 
@@ -140,13 +134,9 @@ public class AS2ServerXMLSession extends AS2Session implements ICommandRegistryF
       loadCommandProcessor (m_aCmdManager, processor);
   }
 
-  protected void loadCommandProcessor (@Nonnull final CommandManager aCommandMgr,
-                                       @Nonnull final IMicroElement aElement) throws OpenAS2Exception
+  protected void loadCommandProcessor (@Nonnull final CommandManager aCommandMgr, @Nonnull final IMicroElement aElement) throws OpenAS2Exception
   {
-    final AbstractCommandProcessor aCmdProcesor = XMLHelper.createComponent (aElement,
-                                                                             AbstractCommandProcessor.class,
-                                                                             this,
-                                                                             m_sBaseDirectory);
+    final AbstractCommandProcessor aCmdProcesor = XMLHelper.createComponent (aElement, AbstractCommandProcessor.class, this, m_sBaseDirectory);
     aCommandMgr.addProcessor (aCmdProcesor);
     s_aLogger.info ("    loaded command processor " + aCmdProcesor.getName ());
   }
@@ -154,33 +144,23 @@ public class AS2ServerXMLSession extends AS2Session implements ICommandRegistryF
   protected void loadPartnerships (final IMicroElement eRootNode) throws OpenAS2Exception
   {
     s_aLogger.info ("  loading partnerships");
-    final IPartnershipFactory partnerFx = XMLHelper.createComponent (eRootNode,
-                                                                     IPartnershipFactory.class,
-                                                                     this,
-                                                                     m_sBaseDirectory);
+    final IPartnershipFactory partnerFx = XMLHelper.createComponent (eRootNode, IPartnershipFactory.class, this, m_sBaseDirectory);
     setPartnershipFactory (partnerFx);
   }
 
   protected void loadMessageProcessor (final IMicroElement eRootNode) throws OpenAS2Exception
   {
     s_aLogger.info ("  loading message processor");
-    final IMessageProcessor aMsgProcessor = XMLHelper.createComponent (eRootNode,
-                                                                       IMessageProcessor.class,
-                                                                       this,
-                                                                       m_sBaseDirectory);
+    final IMessageProcessor aMsgProcessor = XMLHelper.createComponent (eRootNode, IMessageProcessor.class, this, m_sBaseDirectory);
     setMessageProcessor (aMsgProcessor);
 
     for (final IMicroElement eModule : eRootNode.getAllChildElements ("module"))
       loadProcessorModule (aMsgProcessor, eModule);
   }
 
-  protected void loadProcessorModule (@Nonnull final IMessageProcessor aMsgProcessor,
-                                      @Nonnull final IMicroElement eModule) throws OpenAS2Exception
+  protected void loadProcessorModule (@Nonnull final IMessageProcessor aMsgProcessor, @Nonnull final IMicroElement eModule) throws OpenAS2Exception
   {
-    final IProcessorModule aProcessorModule = XMLHelper.createComponent (eModule,
-                                                                         IProcessorModule.class,
-                                                                         this,
-                                                                         m_sBaseDirectory);
+    final IProcessorModule aProcessorModule = XMLHelper.createComponent (eModule, IProcessorModule.class, this, m_sBaseDirectory);
     aMsgProcessor.addModule (aProcessorModule);
     s_aLogger.info ("    loaded processor module " + aProcessorModule.getName ());
   }
@@ -189,6 +169,17 @@ public class AS2ServerXMLSession extends AS2Session implements ICommandRegistryF
   {
     final IMicroDocument aDoc = MicroReader.readMicroXML (aIS);
     final IMicroElement eRoot = aDoc.getDocumentElement ();
+
+    // Special global attributes
+    final String sCryptoVerifyUseCertificateInBodyPart = eRoot.getAttributeValue (ATTR_CRYPTO_VERIFY_USE_CERTIFICATE_IN_BODY_PART);
+    if (sCryptoVerifyUseCertificateInBodyPart != null)
+      setCryptoVerifyUseCertificateInBodyPart (StringParser.parseBool (sCryptoVerifyUseCertificateInBodyPart,
+                                                                       DEFAULT_CRYPTO_VERIFY_USE_CERTIFICATE_IN_BODY_PART));
+
+    final String sCryptoSignIncludeCertificateInBodyPart = eRoot.getAttributeValue (ATTR_CRYPTO_SIGN_INCLUDE_CERTIFICATE_IN_BODY_PART);
+    if (sCryptoSignIncludeCertificateInBodyPart != null)
+      setCryptoSignIncludeCertificateInBodyPart (StringParser.parseBool (sCryptoSignIncludeCertificateInBodyPart,
+                                                                         DEFAULT_CRYPTO_SIGN_INCLUDE_CERTIFICATE_IN_BODY_PART));
 
     for (final IMicroElement eRootChild : eRoot.getAllChildElements ())
     {
@@ -210,17 +201,6 @@ public class AS2ServerXMLSession extends AS2Session implements ICommandRegistryF
                 loadCommands (eRootChild);
               else
                 throw new OpenAS2Exception ("Undefined tag: " + sNodeName);
-
-      // Special global attributes
-      final String sCryptoVerifyUseCertificateInBodyPart = eRootChild.getAttributeValue (ATTR_CRYPTO_VERIFY_USE_CERTIFICATE_IN_BODY_PART);
-      if (sCryptoVerifyUseCertificateInBodyPart != null)
-        setCryptoVerifyUseCertificateInBodyPart (StringParser.parseBool (sCryptoVerifyUseCertificateInBodyPart,
-                                                                         DEFAULT_CRYPTO_VERIFY_USE_CERTIFICATE_IN_BODY_PART));
-
-      final String sCryptoSignIncludeCertificateInBodyPart = eRootChild.getAttributeValue (ATTR_CRYPTO_SIGN_INCLUDE_CERTIFICATE_IN_BODY_PART);
-      if (sCryptoSignIncludeCertificateInBodyPart != null)
-        setCryptoSignIncludeCertificateInBodyPart (StringParser.parseBool (sCryptoSignIncludeCertificateInBodyPart,
-                                                                           DEFAULT_CRYPTO_SIGN_INCLUDE_CERTIFICATE_IN_BODY_PART));
     }
   }
 }
