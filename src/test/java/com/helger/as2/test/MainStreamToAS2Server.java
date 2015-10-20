@@ -15,7 +15,7 @@ import com.helger.commons.io.stream.StreamHelper;
  *
  * @author Philip Helger
  */
-public final class MainStreamToServer
+public final class MainStreamToAS2Server
 {
   public static void main (final String [] args) throws UnknownHostException, IOException
   {

@@ -33,7 +33,7 @@
     official policies, either expressed or implied, of the FreeBSD Project.
 
 -->
-<openas2>
+<openas2 _CryptoVerifyUseCertificateInBodyPart="false">
   <certificates classname="com.helger.as2.app.cert.ServerPKCS12CertificateFactory" 
                 filename="%home%/certs.p12"
                 password="test"
