@@ -34,8 +34,8 @@
 
 -->
 <partnerships>
-	<partner name="OpenAS2A" as2_id="OpenAS2A" x509_alias="OpenAS2A" email="OpenAS2 A email"/>
-	<partner name="OpenAS2B" as2_id="OpenAS2B" x509_alias="OpenAS2B" email="OpenAS2 B email"/>	
+	<partner name="OpenAS2A" as2_id="OpenAS2A" x509_alias="OpenAS2A_alias" email="OpenAS2 A email"/>
+	<partner name="OpenAS2B" as2_id="OpenAS2B" x509_alias="OpenAS2B_alias" email="OpenAS2 B email"/>	
 
 	<partnership name="OpenAS2A-OpenAS2B">
 		<sender name="OpenAS2A"/>
