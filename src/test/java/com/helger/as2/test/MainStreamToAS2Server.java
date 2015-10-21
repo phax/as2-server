@@ -64,7 +64,6 @@ public final class MainStreamToAS2Server
                     "--boundaryEHSgAQ==\r\n" +
                     "Content-Type: application/edi-x12\r\n" +
                     "Content-Disposition: Attachment; filename=\"test_data_2.edi\"\r\n" +
-                    "Content-Transfer-Encoding: 7bit\r\n" +
                     "\r\n" +
                     "ISA*00*ssssssssss*00*rrrrrrrrrr*ZZ*testas2     *zz*testas2      *961007*2013*U*00200*754320000*0*T*:" +
                     sContentNewLine +
