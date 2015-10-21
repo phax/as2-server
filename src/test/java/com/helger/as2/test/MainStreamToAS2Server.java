@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import com.helger.commons.charset.CCharset;
 import com.helger.commons.io.file.FileHelper;
 import com.helger.commons.io.stream.StreamHelper;
 
@@ -27,8 +28,10 @@ public final class MainStreamToAS2Server
     {
       final OutputStream out = aSocket.getOutputStream ();
       out.write (aPayload);
-      out.close ();
-      System.out.println ("Stream payload to AS2 server");
+      out.flush ();
+      System.out.println ("Streamed payload to AS2 server");
+      final byte [] aResponse = StreamHelper.getAllBytes (aSocket.getInputStream ());
+      System.out.println ("Response:\n\n" + new String (aResponse, CCharset.CHARSET_ISO_8859_1_OBJ));
     }
     finally
     {
