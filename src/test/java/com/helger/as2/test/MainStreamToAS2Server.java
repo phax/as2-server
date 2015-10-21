@@ -47,7 +47,8 @@ public final class MainStreamToAS2Server
     if (true)
     {
       // Build as String to easily handle different line ending
-      final String sMsg = "AS2-To: OpenAS2A\r\n" +
+      final String sMsg = "HTTP 1.1 POST /any\r\n" +
+                          "AS2-To: OpenAS2A\r\n" +
                           "AS2-From: OpenAS2B\r\n" +
                           "AS2-Version: 1.2\r\n" +
                           "EDIINT-Features: multiple-attachments, AS2-Reliability\r\n" +
