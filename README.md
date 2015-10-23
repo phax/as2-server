@@ -11,8 +11,10 @@ This project is licensed under the FreeBSD License.
 
 #New and noteworthy
 
+  * Version 2.2.3 - 2015-10-22
+    * Updated to as2-lib 2.2.3
   * Version 2.2.2 - 2015-10-19
-    * Updated to Bouncy Castle 1.53
+    * Updated to as2-lib 2.2.2 and Bouncy Castle 1.53
   * Version 2.2.1 - 2015-10-08
     * Updated to as2-lib 2.2.1
   * Version 2.2.0
@@ -25,7 +27,7 @@ Add the following to your pom.xml to use this artifact:
 <dependency>
   <groupId>com.helger</groupId>
   <artifactId>as2-server</artifactId>
-  <version>2.2.2</version>
+  <version>2.2.3</version>
 </dependency>
 ```
 
