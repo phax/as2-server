@@ -1,5 +1,7 @@
 #as2-server
 
+[![Build Status](https://travis-ci.org/phax/as2-server.svg?branch=master)](https://travis-ci.org/phax/as2-server)
+﻿
 [![Join the chat at https://gitter.im/phax/as2-server](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/phax/as2-server?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 The standalone AS2 server component based on **[as2-lib](https://github.com/phax/as2-lib)**.
