@@ -1,5 +1,7 @@
 #as2-server
 
+[![Join the chat at https://gitter.im/phax/as2-server](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/phax/as2-server?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 The standalone AS2 server component based on **[as2-lib](https://github.com/phax/as2-lib)**.
 It directly works on Sockets and not on Servlets. Please see **[as2-peppol-servlet](https://github.com/phax/as2-peppol-servlet)** for an example how **[as2-lib](https://github.com/phax/as2-lib)** can be used together with the Servlet specs.
 Alternatively a specialized Servlet based server for PEPPOL is available with my **[as2-peppol-server](https://github.com/phax/as2-peppol-server)** project.
