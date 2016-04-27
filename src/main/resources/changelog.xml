@@ -34,6 +34,13 @@
 
 -->
 <changelog xmlns="http://www.helger.com/xsd/changelog/1.0" version="1.0" component="as2-server">
+  <release date="2016-04-27" version="2.2.7" />
+  <entry date="2016-04-27" category="tech" action="update">
+    <change>
+      <text locale="en">Updated to as2-lib 2.2.7</text>
+    </change>
+  </entry>
+  <!-- There was no 2.2.6 release! -->
   <release date="2015-12-01" version="2.2.5" />
   <entry date="2015-12-01" category="tech" action="update">
     <change>
