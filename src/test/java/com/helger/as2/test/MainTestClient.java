@@ -115,7 +115,8 @@ public class MainTestClient
     aSettings.setSenderData ("OpenAS2A", "email@example.org", "OpenAS2A_alias");
     aSettings.setReceiverData ("OpenAS2B", "OpenAS2B_alias", "http://localhost:10080/HttpReceiver");
     aSettings.setPartnershipName ("Partnership name");
-    aSettings.setEncryptAndSign (DO_ENCRYPT ? ECryptoAlgorithmCrypt.CRYPT_3DES : null, DO_SIGN ? ECryptoAlgorithmSign.DIGEST_SHA1 : null);
+    aSettings.setEncryptAndSign (DO_ENCRYPT ? ECryptoAlgorithmCrypt.CRYPT_3DES : null,
+                                 DO_SIGN ? ECryptoAlgorithmSign.DIGEST_SHA_1 : null);
     // Use the default MDN options
     // Use the default message ID format
 
@@ -159,11 +160,11 @@ public class MainTestClient
                                new DispositionOptions ().setProtocolImportance (DispositionOptions.IMPORTANCE_OPTIONAL)
                                                         .setProtocol (DispositionOptions.PROTOCOL_PKCS7_SIGNATURE)
                                                         .setMICAlgImportance (DispositionOptions.IMPORTANCE_OPTIONAL)
-                                                        .setMICAlg (ECryptoAlgorithmSign.DIGEST_SHA1)
+                                                        .setMICAlg (ECryptoAlgorithmSign.DIGEST_SHA_1)
                                                         .getAsString ());
 
     aPartnership.setAttribute (CPartnershipIDs.PA_ENCRYPT, ECryptoAlgorithmCrypt.CRYPT_3DES.getID ());
-    aPartnership.setAttribute (CPartnershipIDs.PA_SIGN, ECryptoAlgorithmSign.DIGEST_SHA1.getID ());
+    aPartnership.setAttribute (CPartnershipIDs.PA_SIGN, ECryptoAlgorithmSign.DIGEST_SHA_1.getID ());
     aPartnership.setAttribute (CPartnershipIDs.PA_PROTOCOL, AS2Message.PROTOCOL_AS2);
 
     aPartnership.setAttribute (CPartnershipIDs.PA_AS2_RECEIPT_OPTION, null);
@@ -258,11 +259,17 @@ public class MainTestClient
     try
     {
       InvalidParameterException.checkValue (aMsg, "ContentType", aMsg.getContentType ());
-      InvalidParameterException.checkValue (aMsg, "Attribute: " + CPartnershipIDs.PA_AS2_URL, aPartnership.getAS2URL ());
-      InvalidParameterException.checkValue (aMsg, "Receiver: " + CPartnershipIDs.PID_AS2, aPartnership.getReceiverAS2ID ());
+      InvalidParameterException.checkValue (aMsg,
+                                            "Attribute: " + CPartnershipIDs.PA_AS2_URL,
+                                            aPartnership.getAS2URL ());
+      InvalidParameterException.checkValue (aMsg,
+                                            "Receiver: " + CPartnershipIDs.PID_AS2,
+                                            aPartnership.getReceiverAS2ID ());
       InvalidParameterException.checkValue (aMsg, "Sender: " + CPartnershipIDs.PID_AS2, aPartnership.getSenderAS2ID ());
       InvalidParameterException.checkValue (aMsg, "Subject", aMsg.getSubject ());
-      InvalidParameterException.checkValue (aMsg, "Sender: " + CPartnershipIDs.PID_EMAIL, aPartnership.getSenderEmail ());
+      InvalidParameterException.checkValue (aMsg,
+                                            "Sender: " + CPartnershipIDs.PID_EMAIL,
+                                            aPartnership.getSenderEmail ());
       InvalidParameterException.checkValue (aMsg, "Message Data", aMsg.getData ());
     }
     catch (final InvalidParameterException rpe)
