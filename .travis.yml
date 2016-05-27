@@ -12,7 +12,7 @@ Y8IpBjO6Ydh2BvpY86B2PK9eoCl2HtpfLGbGfvdJlbMayvytQBBgCOBdT6uxtmNLuQHMWi5VvVncrzat
 +FYNrGfOae59qMUKeMx54iQSad+9OmeIqKWZBz9fojtbwRx8SFewrCicPUnsHT6lSmL5To40g42m4m3xtWLQclxCDGx48s="
 
 jdk:
-  - openjdk6
+  - oraclejdk8
   
 install:
   - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V -U
