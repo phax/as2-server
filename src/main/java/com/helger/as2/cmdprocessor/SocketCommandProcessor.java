@@ -52,7 +52,6 @@ import com.helger.as2lib.exception.WrappedOpenAS2Exception;
 import com.helger.as2lib.session.IAS2Session;
 import com.helger.as2lib.util.IStringMap;
 import com.helger.as2lib.util.StringMap;
-import com.helger.commons.io.socket.SocketHelper;
 import com.helger.commons.io.stream.NonBlockingBufferedReader;
 import com.helger.commons.io.stream.NonBlockingBufferedWriter;
 import com.helger.commons.string.StringHelper;
@@ -128,10 +127,8 @@ public class SocketCommandProcessor extends AbstractCommandProcessor
   @Override
   public void processCommand () throws OpenAS2Exception
   {
-    SSLSocket socket = null;
-    try
+    try (final SSLSocket socket = (SSLSocket) m_aSSLServerSocket.accept ())
     {
-      socket = (SSLSocket) m_aSSLServerSocket.accept ();
       socket.setSoTimeout (2000);
       m_aReader = new NonBlockingBufferedReader (new InputStreamReader (socket.getInputStream ()));
       m_aWriter = new NonBlockingBufferedWriter (new OutputStreamWriter (socket.getOutputStream ()));
@@ -205,10 +202,6 @@ public class SocketCommandProcessor extends AbstractCommandProcessor
     catch (final Exception ex)
     {
       throw WrappedOpenAS2Exception.wrap (ex);
-    }
-    finally
-    {
-      SocketHelper.close (socket);
     }
   }
 
