@@ -32,9 +32,6 @@
  */
 package com.helger.as2.cmdprocessor;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -47,12 +44,15 @@ import com.helger.as2lib.util.StringMap;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.annotation.UnsupportedOperation;
-import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.collection.ext.CommonsLinkedHashMap;
+import com.helger.commons.collection.ext.ICommonsMap;
+import com.helger.commons.collection.ext.ICommonsOrderedMap;
 import com.helger.commons.lang.ClassHelper;
 
-public abstract class AbstractCommandProcessor extends StringMap implements ICommandProcessor, IDynamicComponent, Runnable
+public abstract class AbstractCommandProcessor extends StringMap
+                                               implements ICommandProcessor, IDynamicComponent, Runnable
 {
-  private final Map <String, ICommand> m_aCommands = new LinkedHashMap <String, ICommand> ();
+  private final ICommonsOrderedMap <String, ICommand> m_aCommands = new CommonsLinkedHashMap<> ();
   private volatile boolean m_bTerminated = false;
 
   public AbstractCommandProcessor ()
@@ -75,9 +75,9 @@ public abstract class AbstractCommandProcessor extends StringMap implements ICom
 
   @Nonnull
   @ReturnsMutableCopy
-  public Map <String, ICommand> getAllCommands ()
+  public ICommonsMap <String, ICommand> getAllCommands ()
   {
-    return CollectionHelper.newOrderedMap (m_aCommands);
+    return m_aCommands.getClone ();
   }
 
   @Nullable

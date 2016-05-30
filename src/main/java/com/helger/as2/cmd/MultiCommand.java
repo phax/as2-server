@@ -32,8 +32,6 @@
  */
 package com.helger.as2.cmd;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 import javax.annotation.Nonnull;
@@ -43,13 +41,16 @@ import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.session.IAS2Session;
 import com.helger.as2lib.util.IStringMap;
 import com.helger.commons.collection.ArrayHelper;
+import com.helger.commons.collection.ext.CommonsArrayList;
+import com.helger.commons.collection.ext.ICommonsList;
 
 public class MultiCommand extends AbstractCommand
 {
-  private List <ICommand> m_aCmds;
+  private ICommonsList <ICommand> m_aCmds;
 
   @Override
-  public void initDynamicComponent (@Nonnull final IAS2Session session, @Nullable final IStringMap parameters) throws OpenAS2Exception
+  public void initDynamicComponent (@Nonnull final IAS2Session session,
+                                    @Nullable final IStringMap parameters) throws OpenAS2Exception
   {
     super.initDynamicComponent (session, parameters);
     getAttributeAsStringRequired (ATTR_NAME);
@@ -69,10 +70,10 @@ public class MultiCommand extends AbstractCommand
   }
 
   @Nonnull
-  public List <ICommand> getCommands ()
+  public ICommonsList <ICommand> getCommands ()
   {
     if (m_aCmds == null)
-      m_aCmds = new ArrayList <ICommand> ();
+      m_aCmds = new CommonsArrayList<> ();
     return m_aCmds;
   }
 

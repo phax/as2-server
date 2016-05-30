@@ -32,23 +32,22 @@
  */
 package com.helger.as2.cmd;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.annotation.Nonnull;
 
 import com.helger.as2.cmdprocessor.AbstractCommandProcessor;
+import com.helger.commons.collection.ext.CommonsArrayList;
+import com.helger.commons.collection.ext.ICommonsList;
 
 /**
  * command calls the registered command processors
- * 
+ *
  * @author joseph mcverry
  */
 public class CommandManager
 {
   private static CommandManager s_aDefaultManager;
 
-  private List <AbstractCommandProcessor> m_aProcessors;
+  private ICommonsList <AbstractCommandProcessor> m_aProcessors;
 
   @Nonnull
   public static CommandManager getCmdManager ()
@@ -58,15 +57,15 @@ public class CommandManager
     return s_aDefaultManager;
   }
 
-  public void setProcessors (final List <AbstractCommandProcessor> aProcessors)
+  public void setProcessors (final ICommonsList <AbstractCommandProcessor> aProcessors)
   {
     m_aProcessors = aProcessors;
   }
 
-  public List <AbstractCommandProcessor> getProcessors ()
+  public ICommonsList <AbstractCommandProcessor> getProcessors ()
   {
     if (m_aProcessors == null)
-      m_aProcessors = new ArrayList <AbstractCommandProcessor> ();
+      m_aProcessors = new CommonsArrayList<> ();
     return m_aProcessors;
   }
 

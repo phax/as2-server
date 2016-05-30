@@ -33,15 +33,19 @@
 package com.helger.as2.util;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.annotation.Nullable;
+
+import com.helger.commons.collection.ext.CommonsArrayList;
+import com.helger.commons.collection.ext.ICommonsList;
+
 public class FileMonitor
 {
-  private List <IFileMonitorListener> m_aListeners;
+  private ICommonsList <IFileMonitorListener> m_aListeners;
   private Date m_aLastModified;
   private File m_aFile;
   private Timer m_aTimer;
@@ -107,18 +111,15 @@ public class FileMonitor
     return m_aLastModified;
   }
 
-  public void setListeners (final List <IFileMonitorListener> listeners)
+  public void setListeners (@Nullable final ICommonsList <IFileMonitorListener> listeners)
   {
     m_aListeners = listeners;
   }
 
-  public List <IFileMonitorListener> getListeners ()
+  public ICommonsList <IFileMonitorListener> getListeners ()
   {
     if (m_aListeners == null)
-    {
-      m_aListeners = new ArrayList <IFileMonitorListener> ();
-    }
-
+      m_aListeners = new CommonsArrayList<> ();
     return m_aListeners;
   }
 

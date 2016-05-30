@@ -32,16 +32,15 @@
  */
 package com.helger.as2.cmd;
 
-import java.util.Map;
-
 import javax.annotation.Nonnull;
 
 import com.helger.as2lib.IDynamicComponent;
 import com.helger.commons.annotation.ReturnsMutableCopy;
+import com.helger.commons.collection.ext.ICommonsOrderedMap;
 
 public interface ICommandRegistry extends IDynamicComponent
 {
   @Nonnull
   @ReturnsMutableCopy
-  Map <String, ICommand> getAllCommands ();
+  ICommonsOrderedMap <String, ICommand> getAllCommands ();
 }

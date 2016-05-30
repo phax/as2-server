@@ -37,8 +37,6 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 import javax.annotation.Nonnull;
@@ -51,6 +49,8 @@ import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.exception.WrappedOpenAS2Exception;
 import com.helger.as2lib.session.IAS2Session;
 import com.helger.as2lib.util.IStringMap;
+import com.helger.commons.collection.ext.CommonsArrayList;
+import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.thread.ThreadHelper;
 
@@ -126,7 +126,7 @@ public class StreamCommandProcessor extends AbstractCommandProcessor
           }
           else
           {
-            final List <String> aParams = new ArrayList <String> ();
+            final ICommonsList <String> aParams = new CommonsArrayList<> ();
             while (aTokenizer.hasMoreTokens ())
             {
               aParams.add (aTokenizer.nextToken ());
