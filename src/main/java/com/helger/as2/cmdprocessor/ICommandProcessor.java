@@ -32,20 +32,19 @@
  */
 package com.helger.as2.cmdprocessor;
 
-import java.util.Map;
-
 import javax.annotation.Nonnull;
 
 import com.helger.as2.cmd.ICommand;
 import com.helger.as2.cmd.ICommandRegistry;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.commons.annotation.ReturnsMutableCopy;
+import com.helger.commons.collection.ext.ICommonsMap;
 
 public interface ICommandProcessor
 {
   @Nonnull
   @ReturnsMutableCopy
-  Map <String, ICommand> getAllCommands ();
+  ICommonsMap <String, ICommand> getAllCommands ();
 
   boolean isTerminated ();
 

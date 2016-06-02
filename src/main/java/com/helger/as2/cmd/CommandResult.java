@@ -33,14 +33,12 @@
 package com.helger.as2.cmd;
 
 import java.io.Serializable;
-import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.NotThreadSafe;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.collection.CollectionHelper;
 import com.helger.commons.collection.ext.CommonsArrayList;
 import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.microdom.IMicroContainer;
@@ -51,7 +49,7 @@ import com.helger.commons.microdom.serialize.MicroWriter;
 public final class CommandResult
 {
   private final ECommandResultType m_eType;
-  private final ICommonsList <Serializable> m_aResults = new CommonsArrayList<> ();
+  private final ICommonsList <Serializable> m_aResults = new CommonsArrayList <> ();
 
   public CommandResult (@Nonnull final ECommandResultType eType)
   {
@@ -90,9 +88,9 @@ public final class CommandResult
 
   @Nonnull
   @ReturnsMutableCopy
-  public List <Serializable> getAllResults ()
+  public ICommonsList <Serializable> getAllResults ()
   {
-    return CollectionHelper.newList (m_aResults);
+    return m_aResults.getClone ();
   }
 
   @Nonnull
