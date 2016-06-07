@@ -41,8 +41,8 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import com.helger.commons.xml.serialize.read.SAXReader;
-import com.helger.commons.xml.serialize.read.SAXReaderSettings;
+import com.helger.xml.serialize.read.SAXReader;
+import com.helger.xml.serialize.read.SAXReaderSettings;
 
 /**
  * used to parse commands from the socket command processor message format

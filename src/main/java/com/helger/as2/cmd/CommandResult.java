@@ -41,9 +41,9 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.collection.ext.CommonsArrayList;
 import com.helger.commons.collection.ext.ICommonsList;
-import com.helger.commons.microdom.IMicroContainer;
-import com.helger.commons.microdom.MicroContainer;
-import com.helger.commons.microdom.serialize.MicroWriter;
+import com.helger.xml.microdom.IMicroContainer;
+import com.helger.xml.microdom.MicroContainer;
+import com.helger.xml.microdom.serialize.MicroWriter;
 
 @NotThreadSafe
 public final class CommandResult
