@@ -41,6 +41,7 @@ import java.net.UnknownHostException;
 import com.helger.commons.charset.CCharset;
 import com.helger.commons.io.file.FileHelper;
 import com.helger.commons.io.stream.StreamHelper;
+import com.helger.commons.string.StringHelper;
 
 /**
  * Small main application that writes a fully fledged AS2 message via a socket
@@ -180,7 +181,7 @@ public final class MainStreamToAS2Server
                     "--boundaryEHSgAQ==--\r\n";
       // Get content length
       final int nContentLength = sMsg.substring (sMsg.indexOf ("--boundaryEHSgAQ==")).length ();
-      sMsg = sMsg.replace ("$CL$", Integer.toString (nContentLength));
+      sMsg = StringHelper.replaceAll (sMsg, "$CL$", Integer.toString (nContentLength));
       aPayload = sMsg.getBytes (CCharset.CHARSET_ISO_8859_1_OBJ);
     }
 
