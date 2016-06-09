@@ -64,7 +64,7 @@
   </scm>
   
   <properties>
-    <log4j.version>2.6</log4j.version>
+    <log4j.version>2.6.1</log4j.version>
   </properties>
 
   <dependencies>
