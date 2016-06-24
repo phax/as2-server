@@ -64,6 +64,7 @@ import com.helger.as2lib.session.AS2Session;
 import com.helger.as2lib.util.CAS2Header;
 import com.helger.as2lib.util.DateHelper;
 import com.helger.as2lib.util.StringMap;
+import com.helger.as2lib.util.http.AS2HttpHeaderWrapperHttpURLConnection;
 import com.helger.commons.io.resource.ClassPathResource;
 
 /**
@@ -282,37 +283,39 @@ public class MainTestClient
   {
     final Partnership aPartnership = aMsg.getPartnership ();
 
-    aConn.setRequestProperty (CAS2Header.HEADER_CONNECTION, CAS2Header.DEFAULT_CONNECTION);
-    aConn.setRequestProperty (CAS2Header.HEADER_USER_AGENT, CAS2Header.DEFAULT_USER_AGENT);
+    final AS2HttpHeaderWrapperHttpURLConnection aHeaderWrapper = new AS2HttpHeaderWrapperHttpURLConnection (aConn);
+    aHeaderWrapper.setHttpHeader (CAS2Header.HEADER_CONNECTION, CAS2Header.DEFAULT_CONNECTION);
+    aHeaderWrapper.setHttpHeader (CAS2Header.HEADER_USER_AGENT, CAS2Header.DEFAULT_USER_AGENT);
 
-    aConn.setRequestProperty (CAS2Header.HEADER_DATE, DateHelper.getFormattedDateNow (CAS2Header.DEFAULT_DATE_FORMAT));
-    aConn.setRequestProperty (CAS2Header.HEADER_MESSAGE_ID, aMsg.getMessageID ());
+    aHeaderWrapper.setHttpHeader (CAS2Header.HEADER_DATE,
+                                  DateHelper.getFormattedDateNow (CAS2Header.DEFAULT_DATE_FORMAT));
+    aHeaderWrapper.setHttpHeader (CAS2Header.HEADER_MESSAGE_ID, aMsg.getMessageID ());
     // make sure this is the encoding used in the msg, run TBF1
-    aConn.setRequestProperty (CAS2Header.HEADER_MIME_VERSION, CAS2Header.DEFAULT_MIME_VERSION);
-    aConn.setRequestProperty (CAS2Header.HEADER_CONTENT_TYPE, aMsg.getContentType ());
-    aConn.setRequestProperty (CAS2Header.HEADER_AS2_VERSION, CAS2Header.DEFAULT_AS2_VERSION);
-    aConn.setRequestProperty (CAS2Header.HEADER_RECIPIENT_ADDRESS, aPartnership.getAS2URL ());
-    aConn.setRequestProperty (CAS2Header.HEADER_AS2_TO, aPartnership.getReceiverAS2ID ());
-    aConn.setRequestProperty (CAS2Header.HEADER_AS2_FROM, aPartnership.getSenderAS2ID ());
-    aConn.setRequestProperty (CAS2Header.HEADER_SUBJECT, aMsg.getSubject ());
-    aConn.setRequestProperty (CAS2Header.HEADER_FROM, aPartnership.getSenderEmail ());
+    aHeaderWrapper.setHttpHeader (CAS2Header.HEADER_MIME_VERSION, CAS2Header.DEFAULT_MIME_VERSION);
+    aHeaderWrapper.setHttpHeader (CAS2Header.HEADER_CONTENT_TYPE, aMsg.getContentType ());
+    aHeaderWrapper.setHttpHeader (CAS2Header.HEADER_AS2_VERSION, CAS2Header.DEFAULT_AS2_VERSION);
+    aHeaderWrapper.setHttpHeader (CAS2Header.HEADER_RECIPIENT_ADDRESS, aPartnership.getAS2URL ());
+    aHeaderWrapper.setHttpHeader (CAS2Header.HEADER_AS2_TO, aPartnership.getReceiverAS2ID ());
+    aHeaderWrapper.setHttpHeader (CAS2Header.HEADER_AS2_FROM, aPartnership.getSenderAS2ID ());
+    aHeaderWrapper.setHttpHeader (CAS2Header.HEADER_SUBJECT, aMsg.getSubject ());
+    aHeaderWrapper.setHttpHeader (CAS2Header.HEADER_FROM, aPartnership.getSenderEmail ());
 
     final String sDispTo = aPartnership.getAS2MDNTo ();
     if (sDispTo != null)
-      aConn.setRequestProperty (CAS2Header.HEADER_DISPOSITION_NOTIFICATION_TO, sDispTo);
+      aHeaderWrapper.setHttpHeader (CAS2Header.HEADER_DISPOSITION_NOTIFICATION_TO, sDispTo);
 
     final String sDispOptions = aPartnership.getAS2MDNOptions ();
     if (sDispOptions != null)
-      aConn.setRequestProperty (CAS2Header.HEADER_DISPOSITION_NOTIFICATION_OPTIONS, sDispOptions);
+      aHeaderWrapper.setHttpHeader (CAS2Header.HEADER_DISPOSITION_NOTIFICATION_OPTIONS, sDispOptions);
 
     // Asynch MDN 2007-03-12
     final String sReceiptOption = aPartnership.getAS2ReceiptOption ();
     if (sReceiptOption != null)
-      aConn.setRequestProperty (CAS2Header.HEADER_RECEIPT_DELIVERY_OPTION, sReceiptOption);
+      aHeaderWrapper.setHttpHeader (CAS2Header.HEADER_RECEIPT_DELIVERY_OPTION, sReceiptOption);
 
     // As of 2007-06-01
     final String sContentDisp = aMsg.getContentDisposition ();
     if (sContentDisp != null)
-      aConn.setRequestProperty (CAS2Header.HEADER_CONTENT_DISPOSITION, sContentDisp);
+      aHeaderWrapper.setHttpHeader (CAS2Header.HEADER_CONTENT_DISPOSITION, sContentDisp);
   }
 }
