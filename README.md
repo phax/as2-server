@@ -8,13 +8,13 @@ The standalone AS2 server component based on **[as2-lib](https://github.com/phax
 It directly works on Sockets and not on Servlets. Please see **[as2-peppol-servlet](https://github.com/phax/as2-peppol-servlet)** for an example how **[as2-lib](https://github.com/phax/as2-lib)** can be used together with the Servlet specs.
 Alternatively a specialized Servlet based server for PEPPOL is available with my **[as2-peppol-server](https://github.com/phax/as2-peppol-server)** project.
 
-Versions <= 1.0.1 are compatible with ph-commons < 6.0.
-Versions >= 2.0.0 are compatible with ph-commons >= 6.0.
-
 This project is licensed under the FreeBSD License.
 
 #New and noteworthy
 
+  * Version 3.0.0 - 2016-08-21
+    * Requires JDK 8
+    * Updated to as2-lib 3.0.0
   * Version 2.2.7 - 2016-04-27
     * Updated to as2-lib 2.2.7
   * Version 2.2.5 - 2015-12-01
@@ -37,7 +37,7 @@ Add the following to your pom.xml to use this artifact:
 <dependency>
   <groupId>com.helger</groupId>
   <artifactId>as2-server</artifactId>
-  <version>2.2.7</version>
+  <version>3.0.0</version>
 </dependency>
 ```
 
