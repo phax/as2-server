@@ -12,6 +12,8 @@ This project is licensed under the FreeBSD License.
 
 #New and noteworthy
 
+  * Version 3.0.1 - 2016-09-27
+    * Updated to as2-lib 3.0.1
   * Version 3.0.0 - 2016-08-21
     * Requires JDK 8
     * Updated to as2-lib 3.0.0
@@ -37,7 +39,7 @@ Add the following to your pom.xml to use this artifact:
 <dependency>
   <groupId>com.helger</groupId>
   <artifactId>as2-server</artifactId>
-  <version>3.0.0</version>
+  <version>3.0.1</version>
 </dependency>
 ```
 
