@@ -72,7 +72,7 @@
       <dependency>
         <groupId>com.helger</groupId>
         <artifactId>ph-commons-parent-pom</artifactId>
-        <version>8.5.5</version>
+        <version>8.5.6</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -86,7 +86,7 @@
       <dependency>
         <groupId>com.helger</groupId>
         <artifactId>as2-lib-parent-pom</artifactId>
-        <version>3.0.2</version>
+        <version>3.0.3-SNAPSHOT</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
