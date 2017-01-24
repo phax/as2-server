@@ -12,26 +12,28 @@ This project is licensed under the FreeBSD License.
 
 #New and noteworthy
 
-  * Version 3.0.2 - 2016-12-12
+   * v3.0.3 - 2017-01-24
+    * Updated to as2-lib 3.0.3
+   * v3.0.2 - 2016-12-12
     * Updated to as2-lib 3.0.2
-  * Version 3.0.1 - 2016-09-27
+  * v3.0.1 - 2016-09-27
     * Updated to as2-lib 3.0.1
-  * Version 3.0.0 - 2016-08-21
+  * v3.0.0 - 2016-08-21
     * Requires JDK 8
     * Updated to as2-lib 3.0.0
-  * Version 2.2.7 - 2016-04-27
+  * v2.2.7 - 2016-04-27
     * Updated to as2-lib 2.2.7
-  * Version 2.2.5 - 2015-12-01
+  * v2.2.5 - 2015-12-01
     * Updated to as2-lib 2.2.5
-  * Version 2.2.4 - 2015-11-11
+  * v2.2.4 - 2015-11-11
     * Updated to as2-lib 2.2.4
-  * Version 2.2.3 - 2015-10-22
+  * v2.2.3 - 2015-10-22
     * Updated to as2-lib 2.2.3
-  * Version 2.2.2 - 2015-10-19
+  * v2.2.2 - 2015-10-19
     * Updated to as2-lib 2.2.2 and Bouncy Castle 1.53
-  * Version 2.2.1 - 2015-10-08
+  * v2.2.1 - 2015-10-08
     * Updated to as2-lib 2.2.1
-  * Version 2.2.0
+  * v2.2.0
     * Extended the configuration file with the attribute `CryptoVerifyUseCertificateInBodyPart` to define whether a certificate passed in the signed MIME body part shall be used to verify the signature (when `true`) or whether to always use the certificate provided in the partnership (when `false`). By default the value is `true`.
     * Extended the configuration file with the attribute `CryptoSignIncludeCertificateInBodyPart` to define whether the certificate used for signing should be included in the signed MIME body part (when `true`) or not to include it (when `false`). By default the value is `true`. This is the sending counter part of `CryptoVerifyUseCertificateInBodyPart`
 
