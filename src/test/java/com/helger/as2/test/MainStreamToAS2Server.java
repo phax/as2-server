@@ -37,8 +37,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
 
-import com.helger.commons.charset.CCharset;
 import com.helger.commons.io.file.FileHelper;
 import com.helger.commons.io.stream.StreamHelper;
 import com.helger.commons.string.StringHelper;
@@ -64,7 +64,7 @@ public final class MainStreamToAS2Server
 
       // Get response
       final byte [] aResponse = StreamHelper.getAllBytes (aSocket.getInputStream ());
-      System.out.println ("Response:\n\n" + new String (aResponse, CCharset.CHARSET_ISO_8859_1_OBJ));
+      System.out.println ("Response:\n\n" + new String (aResponse, StandardCharsets.ISO_8859_1));
     }
     finally
     {
@@ -182,7 +182,7 @@ public final class MainStreamToAS2Server
       // Get content length
       final int nContentLength = sMsg.substring (sMsg.indexOf ("--boundaryEHSgAQ==")).length ();
       sMsg = StringHelper.replaceAll (sMsg, "$CL$", Integer.toString (nContentLength));
-      aPayload = sMsg.getBytes (CCharset.CHARSET_ISO_8859_1_OBJ);
+      aPayload = sMsg.getBytes (StandardCharsets.ISO_8859_1);
     }
 
     streamCompleteHttpRequestToServer (aPayload);

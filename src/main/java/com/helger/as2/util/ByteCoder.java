@@ -32,11 +32,11 @@
  */
 package com.helger.as2.util;
 
+import java.nio.charset.StandardCharsets;
 import java.util.regex.Matcher;
 
 import javax.annotation.Nonnull;
 
-import com.helger.commons.charset.CCharset;
 import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
 import com.helger.commons.regex.RegExHelper;
 
@@ -52,7 +52,7 @@ public final class ByteCoder
   public static String encode (@Nonnull final String inStr)
   {
     final StringBuilder aSB = new StringBuilder (inStr.length () * 3);
-    for (final byte element : inStr.getBytes (CCharset.CHARSET_ISO_8859_1_OBJ))
+    for (final byte element : inStr.getBytes (StandardCharsets.ISO_8859_1))
     {
       // Ensure unsigned int
       aSB.append ('.').append (element & 0xff).append ('.');
@@ -73,6 +73,6 @@ public final class ByteCoder
       aBAOS.write (me);
     }
     aBAOS.close ();
-    return aBAOS.getAsString (CCharset.CHARSET_ISO_8859_1_OBJ);
+    return aBAOS.getAsString (StandardCharsets.ISO_8859_1);
   }
 }
