@@ -1,4 +1,4 @@
-#as2-server
+# as2-server
 
 [![Build Status](https://travis-ci.org/phax/as2-server.svg?branch=master)](https://travis-ci.org/phax/as2-server)
 ﻿
@@ -10,7 +10,7 @@ Alternatively a specialized Servlet based server for PEPPOL is available with my
 
 This project is licensed under the FreeBSD License.
 
-#New and noteworthy
+# New and noteworthy
 
    * v3.0.3 - 2017-01-24
     * Updated to as2-lib 3.0.3
@@ -37,17 +37,17 @@ This project is licensed under the FreeBSD License.
     * Extended the configuration file with the attribute `CryptoVerifyUseCertificateInBodyPart` to define whether a certificate passed in the signed MIME body part shall be used to verify the signature (when `true`) or whether to always use the certificate provided in the partnership (when `false`). By default the value is `true`.
     * Extended the configuration file with the attribute `CryptoSignIncludeCertificateInBodyPart` to define whether the certificate used for signing should be included in the signed MIME body part (when `true`) or not to include it (when `false`). By default the value is `true`. This is the sending counter part of `CryptoVerifyUseCertificateInBodyPart`
 
-#Maven usage
+# Maven usage
 Add the following to your pom.xml to use this artifact:
-```
+```xml
 <dependency>
   <groupId>com.helger</groupId>
   <artifactId>as2-server</artifactId>
-  <version>3.0.1</version>
+  <version>3.0.3</version>
 </dependency>
 ```
 
-#Configuration
+# Configuration
 Start server: run class `com.helger.as2.app.MainOpenAS2Server`
 
 Startup arguments (required): `src/main/resources/config/config.xml`
@@ -60,7 +60,7 @@ Than run `com.helger.as2.test.TestClient` as a Java main application to perform 
 
 No database or additional software is needed to exchange AS2 messages!
 
-#Building and running from source
+# Building and running from source
 To run this server stand-alone from the source build, perform the following steps.
 In the below commands `x.y.z` denotes the effective version number
 

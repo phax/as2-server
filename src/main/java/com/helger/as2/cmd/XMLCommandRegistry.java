@@ -32,6 +32,7 @@
  */
 package com.helger.as2.cmd;
 
+import java.io.File;
 import java.io.InputStream;
 
 import javax.annotation.Nonnull;
@@ -121,6 +122,6 @@ public class XMLCommandRegistry extends BaseCommandRegistry
   public void refresh () throws OpenAS2Exception
   {
     final String sFilename = getAttributeAsStringRequired (ATTR_FILENAME);
-    load (FileHelper.getInputStream (sFilename));
+    load (FileHelper.getInputStream (new File (sFilename)));
   }
 }

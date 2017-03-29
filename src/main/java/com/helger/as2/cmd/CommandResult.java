@@ -108,7 +108,7 @@ public final class CommandResult
     final IMicroContainer aCont = new MicroContainer ();
     for (final Serializable x : m_aResults)
       aCont.appendElement ("result").appendText (x.toString ());
-    return MicroWriter.getXMLString (aCont);
+    return MicroWriter.getNodeAsString (aCont);
   }
 
   @Override
