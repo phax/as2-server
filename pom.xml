@@ -65,7 +65,6 @@
   
   <properties>
     <log4j.version>2.8.2</log4j.version>
-    <bc.version>1.57</bc.version>
   </properties>
   
   <dependencyManagement>
@@ -87,7 +86,7 @@
       <dependency>
         <groupId>com.helger</groupId>
         <artifactId>as2-lib-parent-pom</artifactId>
-        <version>3.0.3</version>
+        <version>3.0.4</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -113,11 +112,6 @@
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-slf4j-impl</artifactId>
       <version>${log4j.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.bouncycastle</groupId>
-      <artifactId>bcmail-jdk15on</artifactId>
-      <version>${bc.version}</version><!--$NO-MVN-MAN-VER$-->
     </dependency>
     
     <dependency>

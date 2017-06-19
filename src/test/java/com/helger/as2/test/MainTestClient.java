@@ -168,7 +168,7 @@ public class MainTestClient
     aPartnership.setAttribute (CPartnershipIDs.PA_SIGN, ECryptoAlgorithmSign.DIGEST_SHA_1.getID ());
     aPartnership.setAttribute (CPartnershipIDs.PA_PROTOCOL, AS2Message.PROTOCOL_AS2);
 
-    aPartnership.setAttribute (CPartnershipIDs.PA_AS2_RECEIPT_OPTION, null);
+    aPartnership.setAttribute (CPartnershipIDs.PA_AS2_RECEIPT_DELIVERY_OPTION, null);
 
     s_aLogger.info ("ALIAS: " + aPartnership.getSenderX509Alias ());
 
@@ -227,7 +227,7 @@ public class MainTestClient
 
     s_aLogger.info ("is requesting  MDN?: " + aMsg.isRequestingMDN ());
     s_aLogger.info ("is async MDN?: " + aMsg.isRequestingAsynchMDN ());
-    s_aLogger.info ("is rule to receive MDN active?: " + aMsg.getPartnership ().getAS2ReceiptOption ());
+    s_aLogger.info ("is rule to receive MDN active?: " + aMsg.getPartnership ().getAS2ReceiptDeliveryOption ());
 
     aTestSender.handle (IProcessorSenderModule.DO_SEND, aMsg, null);
     s_aLogger.info ("MDN is " + aMsg.getMDN ().toString ());
@@ -308,8 +308,8 @@ public class MainTestClient
     if (sDispOptions != null)
       aHeaderWrapper.setHttpHeader (CAS2Header.HEADER_DISPOSITION_NOTIFICATION_OPTIONS, sDispOptions);
 
-    // Asynch MDN 2007-03-12
-    final String sReceiptOption = aPartnership.getAS2ReceiptOption ();
+    // Async MDN 2007-03-12
+    final String sReceiptOption = aPartnership.getAS2ReceiptDeliveryOption ();
     if (sReceiptOption != null)
       aHeaderWrapper.setHttpHeader (CAS2Header.HEADER_RECEIPT_DELIVERY_OPTION, sReceiptOption);
 
