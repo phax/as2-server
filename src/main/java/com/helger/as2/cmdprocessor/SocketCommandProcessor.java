@@ -50,8 +50,9 @@ import com.helger.as2lib.exception.WrappedOpenAS2Exception;
 import com.helger.as2lib.session.IAS2Session;
 import com.helger.as2lib.util.IStringMap;
 import com.helger.as2lib.util.StringMap;
-import com.helger.commons.collection.ext.CommonsArrayList;
-import com.helger.commons.collection.ext.ICommonsList;
+import com.helger.commons.annotation.OverrideOnDemand;
+import com.helger.commons.collection.impl.CommonsArrayList;
+import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.io.stream.NonBlockingBufferedReader;
 import com.helger.commons.io.stream.NonBlockingBufferedWriter;
 import com.helger.commons.string.StringHelper;
@@ -82,20 +83,29 @@ public class SocketCommandProcessor extends AbstractCommandProcessor
   public SocketCommandProcessor ()
   {}
 
+  @OverrideOnDemand
+  @Nullable
+  protected String [] getEnabledCipherSuites ()
+  {
+    // Any reason why this specific cipher suite is used??
+    return new String [] { "SSL_DH_anon_WITH_RC4_128_MD5" };
+  }
+
   @Override
   public void initDynamicComponent (@Nonnull final IAS2Session aSession,
                                     @Nullable final IStringMap aParams) throws OpenAS2Exception
   {
     final StringMap aParameters = aParams == null ? new StringMap () : new StringMap (aParams);
-    final String sPort = aParameters.getAttributeAsString (ATTR_PORTID);
+    final String sPort = aParameters.getAsString (ATTR_PORTID);
     try
     {
       final int nPort = Integer.parseInt (sPort);
 
       final SSLServerSocketFactory aSSLServerSocketFactory = (SSLServerSocketFactory) SSLServerSocketFactory.getDefault ();
       m_aSSLServerSocket = (SSLServerSocket) aSSLServerSocketFactory.createServerSocket (nPort);
-      final String [] aEnabledCipherSuites = { "SSL_DH_anon_WITH_RC4_128_MD5" };
-      m_aSSLServerSocket.setEnabledCipherSuites (aEnabledCipherSuites);
+      final String [] aEnabledCipherSuites = getEnabledCipherSuites ();
+      if (aEnabledCipherSuites != null)
+        m_aSSLServerSocket.setEnabledCipherSuites (aEnabledCipherSuites);
     }
     catch (final IOException e)
     {
@@ -106,11 +116,11 @@ public class SocketCommandProcessor extends AbstractCommandProcessor
       throw new OpenAS2Exception ("Error converting portid parameter '" + sPort + "': " + e);
     }
 
-    m_sUserID = aParameters.getAttributeAsString (ATTR_USERID);
+    m_sUserID = aParameters.getAsString (ATTR_USERID);
     if (StringHelper.hasNoText (m_sUserID))
       throw new OpenAS2Exception ("missing 'userid' parameter");
 
-    m_sPassword = aParameters.getAttributeAsString (ATTR_PASSWORD);
+    m_sPassword = aParameters.getAsString (ATTR_PASSWORD);
     if (StringHelper.hasNoText (m_sPassword))
       throw new OpenAS2Exception ("missing 'password' parameter");
 
@@ -164,7 +174,7 @@ public class SocketCommandProcessor extends AbstractCommandProcessor
           }
           else
           {
-            final ICommonsList <String> params = new CommonsArrayList<> ();
+            final ICommonsList <String> params = new CommonsArrayList <> ();
 
             while (cmdTkn.hasMoreTokens ())
             {

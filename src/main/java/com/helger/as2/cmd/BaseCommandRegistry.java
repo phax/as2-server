@@ -40,8 +40,8 @@ import org.slf4j.LoggerFactory;
 import com.helger.as2lib.AbstractDynamicComponent;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.collection.ext.CommonsLinkedHashMap;
-import com.helger.commons.collection.ext.ICommonsOrderedMap;
+import com.helger.commons.collection.impl.CommonsLinkedHashMap;
+import com.helger.commons.collection.impl.ICommonsOrderedMap;
 
 public class BaseCommandRegistry extends AbstractDynamicComponent implements ICommandRegistry
 {

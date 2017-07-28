@@ -67,7 +67,7 @@ public class ServerPKCS12CertificateFactory extends PKCS12CertificateFactory imp
 
   public FileMonitor getFileMonitor () throws InvalidParameterException
   {
-    boolean bCreateMonitor = m_aFileMonitor == null && getAttributeAsString (ATTR_INTERVAL) != null;
+    boolean bCreateMonitor = m_aFileMonitor == null && getAsString (ATTR_INTERVAL) != null;
     if (!bCreateMonitor && m_aFileMonitor != null)
     {
       final String filename = m_aFileMonitor.getFilename ();

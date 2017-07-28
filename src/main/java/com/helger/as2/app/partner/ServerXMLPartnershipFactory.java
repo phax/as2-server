@@ -50,7 +50,9 @@ import com.helger.as2lib.partner.xml.XMLPartnershipFactory;
  *
  * @author joseph mcverry
  */
-public class ServerXMLPartnershipFactory extends XMLPartnershipFactory implements IRefreshablePartnershipFactory, IFileMonitorListener
+public class ServerXMLPartnershipFactory extends XMLPartnershipFactory implements
+                                         IRefreshablePartnershipFactory,
+                                         IFileMonitorListener
 {
   public static final String ATTR_INTERVAL = "interval";
   private static final Logger s_aLogger = LoggerFactory.getLogger (ServerXMLPartnershipFactory.class);
@@ -66,7 +68,7 @@ public class ServerXMLPartnershipFactory extends XMLPartnershipFactory implement
   {
     boolean bCreateMonitor;
 
-    bCreateMonitor = m_aFileMonitor == null && containsAttribute (ATTR_INTERVAL);
+    bCreateMonitor = m_aFileMonitor == null && containsKey (ATTR_INTERVAL);
 
     if (!bCreateMonitor && m_aFileMonitor != null)
     {

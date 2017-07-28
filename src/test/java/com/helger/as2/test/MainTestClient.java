@@ -176,10 +176,10 @@ public class MainTestClient
     aMsg.setContentType ("application/xml");
     aMsg.setSubject ("some subject");
 
-    aMsg.setAttribute (CPartnershipIDs.PA_AS2_URL, paAs2Url);
+    aMsg.attrs ().putIn (CPartnershipIDs.PA_AS2_URL, paAs2Url);
 
-    aMsg.setAttribute (CPartnershipIDs.PID_AS2, pidAs2);
-    aMsg.setAttribute (CPartnershipIDs.PID_EMAIL, "email");
+    aMsg.attrs ().putIn (CPartnershipIDs.PID_AS2, pidAs2);
+    aMsg.attrs ().putIn (CPartnershipIDs.PID_EMAIL, "email");
 
     MimeBodyPart aBodyPart;
     // part = new MimeBodyPart(new FileInputStream("/tmp/tst"));
@@ -210,8 +210,8 @@ public class MainTestClient
     // /Users/oleo/samples/parfum.spb.ru/as2/test/test.p12
 
     final StringMap aCertFactorySettings = new StringMap ();
-    aCertFactorySettings.setAttribute (PKCS12CertificateFactory.ATTR_FILENAME, filename);
-    aCertFactorySettings.setAttribute (PKCS12CertificateFactory.ATTR_PASSWORD, password);
+    aCertFactorySettings.putIn (PKCS12CertificateFactory.ATTR_FILENAME, filename);
+    aCertFactorySettings.putIn (PKCS12CertificateFactory.ATTR_PASSWORD, password);
 
     aCertFactory.initDynamicComponent (aSession, aCertFactorySettings);
 
@@ -227,7 +227,7 @@ public class MainTestClient
 
     s_aLogger.info ("is requesting  MDN?: " + aMsg.isRequestingMDN ());
     s_aLogger.info ("is async MDN?: " + aMsg.isRequestingAsynchMDN ());
-    s_aLogger.info ("is rule to receive MDN active?: " + aMsg.getPartnership ().getAS2ReceiptDeliveryOption ());
+    s_aLogger.info ("is rule to receive MDN active?: " + aMsg.partnership ().getAS2ReceiptDeliveryOption ());
 
     aTestSender.handle (IProcessorSenderModule.DO_SEND, aMsg, null);
     s_aLogger.info ("MDN is " + aMsg.getMDN ().toString ());
@@ -255,7 +255,7 @@ public class MainTestClient
 
   protected static void checkRequired (final IMessage aMsg)
   {
-    final Partnership aPartnership = aMsg.getPartnership ();
+    final Partnership aPartnership = aMsg.partnership ();
 
     try
     {
@@ -281,7 +281,7 @@ public class MainTestClient
 
   protected void updateHttpHeaders (@Nonnull final HttpURLConnection aConn, @Nonnull final IMessage aMsg)
   {
-    final Partnership aPartnership = aMsg.getPartnership ();
+    final Partnership aPartnership = aMsg.partnership ();
 
     final AS2HttpHeaderWrapperHttpURLConnection aHeaderWrapper = new AS2HttpHeaderWrapperHttpURLConnection (aConn);
     aHeaderWrapper.setHttpHeader (CAS2Header.HEADER_CONNECTION, CAS2Header.DEFAULT_CONNECTION);

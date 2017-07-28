@@ -49,10 +49,10 @@ import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.exception.WrappedOpenAS2Exception;
 import com.helger.as2lib.session.IAS2Session;
 import com.helger.as2lib.util.IStringMap;
-import com.helger.commons.collection.ext.CommonsArrayList;
-import com.helger.commons.collection.ext.ICommonsList;
+import com.helger.commons.collection.impl.CommonsArrayList;
+import com.helger.commons.collection.impl.ICommonsList;
+import com.helger.commons.concurrent.ThreadHelper;
 import com.helger.commons.string.StringHelper;
-import com.helger.commons.thread.ThreadHelper;
 
 /**
  * original author unknown in this release made the process a thread so it can
