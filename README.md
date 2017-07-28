@@ -14,6 +14,7 @@ This project is licensed under the FreeBSD License.
 
   * v4.0.0 - work in progress
     * Updated to as2-lib 4.0.0
+    * Anonymous TLS cipher suite determination improved
   * v3.1.0 - 2017-07-27
     * Updated to as2-lib 3.1.0
   * v3.0.4 - 2017-06-19

@@ -52,7 +52,9 @@ import com.helger.as2lib.util.IStringMap;
 import com.helger.as2lib.util.StringMap;
 import com.helger.commons.annotation.OverrideOnDemand;
 import com.helger.commons.collection.impl.CommonsArrayList;
+import com.helger.commons.collection.impl.CommonsLinkedHashSet;
 import com.helger.commons.collection.impl.ICommonsList;
+import com.helger.commons.collection.impl.ICommonsOrderedSet;
 import com.helger.commons.io.stream.NonBlockingBufferedReader;
 import com.helger.commons.io.stream.NonBlockingBufferedWriter;
 import com.helger.commons.string.StringHelper;
@@ -85,10 +87,26 @@ public class SocketCommandProcessor extends AbstractCommandProcessor
 
   @OverrideOnDemand
   @Nullable
-  protected String [] getEnabledCipherSuites ()
+  protected String [] getEnabledAnonymousCipherSuites (@Nonnull final String [] aEnabled,
+                                                       @Nonnull final String [] aSupported)
   {
-    // Any reason why this specific cipher suite is used??
-    return new String [] { "SSL_DH_anon_WITH_RC4_128_MD5" };
+    final ICommonsOrderedSet <String> ret = new CommonsLinkedHashSet <> ();
+    for (final String sSupported : aSupported)
+    {
+      // No SSL - usually TLS
+      // Only anonymous
+      // No DES
+      // No MD5
+      if (!sSupported.startsWith ("SSL") &&
+          sSupported.indexOf ("_anon_") >= 0 &&
+          (sSupported.indexOf ("_AES_") >= 0 || sSupported.indexOf ("_3DES_") >= 0) &&
+          sSupported.indexOf ("_SHA") >= 0)
+      {
+        ret.add (sSupported);
+      }
+    }
+    ret.addAll (aEnabled);
+    return ret.toArray (new String [0]);
   }
 
   @Override
@@ -103,9 +121,9 @@ public class SocketCommandProcessor extends AbstractCommandProcessor
 
       final SSLServerSocketFactory aSSLServerSocketFactory = (SSLServerSocketFactory) SSLServerSocketFactory.getDefault ();
       m_aSSLServerSocket = (SSLServerSocket) aSSLServerSocketFactory.createServerSocket (nPort);
-      final String [] aEnabledCipherSuites = getEnabledCipherSuites ();
-      if (aEnabledCipherSuites != null)
-        m_aSSLServerSocket.setEnabledCipherSuites (aEnabledCipherSuites);
+      final String [] aEnabledCipherSuites = getEnabledAnonymousCipherSuites (m_aSSLServerSocket.getEnabledCipherSuites (),
+                                                                              m_aSSLServerSocket.getSupportedCipherSuites ());
+      m_aSSLServerSocket.setEnabledCipherSuites (aEnabledCipherSuites);
     }
     catch (final IOException e)
     {
