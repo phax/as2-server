@@ -65,6 +65,7 @@ import com.helger.as2lib.util.CAS2Header;
 import com.helger.as2lib.util.DateHelper;
 import com.helger.as2lib.util.StringMap;
 import com.helger.as2lib.util.http.AS2HttpHeaderWrapperHttpURLConnection;
+import com.helger.commons.http.CHttpHeader;
 import com.helger.commons.io.resource.ClassPathResource;
 
 /**
@@ -284,38 +285,38 @@ public class MainTestClient
     final Partnership aPartnership = aMsg.partnership ();
 
     final AS2HttpHeaderWrapperHttpURLConnection aHeaderWrapper = new AS2HttpHeaderWrapperHttpURLConnection (aConn);
-    aHeaderWrapper.setHttpHeader (CAS2Header.HEADER_CONNECTION, CAS2Header.DEFAULT_CONNECTION);
-    aHeaderWrapper.setHttpHeader (CAS2Header.HEADER_USER_AGENT, CAS2Header.DEFAULT_USER_AGENT);
+    aHeaderWrapper.setHttpHeader (CHttpHeader.CONNECTION, CAS2Header.DEFAULT_CONNECTION);
+    aHeaderWrapper.setHttpHeader (CHttpHeader.USER_AGENT, CAS2Header.DEFAULT_USER_AGENT);
 
-    aHeaderWrapper.setHttpHeader (CAS2Header.HEADER_DATE,
+    aHeaderWrapper.setHttpHeader (CHttpHeader.DATE,
                                   DateHelper.getFormattedDateNow (CAS2Header.DEFAULT_DATE_FORMAT));
-    aHeaderWrapper.setHttpHeader (CAS2Header.HEADER_MESSAGE_ID, aMsg.getMessageID ());
+    aHeaderWrapper.setHttpHeader (CHttpHeader.MESSAGE_ID, aMsg.getMessageID ());
     // make sure this is the encoding used in the msg, run TBF1
-    aHeaderWrapper.setHttpHeader (CAS2Header.HEADER_MIME_VERSION, CAS2Header.DEFAULT_MIME_VERSION);
-    aHeaderWrapper.setHttpHeader (CAS2Header.HEADER_CONTENT_TYPE, aMsg.getContentType ());
-    aHeaderWrapper.setHttpHeader (CAS2Header.HEADER_AS2_VERSION, CAS2Header.DEFAULT_AS2_VERSION);
-    aHeaderWrapper.setHttpHeader (CAS2Header.HEADER_RECIPIENT_ADDRESS, aPartnership.getAS2URL ());
-    aHeaderWrapper.setHttpHeader (CAS2Header.HEADER_AS2_TO, aPartnership.getReceiverAS2ID ());
-    aHeaderWrapper.setHttpHeader (CAS2Header.HEADER_AS2_FROM, aPartnership.getSenderAS2ID ());
-    aHeaderWrapper.setHttpHeader (CAS2Header.HEADER_SUBJECT, aMsg.getSubject ());
-    aHeaderWrapper.setHttpHeader (CAS2Header.HEADER_FROM, aPartnership.getSenderEmail ());
+    aHeaderWrapper.setHttpHeader (CHttpHeader.MIME_VERSION, CAS2Header.DEFAULT_MIME_VERSION);
+    aHeaderWrapper.setHttpHeader (CHttpHeader.CONTENT_TYPE, aMsg.getContentType ());
+    aHeaderWrapper.setHttpHeader (CHttpHeader.AS2_VERSION, CAS2Header.DEFAULT_AS2_VERSION);
+    aHeaderWrapper.setHttpHeader (CHttpHeader.RECIPIENT_ADDRESS, aPartnership.getAS2URL ());
+    aHeaderWrapper.setHttpHeader (CHttpHeader.AS2_TO, aPartnership.getReceiverAS2ID ());
+    aHeaderWrapper.setHttpHeader (CHttpHeader.AS2_FROM, aPartnership.getSenderAS2ID ());
+    aHeaderWrapper.setHttpHeader (CHttpHeader.SUBJECT, aMsg.getSubject ());
+    aHeaderWrapper.setHttpHeader (CHttpHeader.FROM, aPartnership.getSenderEmail ());
 
     final String sDispTo = aPartnership.getAS2MDNTo ();
     if (sDispTo != null)
-      aHeaderWrapper.setHttpHeader (CAS2Header.HEADER_DISPOSITION_NOTIFICATION_TO, sDispTo);
+      aHeaderWrapper.setHttpHeader (CHttpHeader.DISPOSITION_NOTIFICATION_TO, sDispTo);
 
     final String sDispOptions = aPartnership.getAS2MDNOptions ();
     if (sDispOptions != null)
-      aHeaderWrapper.setHttpHeader (CAS2Header.HEADER_DISPOSITION_NOTIFICATION_OPTIONS, sDispOptions);
+      aHeaderWrapper.setHttpHeader (CHttpHeader.DISPOSITION_NOTIFICATION_OPTIONS, sDispOptions);
 
     // Async MDN 2007-03-12
     final String sReceiptOption = aPartnership.getAS2ReceiptDeliveryOption ();
     if (sReceiptOption != null)
-      aHeaderWrapper.setHttpHeader (CAS2Header.HEADER_RECEIPT_DELIVERY_OPTION, sReceiptOption);
+      aHeaderWrapper.setHttpHeader (CHttpHeader.RECEIPT_DELIVERY_OPTION, sReceiptOption);
 
     // As of 2007-06-01
     final String sContentDisp = aMsg.getContentDisposition ();
     if (sContentDisp != null)
-      aHeaderWrapper.setHttpHeader (CAS2Header.HEADER_CONTENT_DISPOSITION, sContentDisp);
+      aHeaderWrapper.setHttpHeader (CHttpHeader.CONTENT_DISPOSITION, sContentDisp);
   }
 }
