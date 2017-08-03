@@ -238,14 +238,14 @@ public class MainTestClient
     final IMessageMDN reply = aMsg.getMDN ();
 
     if (false)
-      s_aLogger.info ("MDN headers:\n" + reply.getHeadersDebugFormatted ());
+      s_aLogger.info ("MDN headers:\n" + reply.headers ().toString ());
 
-    final Enumeration <?> list2 = reply.getData ().getAllHeaders ();
+    final Enumeration <Header> list2 = reply.getData ().getAllHeaders ();
     final StringBuilder aSB2 = new StringBuilder ("Mime headers:\n");
     while (list2.hasMoreElements ())
     {
 
-      final Header aHeader = (Header) list2.nextElement ();
+      final Header aHeader = list2.nextElement ();
       aSB2.append (aHeader.getName ()).append (" = ").append (aHeader.getValue ()).append ('\n');
     }
 
@@ -288,8 +288,7 @@ public class MainTestClient
     aHeaderWrapper.setHttpHeader (CHttpHeader.CONNECTION, CAS2Header.DEFAULT_CONNECTION);
     aHeaderWrapper.setHttpHeader (CHttpHeader.USER_AGENT, CAS2Header.DEFAULT_USER_AGENT);
 
-    aHeaderWrapper.setHttpHeader (CHttpHeader.DATE,
-                                  DateHelper.getFormattedDateNow (CAS2Header.DEFAULT_DATE_FORMAT));
+    aHeaderWrapper.setHttpHeader (CHttpHeader.DATE, DateHelper.getFormattedDateNow (CAS2Header.DEFAULT_DATE_FORMAT));
     aHeaderWrapper.setHttpHeader (CHttpHeader.MESSAGE_ID, aMsg.getMessageID ());
     // make sure this is the encoding used in the msg, run TBF1
     aHeaderWrapper.setHttpHeader (CHttpHeader.MIME_VERSION, CAS2Header.DEFAULT_MIME_VERSION);
