@@ -63,8 +63,8 @@ import com.helger.as2lib.processor.sender.IProcessorSenderModule;
 import com.helger.as2lib.session.AS2Session;
 import com.helger.as2lib.util.CAS2Header;
 import com.helger.as2lib.util.DateHelper;
-import com.helger.as2lib.util.StringMap;
 import com.helger.as2lib.util.http.AS2HttpHeaderWrapperHttpURLConnection;
+import com.helger.commons.collection.attr.StringMap;
 import com.helger.commons.http.CHttpHeader;
 import com.helger.commons.io.resource.ClassPathResource;
 

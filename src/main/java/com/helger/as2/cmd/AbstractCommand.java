@@ -38,7 +38,7 @@ import javax.annotation.Nullable;
 import com.helger.as2lib.AbstractDynamicComponent;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.session.IAS2Session;
-import com.helger.as2lib.util.IStringMap;
+import com.helger.commons.collection.attr.IStringMap;
 
 public abstract class AbstractCommand extends AbstractDynamicComponent implements ICommand
 {

@@ -39,8 +39,8 @@ import javax.annotation.Nullable;
 
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.session.IAS2Session;
-import com.helger.as2lib.util.IStringMap;
 import com.helger.commons.collection.ArrayHelper;
+import com.helger.commons.collection.attr.IStringMap;
 import com.helger.commons.collection.impl.CommonsArrayList;
 import com.helger.commons.collection.impl.ICommonsList;
 
