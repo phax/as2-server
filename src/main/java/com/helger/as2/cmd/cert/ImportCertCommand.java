@@ -32,15 +32,18 @@
  */
 package com.helger.as2.cmd.cert;
 
-import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.security.Key;
 import java.security.KeyStore;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.Enumeration;
+
+import javax.annotation.Nonnull;
 
 import com.helger.as2.cmd.CommandResult;
 import com.helger.as2.cmd.ECommandResultType;
@@ -48,6 +51,7 @@ import com.helger.as2lib.cert.IAliasedCertificateFactory;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.exception.WrappedOpenAS2Exception;
 import com.helger.as2lib.util.AS2Helper;
+import com.helger.commons.io.stream.NonBlockingBufferedInputStream;
 
 public class ImportCertCommand extends AbstractAliasedCertCommand
 {
@@ -94,8 +98,8 @@ public class ImportCertCommand extends AbstractAliasedCertCommand
         {
           if (password == null)
           {
-            return new CommandResult (ECommandResultType.TYPE_INVALID_PARAM_COUNT, getUsage () +
-                                                                                   " (Password is required for p12 files)");
+            return new CommandResult (ECommandResultType.TYPE_INVALID_PARAM_COUNT,
+                                      getUsage () + " (Password is required for p12 files)");
           }
 
           return importPrivateKey (certFx, alias, filename, password);
@@ -109,59 +113,61 @@ public class ImportCertCommand extends AbstractAliasedCertCommand
     }
   }
 
-  protected CommandResult importCert (final IAliasedCertificateFactory certFx, final String alias, final String filename) throws IOException,
-                                                                                                                         CertificateException,
-                                                                                                                         OpenAS2Exception
+  @Nonnull
+  protected CommandResult importCert (final IAliasedCertificateFactory certFx,
+                                      final String sAlias,
+                                      final String sFilename) throws IOException, CertificateException, OpenAS2Exception
   {
-    final FileInputStream fis = new FileInputStream (filename);
-    final BufferedInputStream bis = new BufferedInputStream (fis);
-
-    final java.security.cert.CertificateFactory cf = java.security.cert.CertificateFactory.getInstance ("X.509");
-
-    final CommandResult cmdRes = new CommandResult (ECommandResultType.TYPE_OK, "Certificate(s) imported successfully");
-
-    while (bis.available () > 0)
+    try (final FileInputStream fis = new FileInputStream (sFilename);
+         final NonBlockingBufferedInputStream bis = new NonBlockingBufferedInputStream (fis))
     {
-      final Certificate cert = cf.generateCertificate (bis);
-
-      if (cert instanceof X509Certificate)
+      final CertificateFactory cf = CertificateFactory.getInstance ("X.509");
+      while (bis.available () > 0)
       {
-        certFx.addCertificate (alias, (X509Certificate) cert, true);
-        cmdRes.addResult ("Imported certificate: " + cert.toString ());
+        final Certificate aCert = cf.generateCertificate (bis);
 
-        return cmdRes;
+        if (aCert instanceof X509Certificate)
+        {
+          certFx.addCertificate (sAlias, (X509Certificate) aCert, true);
+
+          final CommandResult cmdRes = new CommandResult (ECommandResultType.TYPE_OK,
+                                                          "Certificate(s) imported successfully");
+          cmdRes.addResult ("Imported certificate: " + aCert.toString ());
+          return cmdRes;
+        }
       }
-    }
 
-    return new CommandResult (ECommandResultType.TYPE_ERROR, "No valid X509 certificates found");
+      return new CommandResult (ECommandResultType.TYPE_ERROR, "No valid X509 certificates found");
+    }
   }
 
-  protected CommandResult importPrivateKey (final IAliasedCertificateFactory certFx,
-                                            final String alias,
-                                            final String filename,
-                                            final String password) throws Exception
+  protected CommandResult importPrivateKey (final IAliasedCertificateFactory aFactory,
+                                            final String sAlias,
+                                            final String sFilename,
+                                            final String sPassword) throws Exception
   {
-    final KeyStore ks = AS2Helper.getCryptoHelper ().createNewKeyStore ();
-    ks.load (new FileInputStream (filename), password.toCharArray ());
+    final KeyStore aKeyStore = AS2Helper.getCryptoHelper ().createNewKeyStore ();
+    try (final InputStream aIS = new FileInputStream (sFilename))
+    {
+      aKeyStore.load (aIS, sPassword.toCharArray ());
+    }
 
-    final Enumeration <String> aliases = ks.aliases ();
+    final Enumeration <String> aliases = aKeyStore.aliases ();
     while (aliases.hasMoreElements ())
     {
-      final String certAlias = aliases.nextElement ();
-      final Certificate cert = ks.getCertificate (certAlias);
-
-      if (cert instanceof X509Certificate)
+      final String sCertAlias = aliases.nextElement ();
+      final Certificate aCert = aKeyStore.getCertificate (sCertAlias);
+      if (aCert instanceof X509Certificate)
       {
-        certFx.addCertificate (alias, (X509Certificate) cert, true);
+        aFactory.addCertificate (sAlias, (X509Certificate) aCert, true);
 
-        final Key certKey = ks.getKey (certAlias, password.toCharArray ());
-        certFx.addPrivateKey (alias, certKey, password);
+        final Key certKey = aKeyStore.getKey (sCertAlias, sPassword.toCharArray ());
+        aFactory.addPrivateKey (sAlias, certKey, sPassword);
 
-        return new CommandResult (ECommandResultType.TYPE_OK, "Imported certificate and key: " + cert.toString ());
+        return new CommandResult (ECommandResultType.TYPE_OK, "Imported certificate and key: " + aCert.toString ());
       }
     }
 
     return new CommandResult (ECommandResultType.TYPE_ERROR, "No valid X509 certificates found");
-
   }
 }
