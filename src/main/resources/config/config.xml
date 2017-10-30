@@ -81,12 +81,12 @@
             sendFilename="true"
             mimetype="application/EDI-X12"/>
     <module classname="com.helger.as2lib.processor.storage.MDNFileModule"
-            filename="data/mdn/$date.yyyy$/$date.MM$/$mdn.msg.sender.as2_id$-$mdn.msg.receiver.as2_id$-$mdn.msg.headers.message-id$"      
+            filename="data/mdn/$date.uuuu$/$date.MM$/$mdn.msg.sender.as2_id$-$mdn.msg.receiver.as2_id$-$mdn.msg.headers.message-id$"      
             protocol="as2"
             tempdir="data/temp"/>
     <module classname="com.helger.as2lib.processor.storage.MessageFileModule"
             filename="data/inbox/$msg.sender.as2_id$-$msg.receiver.as2_id$-$msg.headers.message-id$"
-            header="data/inbox/msgheaders/$date.yyyy$/$date.MM$/$msg.sender.as2_id$-$msg.receiver.as2_id$-$msg.headers.message-id$"    
+            header="data/inbox/msgheaders/$date.uuuu$/$date.MM$/$msg.sender.as2_id$-$msg.receiver.as2_id$-$msg.headers.message-id$"    
             protocol="as2"
             tempdir="data/temp"/>    
     <module classname="com.helger.as2lib.processor.receiver.AS2ReceiverModule"      
