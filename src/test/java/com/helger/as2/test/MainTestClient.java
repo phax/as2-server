@@ -43,7 +43,7 @@ import javax.mail.internet.MimeBodyPart;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.as2lib.cert.PKCS12CertificateFactory;
+import com.helger.as2lib.cert.CertificateFactory;
 import com.helger.as2lib.client.AS2Client;
 import com.helger.as2lib.client.AS2ClientRequest;
 import com.helger.as2lib.client.AS2ClientSettings;
@@ -61,12 +61,13 @@ import com.helger.as2lib.partner.SelfFillingPartnershipFactory;
 import com.helger.as2lib.processor.sender.AS2SenderModule;
 import com.helger.as2lib.processor.sender.IProcessorSenderModule;
 import com.helger.as2lib.session.AS2Session;
+import com.helger.as2lib.util.AS2DateHelper;
 import com.helger.as2lib.util.CAS2Header;
-import com.helger.as2lib.util.DateHelper;
 import com.helger.as2lib.util.http.AS2HttpHeaderWrapperHttpURLConnection;
 import com.helger.commons.collection.attr.StringMap;
 import com.helger.commons.http.CHttpHeader;
 import com.helger.commons.io.resource.ClassPathResource;
+import com.helger.security.keystore.EKeyStoreType;
 
 /**
  * <pre>
@@ -113,7 +114,7 @@ public class MainTestClient
     final boolean DO_SIGN = true;
 
     final AS2ClientSettings aSettings = new AS2ClientSettings ();
-    aSettings.setKeyStore (ClassPathResource.getAsFile ("config/certs.p12"), "test");
+    aSettings.setKeyStore (EKeyStoreType.PKCS12, ClassPathResource.getAsFile ("config/certs.p12"), "test");
     aSettings.setSenderData ("OpenAS2A", "email@example.org", "OpenAS2A_alias");
     aSettings.setReceiverData ("OpenAS2B", "OpenAS2B_alias", "http://localhost:10080/HttpReceiver");
     aSettings.setPartnershipName ("Partnership name");
@@ -195,7 +196,7 @@ public class MainTestClient
     s_aLogger.info ("msg id: " + aMsg.getMessageID ());
 
     final AS2Session aSession = new AS2Session ();
-    final PKCS12CertificateFactory aCertFactory = new PKCS12CertificateFactory ();
+    final CertificateFactory aCertFactory = new CertificateFactory ();
     /*
      * filename="%home%/certs.p12" password="test" interval="300"
      */
@@ -211,8 +212,9 @@ public class MainTestClient
     // /Users/oleo/samples/parfum.spb.ru/as2/test/test.p12
 
     final StringMap aCertFactorySettings = new StringMap ();
-    aCertFactorySettings.putIn (PKCS12CertificateFactory.ATTR_FILENAME, filename);
-    aCertFactorySettings.putIn (PKCS12CertificateFactory.ATTR_PASSWORD, password);
+    aCertFactorySettings.putIn (CertificateFactory.ATTR_TYPE, EKeyStoreType.PKCS12.getID ());
+    aCertFactorySettings.putIn (CertificateFactory.ATTR_FILENAME, filename);
+    aCertFactorySettings.putIn (CertificateFactory.ATTR_PASSWORD, password);
 
     aCertFactory.initDynamicComponent (aSession, aCertFactorySettings);
 
@@ -288,7 +290,7 @@ public class MainTestClient
     aHeaderWrapper.setHttpHeader (CHttpHeader.CONNECTION, CAS2Header.DEFAULT_CONNECTION);
     aHeaderWrapper.setHttpHeader (CHttpHeader.USER_AGENT, CAS2Header.DEFAULT_USER_AGENT);
 
-    aHeaderWrapper.setHttpHeader (CHttpHeader.DATE, DateHelper.getFormattedDateNow (CAS2Header.DEFAULT_DATE_FORMAT));
+    aHeaderWrapper.setHttpHeader (CHttpHeader.DATE, AS2DateHelper.getFormattedDateNow (CAS2Header.DEFAULT_DATE_FORMAT));
     aHeaderWrapper.setHttpHeader (CHttpHeader.MESSAGE_ID, aMsg.getMessageID ());
     // make sure this is the encoding used in the msg, run TBF1
     aHeaderWrapper.setHttpHeader (CHttpHeader.MIME_VERSION, CAS2Header.DEFAULT_MIME_VERSION);

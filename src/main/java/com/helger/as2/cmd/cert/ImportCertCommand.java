@@ -52,6 +52,8 @@ import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.exception.WrappedOpenAS2Exception;
 import com.helger.as2lib.util.AS2Helper;
 import com.helger.commons.io.stream.NonBlockingBufferedInputStream;
+import com.helger.security.keystore.EKeyStoreType;
+import com.helger.security.keystore.IKeyStoreType;
 
 public class ImportCertCommand extends AbstractAliasedCertCommand
 {
@@ -102,7 +104,7 @@ public class ImportCertCommand extends AbstractAliasedCertCommand
                                       getUsage () + " (Password is required for p12 files)");
           }
 
-          return importPrivateKey (certFx, alias, filename, password);
+          return importPrivateKey (EKeyStoreType.PKCS12, certFx, alias, filename, password);
         }
         return importCert (certFx, alias, filename);
       }
@@ -141,12 +143,13 @@ public class ImportCertCommand extends AbstractAliasedCertCommand
     }
   }
 
-  protected CommandResult importPrivateKey (final IAliasedCertificateFactory aFactory,
+  protected CommandResult importPrivateKey (@Nonnull final IKeyStoreType aKeyStoreType,
+                                            final IAliasedCertificateFactory aFactory,
                                             final String sAlias,
                                             final String sFilename,
                                             final String sPassword) throws Exception
   {
-    final KeyStore aKeyStore = AS2Helper.getCryptoHelper ().createNewKeyStore ();
+    final KeyStore aKeyStore = AS2Helper.getCryptoHelper ().createNewKeyStore (aKeyStoreType);
     try (final InputStream aIS = new FileInputStream (sFilename))
     {
       aKeyStore.load (aIS, sPassword.toCharArray ());

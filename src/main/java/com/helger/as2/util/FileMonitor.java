@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.helger.commons.collection.impl.CommonsArrayList;
@@ -119,7 +120,7 @@ public class FileMonitor
   public ICommonsList <IFileMonitorListener> getListeners ()
   {
     if (m_aListeners == null)
-      m_aListeners = new CommonsArrayList<> ();
+      m_aListeners = new CommonsArrayList <> ();
     return m_aListeners;
   }
 
@@ -142,9 +143,9 @@ public class FileMonitor
 
   public void stop ()
   {
-    if (getTimer () != null)
+    if (m_aTimer != null)
     {
-      getTimer ().cancel ();
+      m_aTimer.cancel ();
     }
   }
 
@@ -162,13 +163,11 @@ public class FileMonitor
     return false;
   }
 
+  @Nonnull
   protected Timer getTimer ()
   {
     if (m_aTimer == null)
-    {
       m_aTimer = new Timer (true);
-    }
-
     return m_aTimer;
   }
 

@@ -54,7 +54,7 @@ import com.helger.as2lib.partner.IPartnershipFactory;
 import com.helger.as2lib.processor.IMessageProcessor;
 import com.helger.as2lib.processor.module.IProcessorModule;
 import com.helger.as2lib.session.AS2Session;
-import com.helger.as2lib.util.XMLHelper;
+import com.helger.as2lib.util.AS2XMLHelper;
 import com.helger.commons.io.file.FileHelper;
 import com.helger.commons.string.StringParser;
 import com.helger.xml.microdom.IMicroDocument;
@@ -115,14 +115,20 @@ public class AS2ServerXMLSession extends AS2Session implements ICommandRegistryF
   protected void loadCertificates (@Nonnull final IMicroElement aElement) throws OpenAS2Exception
   {
     s_aLogger.info ("  loading certificates");
-    final ICertificateFactory certFx = XMLHelper.createComponent (aElement, ICertificateFactory.class, this, m_sBaseDirectory);
+    final ICertificateFactory certFx = AS2XMLHelper.createComponent (aElement,
+                                                                     ICertificateFactory.class,
+                                                                     this,
+                                                                     m_sBaseDirectory);
     setCertificateFactory (certFx);
   }
 
   protected void loadCommands (@Nonnull final IMicroElement aElement) throws OpenAS2Exception
   {
     s_aLogger.info ("  loading commands");
-    final ICommandRegistry cmdReg = XMLHelper.createComponent (aElement, ICommandRegistry.class, this, m_sBaseDirectory);
+    final ICommandRegistry cmdReg = AS2XMLHelper.createComponent (aElement,
+                                                                  ICommandRegistry.class,
+                                                                  this,
+                                                                  m_sBaseDirectory);
     m_aCommandRegistry = cmdReg;
   }
 
@@ -134,9 +140,13 @@ public class AS2ServerXMLSession extends AS2Session implements ICommandRegistryF
       loadCommandProcessor (m_aCmdManager, processor);
   }
 
-  protected void loadCommandProcessor (@Nonnull final CommandManager aCommandMgr, @Nonnull final IMicroElement aElement) throws OpenAS2Exception
+  protected void loadCommandProcessor (@Nonnull final CommandManager aCommandMgr,
+                                       @Nonnull final IMicroElement aElement) throws OpenAS2Exception
   {
-    final AbstractCommandProcessor aCmdProcesor = XMLHelper.createComponent (aElement, AbstractCommandProcessor.class, this, m_sBaseDirectory);
+    final AbstractCommandProcessor aCmdProcesor = AS2XMLHelper.createComponent (aElement,
+                                                                                AbstractCommandProcessor.class,
+                                                                                this,
+                                                                                m_sBaseDirectory);
     aCommandMgr.addProcessor (aCmdProcesor);
     s_aLogger.info ("    loaded command processor " + aCmdProcesor.getName ());
   }
@@ -144,23 +154,33 @@ public class AS2ServerXMLSession extends AS2Session implements ICommandRegistryF
   protected void loadPartnerships (final IMicroElement eRootNode) throws OpenAS2Exception
   {
     s_aLogger.info ("  loading partnerships");
-    final IPartnershipFactory partnerFx = XMLHelper.createComponent (eRootNode, IPartnershipFactory.class, this, m_sBaseDirectory);
+    final IPartnershipFactory partnerFx = AS2XMLHelper.createComponent (eRootNode,
+                                                                        IPartnershipFactory.class,
+                                                                        this,
+                                                                        m_sBaseDirectory);
     setPartnershipFactory (partnerFx);
   }
 
   protected void loadMessageProcessor (final IMicroElement eRootNode) throws OpenAS2Exception
   {
     s_aLogger.info ("  loading message processor");
-    final IMessageProcessor aMsgProcessor = XMLHelper.createComponent (eRootNode, IMessageProcessor.class, this, m_sBaseDirectory);
+    final IMessageProcessor aMsgProcessor = AS2XMLHelper.createComponent (eRootNode,
+                                                                          IMessageProcessor.class,
+                                                                          this,
+                                                                          m_sBaseDirectory);
     setMessageProcessor (aMsgProcessor);
 
     for (final IMicroElement eModule : eRootNode.getAllChildElements ("module"))
       loadProcessorModule (aMsgProcessor, eModule);
   }
 
-  protected void loadProcessorModule (@Nonnull final IMessageProcessor aMsgProcessor, @Nonnull final IMicroElement eModule) throws OpenAS2Exception
+  protected void loadProcessorModule (@Nonnull final IMessageProcessor aMsgProcessor,
+                                      @Nonnull final IMicroElement eModule) throws OpenAS2Exception
   {
-    final IProcessorModule aProcessorModule = XMLHelper.createComponent (eModule, IProcessorModule.class, this, m_sBaseDirectory);
+    final IProcessorModule aProcessorModule = AS2XMLHelper.createComponent (eModule,
+                                                                            IProcessorModule.class,
+                                                                            this,
+                                                                            m_sBaseDirectory);
     aMsgProcessor.addModule (aProcessorModule);
     s_aLogger.info ("    loaded processor module " + aProcessorModule.getName ());
   }

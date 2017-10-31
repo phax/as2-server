@@ -72,12 +72,18 @@
 	  <dt> classname
 	  <dd> describes the Java class to process the certificate file.
 	  <br> for example:
-	    <cite> com.helger.as2.cert.PKCS12CertificateFactory </cite>
+	    <cite> com.helger.as2.cert.CertificateFactory </cite>
 
-		<dt> filename
-		<dd> defines the file name containing the certificates
-		<br> for example:
-		  <cite> %home%\certs.p12 </cite>
+    <dt> type
+    <dd> defines the file type of the file containing the certificates
+    <br> for example:
+      <cite> pkcs12 </cite> or
+      <cite> jks </cite> or
+
+    <dt> filename
+    <dd> defines the file name containing the certificates
+    <br> for example:
+      <cite> %home%\certs.p12 </cite>
 
 		<dt> password
 		<dd> opens the file using this password
