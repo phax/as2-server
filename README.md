@@ -16,6 +16,7 @@ This project is licensed under the FreeBSD License.
     * Updated to as2-lib 4.0.0
     * Anonymous TLS cipher suite determination improved
     * Changed internally from `java.util.Date` to `java.time.LocalDateTime` - so all the Date parameters must be changed from `yyyy` to `uuuu`!!! 
+    * The certificate factory `com.helger.as2.app.cert.ServerPKCS12CertificateFactory` was deprecated in favor of the more generic `com.helger.as2.app.cert.ServerCertificateFactory` that handles arbitrary keystore types (like JKS).
   * v3.1.0 - 2017-07-27
     * Updated to as2-lib 3.1.0
   * v3.0.4 - 2017-06-19

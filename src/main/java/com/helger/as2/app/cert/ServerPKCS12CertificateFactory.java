@@ -45,7 +45,7 @@ public class ServerPKCS12CertificateFactory extends ServerCertificateFactory
 
   static
   {
-    s_aLogger.warn ("ServerPKCS12CertificateFactory is deprecated. Please use the more generic CertificateFactory instead!");
+    s_aLogger.warn ("ServerPKCS12CertificateFactory is deprecated. Please use the more generic ServerCertificateFactory instead!");
   }
 
   public ServerPKCS12CertificateFactory ()
