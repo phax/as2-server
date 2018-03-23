@@ -37,7 +37,7 @@
   <parent>
     <groupId>com.helger</groupId>
     <artifactId>parent-pom</artifactId>
-    <version>1.10.2</version>
+    <version>1.10.3</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>as2-server</artifactId>
@@ -64,7 +64,7 @@
   </scm>
   
   <properties>
-    <log4j.version>2.10.0</log4j.version>
+    <log4j.version>2.11.0</log4j.version>
   </properties>
   
   <dependencyManagement>
@@ -72,7 +72,7 @@
       <dependency>
         <groupId>com.helger</groupId>
         <artifactId>ph-commons-parent-pom</artifactId>
-        <version>9.0.1</version>
+        <version>9.0.2</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
