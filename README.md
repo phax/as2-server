@@ -12,6 +12,9 @@ This project is licensed under the FreeBSD License.
 
 # News and noteworthy
 
+* v4.0.1 - 2018-03-27
+  * Updated to as2-lib 4.0.1
+  * Fixes issue #20
 * v4.0.0 - 2018-03-22
   * Updated to as2-lib 4.0.0
   * Anonymous TLS cipher suite determination improved
@@ -52,7 +55,7 @@ Add the following to your pom.xml to use this artifact:
 <dependency>
   <groupId>com.helger</groupId>
   <artifactId>as2-server</artifactId>
-  <version>4.0.0</version>
+  <version>4.0.1</version>
 </dependency>
 ```
 
