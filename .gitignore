@@ -5,8 +5,8 @@
 *.war
 *.ear
 
-target
-data/**
-standalone/**
+/target/
+/data/
 /http-logs/
 **/*.iml
+/standalone/
