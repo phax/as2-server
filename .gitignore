@@ -10,3 +10,6 @@
 /http-logs/
 **/*.iml
 /standalone/
+/.settings/ 
+/.project 
+/.classpath 
