@@ -45,7 +45,7 @@ import com.helger.commons.collection.impl.ICommonsOrderedMap;
 
 public class BaseCommandRegistry extends AbstractDynamicComponent implements ICommandRegistry
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (BaseCommandRegistry.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (BaseCommandRegistry.class);
   private final ICommonsOrderedMap <String, ICommand> m_aCommands = new CommonsLinkedHashMap<> ();
 
   public void addCommand (@Nonnull final ICommand aCommand)
@@ -53,7 +53,7 @@ public class BaseCommandRegistry extends AbstractDynamicComponent implements ICo
     ValueEnforcer.notNull (aCommand, "Command");
     final String sCommandName = aCommand.getName ();
     if (m_aCommands.containsKey (sCommandName))
-      s_aLogger.warn ("Overwriting command '" + sCommandName + "'");
+      LOGGER.warn ("Overwriting command '" + sCommandName + "'");
     m_aCommands.put (sCommandName, aCommand);
   }
 

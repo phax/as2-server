@@ -57,7 +57,7 @@ import com.helger.commons.string.StringHelper;
  */
 public class MainOpenAS2Server
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (MainOpenAS2Server.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (MainOpenAS2Server.class);
 
   public static void main (final String [] args)
   {
@@ -69,12 +69,12 @@ public class MainOpenAS2Server
     AS2ServerXMLSession aXMLSession = null;
     try
     {
-      s_aLogger.info (CAS2Info.NAME_VERSION + " - starting Server...");
+      LOGGER.info (CAS2Info.NAME_VERSION + " - starting Server...");
 
       // create the OpenAS2 Session object
       // this is used by all other objects to access global configs and
       // functionality
-      s_aLogger.info ("Loading configuration...");
+      LOGGER.info ("Loading configuration...");
       if (StringHelper.hasText (sConfigFilePath))
       {
         // Load config file
@@ -82,13 +82,13 @@ public class MainOpenAS2Server
       }
       else
       {
-        s_aLogger.info ("Usage:");
-        s_aLogger.info ("java " + getClass ().getName () + " <configuration file>");
+        LOGGER.info ("Usage:");
+        LOGGER.info ("java " + getClass ().getName () + " <configuration file>");
         throw new Exception ("Missing configuration file name on the commandline. You may specify src/main/resources/config/config.xml");
       }
 
       // start the active processor modules
-      s_aLogger.info ("Starting Active Modules...");
+      LOGGER.info ("Starting Active Modules...");
       aXMLSession.getMessageProcessor ().startActiveModules ();
 
       final ICommandRegistry aCommandRegistry = aXMLSession.getCommandRegistry ();
@@ -96,14 +96,14 @@ public class MainOpenAS2Server
       final List <AbstractCommandProcessor> aCommandProcessors = aCommandMgr.getProcessors ();
       for (final AbstractCommandProcessor cmd : aCommandProcessors)
       {
-        s_aLogger.info ("Loading Command Processor " + cmd.getClass ().getName () + "");
+        LOGGER.info ("Loading Command Processor " + cmd.getClass ().getName () + "");
         cmd.init ();
         cmd.addCommands (aCommandRegistry);
         new Thread (cmd, ClassHelper.getClassLocalName (cmd)).start ();
       }
 
       // enter the command processing loop
-      s_aLogger.info ("OpenAS2 Started");
+      LOGGER.info ("OpenAS2 Started");
 
       // Start waiting for termination
       breakOut: while (true)
@@ -116,7 +116,7 @@ public class MainOpenAS2Server
         // Wait outside loop in case no command processor is present
         Thread.sleep (100);
       }
-      s_aLogger.info ("- OpenAS2 Stopped -");
+      LOGGER.info ("- OpenAS2 Stopped -");
     }
     catch (final Throwable t)
     {
@@ -136,7 +136,7 @@ public class MainOpenAS2Server
         }
       }
 
-      s_aLogger.info ("OpenAS2 has shut down");
+      LOGGER.info ("OpenAS2 has shut down");
     }
   }
 }

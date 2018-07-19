@@ -106,7 +106,7 @@ public class MainTestClient
   // Message msg = new AS2Message();
   // getSession().getProcessor().handle(SenderModule.DO_SEND, msg, null);
 
-  private static final Logger s_aLogger = LoggerFactory.getLogger (MainTestClient.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (MainTestClient.class);
 
   public static void main (final String [] args)
   {
@@ -172,7 +172,7 @@ public class MainTestClient
 
     aPartnership.setAttribute (CPartnershipIDs.PA_AS2_RECEIPT_DELIVERY_OPTION, null);
 
-    s_aLogger.info ("ALIAS: " + aPartnership.getSenderX509Alias ());
+    LOGGER.info ("ALIAS: " + aPartnership.getSenderX509Alias ());
 
     final IMessage aMsg = new AS2Message ();
     aMsg.setContentType ("application/xml");
@@ -193,7 +193,7 @@ public class MainTestClient
 
     aMsg.setPartnership (aPartnership);
     aMsg.setMessageID (aMsg.generateMessageID ());
-    s_aLogger.info ("msg id: " + aMsg.getMessageID ());
+    LOGGER.info ("msg id: " + aMsg.getMessageID ());
 
     final AS2Session aSession = new AS2Session ();
     final CertificateFactory aCertFactory = new CertificateFactory ();
@@ -228,19 +228,19 @@ public class MainTestClient
     aSession.setPartnershipFactory (aPartnershipFactory);
     aTestSender.initDynamicComponent (aSession, null);
 
-    s_aLogger.info ("is requesting  MDN?: " + aMsg.isRequestingMDN ());
-    s_aLogger.info ("is async MDN?: " + aMsg.isRequestingAsynchMDN ());
-    s_aLogger.info ("is rule to receive MDN active?: " + aMsg.partnership ().getAS2ReceiptDeliveryOption ());
+    LOGGER.info ("is requesting  MDN?: " + aMsg.isRequestingMDN ());
+    LOGGER.info ("is async MDN?: " + aMsg.isRequestingAsynchMDN ());
+    LOGGER.info ("is rule to receive MDN active?: " + aMsg.partnership ().getAS2ReceiptDeliveryOption ());
 
     aTestSender.handle (IProcessorSenderModule.DO_SEND, aMsg, null);
-    s_aLogger.info ("MDN is " + aMsg.getMDN ().toString ());
+    LOGGER.info ("MDN is " + aMsg.getMDN ().toString ());
 
-    s_aLogger.info ("message sent" + aMsg.getLoggingText ());
+    LOGGER.info ("message sent" + aMsg.getLoggingText ());
 
     final IMessageMDN reply = aMsg.getMDN ();
 
     if (false)
-      s_aLogger.info ("MDN headers:\n" + reply.headers ().toString ());
+      LOGGER.info ("MDN headers:\n" + reply.headers ().toString ());
 
     final Enumeration <Header> list2 = reply.getData ().getAllHeaders ();
     final StringBuilder aSB2 = new StringBuilder ("Mime headers:\n");

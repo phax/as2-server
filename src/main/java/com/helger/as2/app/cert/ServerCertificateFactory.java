@@ -49,7 +49,7 @@ import com.helger.as2lib.params.InvalidParameterException;
 public class ServerCertificateFactory extends CertificateFactory implements IFileMonitorListener
 {
   public static final String ATTR_INTERVAL = "interval";
-  private static final Logger s_aLogger = LoggerFactory.getLogger (ServerCertificateFactory.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (ServerCertificateFactory.class);
 
   private FileMonitor m_aFileMonitor;
 
@@ -96,7 +96,7 @@ public class ServerCertificateFactory extends CertificateFactory implements IFil
         try
         {
           load ();
-          s_aLogger.info ("- Certificates Reloaded -");
+          LOGGER.info ("- Certificates Reloaded -");
         }
         catch (final OpenAS2Exception oae)
         {

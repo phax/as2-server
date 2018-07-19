@@ -55,7 +55,7 @@ public class ServerXMLPartnershipFactory extends XMLPartnershipFactory implement
                                          IFileMonitorListener
 {
   public static final String ATTR_INTERVAL = "interval";
-  private static final Logger s_aLogger = LoggerFactory.getLogger (ServerXMLPartnershipFactory.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (ServerXMLPartnershipFactory.class);
 
   private FileMonitor m_aFileMonitor;
 
@@ -98,7 +98,7 @@ public class ServerXMLPartnershipFactory extends XMLPartnershipFactory implement
         try
         {
           refresh ();
-          s_aLogger.debug ("- Partnerships Reloaded -");
+          LOGGER.debug ("- Partnerships Reloaded -");
         }
         catch (final OpenAS2Exception oae)
         {

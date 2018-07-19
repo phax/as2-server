@@ -77,7 +77,7 @@ public class AS2ServerXMLSession extends AS2Session implements ICommandRegistryF
   public static final String EL_PARTNERSHIPS = "partnerships";
   public static final String EL_COMMANDS = "commands";
 
-  private static final Logger s_aLogger = LoggerFactory.getLogger (AS2ServerXMLSession.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (AS2ServerXMLSession.class);
 
   private final String m_sBaseDirectory;
   private final CommandManager m_aCmdManager = CommandManager.getCmdManager ();
@@ -114,7 +114,7 @@ public class AS2ServerXMLSession extends AS2Session implements ICommandRegistryF
 
   protected void loadCertificates (@Nonnull final IMicroElement aElement) throws OpenAS2Exception
   {
-    s_aLogger.info ("  loading certificates");
+    LOGGER.info ("  loading certificates");
     final ICertificateFactory certFx = AS2XMLHelper.createComponent (aElement,
                                                                      ICertificateFactory.class,
                                                                      this,
@@ -124,7 +124,7 @@ public class AS2ServerXMLSession extends AS2Session implements ICommandRegistryF
 
   protected void loadCommands (@Nonnull final IMicroElement aElement) throws OpenAS2Exception
   {
-    s_aLogger.info ("  loading commands");
+    LOGGER.info ("  loading commands");
     final ICommandRegistry cmdReg = AS2XMLHelper.createComponent (aElement,
                                                                   ICommandRegistry.class,
                                                                   this,
@@ -135,7 +135,7 @@ public class AS2ServerXMLSession extends AS2Session implements ICommandRegistryF
   protected void loadCommandProcessors (@Nonnull final IMicroElement aElement) throws OpenAS2Exception
   {
     final List <IMicroElement> aElements = aElement.getAllChildElements ("commandProcessor");
-    s_aLogger.info ("  loading " + aElements.size () + " command processors");
+    LOGGER.info ("  loading " + aElements.size () + " command processors");
     for (final IMicroElement processor : aElements)
       loadCommandProcessor (m_aCmdManager, processor);
   }
@@ -148,12 +148,12 @@ public class AS2ServerXMLSession extends AS2Session implements ICommandRegistryF
                                                                                 this,
                                                                                 m_sBaseDirectory);
     aCommandMgr.addProcessor (aCmdProcesor);
-    s_aLogger.info ("    loaded command processor " + aCmdProcesor.getName ());
+    LOGGER.info ("    loaded command processor " + aCmdProcesor.getName ());
   }
 
   protected void loadPartnerships (final IMicroElement eRootNode) throws OpenAS2Exception
   {
-    s_aLogger.info ("  loading partnerships");
+    LOGGER.info ("  loading partnerships");
     final IPartnershipFactory partnerFx = AS2XMLHelper.createComponent (eRootNode,
                                                                         IPartnershipFactory.class,
                                                                         this,
@@ -163,7 +163,7 @@ public class AS2ServerXMLSession extends AS2Session implements ICommandRegistryF
 
   protected void loadMessageProcessor (final IMicroElement eRootNode) throws OpenAS2Exception
   {
-    s_aLogger.info ("  loading message processor");
+    LOGGER.info ("  loading message processor");
     final IMessageProcessor aMsgProcessor = AS2XMLHelper.createComponent (eRootNode,
                                                                           IMessageProcessor.class,
                                                                           this,
@@ -182,7 +182,7 @@ public class AS2ServerXMLSession extends AS2Session implements ICommandRegistryF
                                                                             this,
                                                                             m_sBaseDirectory);
     aMsgProcessor.addModule (aProcessorModule);
-    s_aLogger.info ("    loaded processor module " + aProcessorModule.getName ());
+    LOGGER.info ("    loaded processor module " + aProcessorModule.getName ());
   }
 
   protected void load (@Nonnull @WillClose final InputStream aIS) throws OpenAS2Exception
