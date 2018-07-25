@@ -73,7 +73,7 @@ public class MultiCommand extends AbstractCommand
   public ICommonsList <ICommand> getCommands ()
   {
     if (m_aCmds == null)
-      m_aCmds = new CommonsArrayList<> ();
+      m_aCmds = new CommonsArrayList <> ();
     return m_aCmds;
   }
 

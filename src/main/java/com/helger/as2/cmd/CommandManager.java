@@ -65,7 +65,7 @@ public class CommandManager
   public ICommonsList <AbstractCommandProcessor> getProcessors ()
   {
     if (m_aProcessors == null)
-      m_aProcessors = new CommonsArrayList<> ();
+      m_aProcessors = new CommonsArrayList <> ();
     return m_aProcessors;
   }
 

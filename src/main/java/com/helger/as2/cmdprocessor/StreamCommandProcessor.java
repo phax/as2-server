@@ -126,7 +126,7 @@ public class StreamCommandProcessor extends AbstractCommandProcessor
           }
           else
           {
-            final ICommonsList <String> aParams = new CommonsArrayList<> ();
+            final ICommonsList <String> aParams = new CommonsArrayList <> ();
             while (aTokenizer.hasMoreTokens ())
             {
               aParams.add (aTokenizer.nextToken ());

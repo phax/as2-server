@@ -46,7 +46,7 @@ import com.helger.commons.collection.impl.ICommonsOrderedMap;
 public class BaseCommandRegistry extends AbstractDynamicComponent implements ICommandRegistry
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (BaseCommandRegistry.class);
-  private final ICommonsOrderedMap <String, ICommand> m_aCommands = new CommonsLinkedHashMap<> ();
+  private final ICommonsOrderedMap <String, ICommand> m_aCommands = new CommonsLinkedHashMap <> ();
 
   public void addCommand (@Nonnull final ICommand aCommand)
   {

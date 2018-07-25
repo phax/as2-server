@@ -49,10 +49,12 @@ import com.helger.commons.collection.impl.ICommonsMap;
 import com.helger.commons.collection.impl.ICommonsOrderedMap;
 import com.helger.commons.lang.ClassHelper;
 
-public abstract class AbstractCommandProcessor extends StringMap
-                                               implements ICommandProcessor, IDynamicComponent, Runnable
+public abstract class AbstractCommandProcessor extends StringMap implements
+                                               ICommandProcessor,
+                                               IDynamicComponent,
+                                               Runnable
 {
-  private final ICommonsOrderedMap <String, ICommand> m_aCommands = new CommonsLinkedHashMap<> ();
+  private final ICommonsOrderedMap <String, ICommand> m_aCommands = new CommonsLinkedHashMap <> ();
   private volatile boolean m_bTerminated = false;
 
   public AbstractCommandProcessor ()

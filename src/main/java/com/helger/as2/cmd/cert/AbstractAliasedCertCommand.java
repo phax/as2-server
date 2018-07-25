@@ -62,5 +62,6 @@ public abstract class AbstractAliasedCertCommand extends AbstractCommand
     }
   }
 
-  protected abstract CommandResult execute (IAliasedCertificateFactory certFx, Object [] params) throws OpenAS2Exception;
+  protected abstract CommandResult execute (IAliasedCertificateFactory certFx,
+                                            Object [] params) throws OpenAS2Exception;
 }

@@ -121,7 +121,7 @@ public class ImportCertCommand extends AbstractAliasedCertCommand
                                       final String sFilename) throws IOException, CertificateException, OpenAS2Exception
   {
     try (final FileInputStream fis = new FileInputStream (sFilename);
-         final NonBlockingBufferedInputStream bis = new NonBlockingBufferedInputStream (fis))
+        final NonBlockingBufferedInputStream bis = new NonBlockingBufferedInputStream (fis))
     {
       final CertificateFactory cf = CertificateFactory.getInstance ("X.509");
       while (bis.available () > 0)
