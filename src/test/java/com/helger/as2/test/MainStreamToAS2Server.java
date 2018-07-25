@@ -53,8 +53,7 @@ public final class MainStreamToAS2Server
 {
   public static void streamCompleteHttpRequestToServer (final byte [] aPayload) throws UnknownHostException, IOException
   {
-    final Socket aSocket = new Socket ("localhost", 10080);
-    try
+    try (final Socket aSocket = new Socket ("localhost", 10080))
     {
       // Write request
       final OutputStream out = aSocket.getOutputStream ();
@@ -65,10 +64,6 @@ public final class MainStreamToAS2Server
       // Get response
       final byte [] aResponse = StreamHelper.getAllBytes (aSocket.getInputStream ());
       System.out.println ("Response:\n\n" + new String (aResponse, StandardCharsets.ISO_8859_1));
-    }
-    finally
-    {
-      aSocket.close ();
     }
   }
 

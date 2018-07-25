@@ -63,16 +63,17 @@ public final class ByteCoder
   @Nonnull
   public static String decode (@Nonnull final String inStr)
   {
-    final NonBlockingByteArrayOutputStream aBAOS = new NonBlockingByteArrayOutputStream (inStr.length () / 3);
-    final Matcher aMatcher = RegExHelper.getMatcher (".[0-9]+.", inStr);
-    while (aMatcher.find ())
+    try (final NonBlockingByteArrayOutputStream aBAOS = new NonBlockingByteArrayOutputStream (inStr.length () / 3))
     {
-      final String sMatch = aMatcher.group ();
-      // Ensure unsigned int
-      final byte me = (byte) (Integer.parseInt (sMatch.substring (1, sMatch.length () - 1)) & 0xff);
-      aBAOS.write (me);
+      final Matcher aMatcher = RegExHelper.getMatcher (".[0-9]+.", inStr);
+      while (aMatcher.find ())
+      {
+        final String sMatch = aMatcher.group ();
+        // Ensure unsigned int
+        final byte me = (byte) (Integer.parseInt (sMatch.substring (1, sMatch.length () - 1)) & 0xff);
+        aBAOS.write (me);
+      }
+      return aBAOS.getAsString (StandardCharsets.ISO_8859_1);
     }
-    aBAOS.close ();
-    return aBAOS.getAsString (StandardCharsets.ISO_8859_1);
   }
 }
