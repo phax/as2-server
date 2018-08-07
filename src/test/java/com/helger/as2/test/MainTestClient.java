@@ -64,6 +64,7 @@ import com.helger.as2lib.session.AS2Session;
 import com.helger.as2lib.util.AS2DateHelper;
 import com.helger.as2lib.util.CAS2Header;
 import com.helger.as2lib.util.http.AS2HttpHeaderWrapperHttpURLConnection;
+import com.helger.as2lib.util.http.AS2HttpURLConnection;
 import com.helger.commons.collection.attr.StringMap;
 import com.helger.commons.http.CHttpHeader;
 import com.helger.commons.io.resource.ClassPathResource;
@@ -286,7 +287,7 @@ public class MainTestClient
   {
     final Partnership aPartnership = aMsg.partnership ();
 
-    final AS2HttpHeaderWrapperHttpURLConnection aHeaderWrapper = new AS2HttpHeaderWrapperHttpURLConnection (aConn);
+    final AS2HttpHeaderWrapperHttpURLConnection aHeaderWrapper = new AS2HttpHeaderWrapperHttpURLConnection (new AS2HttpURLConnection (aConn));
     aHeaderWrapper.setHttpHeader (CHttpHeader.CONNECTION, CAS2Header.DEFAULT_CONNECTION);
     aHeaderWrapper.setHttpHeader (CHttpHeader.USER_AGENT, CAS2Header.DEFAULT_USER_AGENT);
 
