@@ -68,6 +68,7 @@ import com.helger.as2lib.util.http.AS2HttpURLConnection;
 import com.helger.commons.collection.attr.StringMap;
 import com.helger.commons.http.CHttpHeader;
 import com.helger.commons.io.resource.ClassPathResource;
+import com.helger.commons.system.SystemHelper;
 import com.helger.security.keystore.EKeyStoreType;
 
 /**
@@ -125,7 +126,7 @@ public class MainTestClient
     // Use the default message ID format
 
     final AS2ClientRequest aRequest = new AS2ClientRequest ("Test message");
-    aRequest.setData (new File ("src/test/resources/dummy.txt"));
+    aRequest.setData (new File ("src/test/resources/dummy.txt"), SystemHelper.getSystemCharset ());
     new AS2Client ().sendSynchronous (aSettings, aRequest);
   }
 
