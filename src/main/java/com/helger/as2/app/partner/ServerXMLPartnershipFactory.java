@@ -68,7 +68,7 @@ public class ServerXMLPartnershipFactory extends XMLPartnershipFactory implement
   {
     boolean bCreateMonitor;
 
-    bCreateMonitor = m_aFileMonitor == null && containsKey (ATTR_INTERVAL);
+    bCreateMonitor = m_aFileMonitor == null && attrs ().containsKey (ATTR_INTERVAL);
 
     if (!bCreateMonitor && m_aFileMonitor != null)
     {

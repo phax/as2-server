@@ -61,33 +61,33 @@ public abstract class AbstractCommand extends AbstractDynamicComponent implement
 
   public String getDescription ()
   {
-    return getAsString (ATTR_DESCRIPTION);
+    return attrs ().getAsString (ATTR_DESCRIPTION);
   }
 
   public void setDescription (final String desc)
   {
-    putIn (ATTR_DESCRIPTION, desc);
+    attrs ().putIn (ATTR_DESCRIPTION, desc);
   }
 
   @Override
   public String getName ()
   {
-    return getAsString (ATTR_NAME);
+    return attrs ().getAsString (ATTR_NAME);
   }
 
   public void setName (final String name)
   {
-    putIn (ATTR_NAME, name);
+    attrs ().putIn (ATTR_NAME, name);
   }
 
   public String getUsage ()
   {
-    return getAsString (ATTR_USAGE);
+    return attrs ().getAsString (ATTR_USAGE);
   }
 
   public void setUsage (final String usage)
   {
-    putIn (ATTR_USAGE, usage);
+    attrs ().putIn (ATTR_USAGE, usage);
   }
 
   public abstract String getDefaultName ();

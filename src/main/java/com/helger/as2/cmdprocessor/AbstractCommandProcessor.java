@@ -42,6 +42,7 @@ import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.session.IAS2Session;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.ReturnsMutableCopy;
+import com.helger.commons.annotation.ReturnsMutableObject;
 import com.helger.commons.annotation.UnsupportedOperation;
 import com.helger.commons.collection.attr.StringMap;
 import com.helger.commons.collection.impl.CommonsLinkedHashMap;
@@ -49,16 +50,21 @@ import com.helger.commons.collection.impl.ICommonsMap;
 import com.helger.commons.collection.impl.ICommonsOrderedMap;
 import com.helger.commons.lang.ClassHelper;
 
-public abstract class AbstractCommandProcessor extends StringMap implements
-                                               ICommandProcessor,
-                                               IDynamicComponent,
-                                               Runnable
+public abstract class AbstractCommandProcessor implements ICommandProcessor, IDynamicComponent, Runnable
 {
+  private final StringMap m_aAttrs = new StringMap ();
   private final ICommonsOrderedMap <String, ICommand> m_aCommands = new CommonsLinkedHashMap <> ();
   private volatile boolean m_bTerminated = false;
 
   public AbstractCommandProcessor ()
   {}
+
+  @Nonnull
+  @ReturnsMutableObject
+  public final StringMap attrs ()
+  {
+    return m_aAttrs;
+  }
 
   @Nullable
   public String getName ()

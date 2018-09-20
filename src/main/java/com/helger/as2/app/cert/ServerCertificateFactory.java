@@ -42,7 +42,7 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.as2.util.FileMonitor;
 import com.helger.as2.util.IFileMonitorListener;
-import com.helger.as2lib.cert.*;
+import com.helger.as2lib.cert.CertificateFactory;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.params.InvalidParameterException;
 
@@ -67,7 +67,7 @@ public class ServerCertificateFactory extends CertificateFactory implements IFil
 
   public FileMonitor getFileMonitor () throws InvalidParameterException
   {
-    boolean bCreateMonitor = m_aFileMonitor == null && getAsString (ATTR_INTERVAL) != null;
+    boolean bCreateMonitor = m_aFileMonitor == null && attrs ().getAsString (ATTR_INTERVAL) != null;
     if (!bCreateMonitor && m_aFileMonitor != null)
     {
       final String filename = m_aFileMonitor.getFilename ();
