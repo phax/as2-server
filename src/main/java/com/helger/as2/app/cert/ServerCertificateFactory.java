@@ -105,4 +105,18 @@ public class ServerCertificateFactory extends CertificateFactory implements IFil
         break;
     }
   }
+
+  @Override
+  public boolean equals (final Object o)
+  {
+    // No field added
+    return super.equals (o);
+  }
+
+  @Override
+  public int hashCode ()
+  {
+    // No field added
+    return super.hashCode ();
+  }
 }

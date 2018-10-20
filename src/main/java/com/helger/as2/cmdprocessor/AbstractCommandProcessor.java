@@ -66,7 +66,7 @@ public abstract class AbstractCommandProcessor implements ICommandProcessor, IDy
     return m_aAttrs;
   }
 
-  @Nullable
+  @Nonnull
   public String getName ()
   {
     return ClassHelper.getClassLocalName (this);
