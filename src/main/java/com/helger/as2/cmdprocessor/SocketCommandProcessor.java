@@ -227,7 +227,7 @@ public class SocketCommandProcessor extends AbstractCommandProcessor
       }
       m_aWriter.flush ();
     }
-    catch (final Exception ex)
+    catch (final IOException ex)
     {
       throw WrappedOpenAS2Exception.wrap (ex);
     }

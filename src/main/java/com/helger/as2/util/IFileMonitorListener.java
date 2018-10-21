@@ -40,5 +40,5 @@ public interface IFileMonitorListener
   int EVENT_MODIFIED = 1;
   int EVENT_MISSED_TICK = -1;
 
-  void handle (FileMonitor monitor, File file, int eventID);
+  void handle (FileMonitor aMonitor, File aFile, int nEventID);
 }

@@ -59,6 +59,7 @@ public abstract class AbstractCommand extends AbstractDynamicComponent implement
       setUsage (getDefaultUsage ());
   }
 
+  @Nullable
   public String getDescription ()
   {
     return attrs ().getAsString (ATTR_DESCRIPTION);
@@ -70,6 +71,7 @@ public abstract class AbstractCommand extends AbstractDynamicComponent implement
   }
 
   @Override
+  @Nullable
   public String getName ()
   {
     return attrs ().getAsString (ATTR_NAME);
@@ -80,6 +82,7 @@ public abstract class AbstractCommand extends AbstractDynamicComponent implement
     attrs ().putIn (ATTR_NAME, name);
   }
 
+  @Nullable
   public String getUsage ()
   {
     return attrs ().getAsString (ATTR_USAGE);

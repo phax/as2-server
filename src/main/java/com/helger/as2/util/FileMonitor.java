@@ -33,8 +33,7 @@
 package com.helger.as2.util;
 
 import java.io.File;
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDateTime;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -43,21 +42,22 @@ import javax.annotation.Nullable;
 
 import com.helger.commons.collection.impl.CommonsArrayList;
 import com.helger.commons.collection.impl.ICommonsList;
+import com.helger.commons.datetime.PDTFactory;
 
 public class FileMonitor
 {
   private ICommonsList <IFileMonitorListener> m_aListeners;
-  private Date m_aLastModified;
+  private LocalDateTime m_aLastModified;
   private File m_aFile;
   private Timer m_aTimer;
   private boolean m_bBusy;
-  private int m_nInterval;
+  private int m_nIntervalSecs;
 
-  public FileMonitor (final File file, final int interval)
+  public FileMonitor (final File file, final int nIntervalSecs)
   {
     super ();
     m_aFile = file;
-    m_nInterval = interval;
+    m_nIntervalSecs = nIntervalSecs;
     start ();
   }
 
@@ -91,32 +91,33 @@ public class FileMonitor
     return null;
   }
 
-  public void setInterval (final int interval)
+  public void setInterval (final int nIntervalSecs)
   {
-    m_nInterval = interval;
+    m_nIntervalSecs = nIntervalSecs;
     restart ();
   }
 
   public int getInterval ()
   {
-    return m_nInterval;
+    return m_nIntervalSecs;
   }
 
-  public void setLastModified (final Date lastModified)
+  public void setLastModified (final LocalDateTime aLastModified)
   {
-    m_aLastModified = lastModified;
+    m_aLastModified = aLastModified;
   }
 
-  public Date getLastModified ()
+  public LocalDateTime getLastModified ()
   {
     return m_aLastModified;
   }
 
-  public void setListeners (@Nullable final ICommonsList <IFileMonitorListener> listeners)
+  public void setListeners (@Nullable final ICommonsList <IFileMonitorListener> aListeners)
   {
-    m_aListeners = listeners;
+    m_aListeners = aListeners;
   }
 
+  @Nonnull
   public ICommonsList <IFileMonitorListener> getListeners ()
   {
     if (m_aListeners == null)
@@ -135,7 +136,7 @@ public class FileMonitor
     start ();
   }
 
-  public void start ()
+  public final void start ()
   {
     m_aTimer = getTimer ();
     m_aTimer.scheduleAtFixedRate (new TimerTick (), 0, getInterval () * 1000);
@@ -151,11 +152,10 @@ public class FileMonitor
 
   protected boolean isModified ()
   {
-    final Date lastModified = getLastModified ();
-
+    final LocalDateTime lastModified = getLastModified ();
     if (lastModified != null)
     {
-      final Date currentModified = new Date (getFile ().lastModified ());
+      final LocalDateTime currentModified = PDTFactory.createLocalDateTime (getFile ().lastModified ());
 
       return !currentModified.equals (getLastModified ());
     }
@@ -180,16 +180,16 @@ public class FileMonitor
     }
   }
 
-  protected void updateListeners (final int eventID)
+  protected void updateListeners (final int nEventID)
   {
-    final List <IFileMonitorListener> listeners = getListeners ();
-    for (final IFileMonitorListener iFileMonitorListener : listeners)
-      iFileMonitorListener.handle (this, getFile (), eventID);
+    final ICommonsList <IFileMonitorListener> aListeners = getListeners ();
+    for (final IFileMonitorListener aListener : aListeners)
+      aListener.handle (this, getFile (), nEventID);
   }
 
   protected void updateModified ()
   {
-    setLastModified (new Date (getFile ().lastModified ()));
+    setLastModified (PDTFactory.createLocalDateTime (getFile ().lastModified ()));
   }
 
   private class TimerTick extends TimerTask
