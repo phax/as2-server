@@ -15,7 +15,7 @@ This project is licensed under the FreeBSD License.
 * v4.2.0 - 2018-11-21
     * Updated to as2-lib 4.2.0
 * v4.1.1 - 2018-07-27
-    * Updated to as2-lib 4.1.0
+    * Updated to as2-lib 4.1.1
 * v4.1.0 - 2018-06-20
     * Updated to as2-lib 4.1.0
 * v4.0.2 - 2018-04-05
