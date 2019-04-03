@@ -15,6 +15,7 @@ This project is licensed under the FreeBSD License.
 * v4.3.0 - work in progress
     * Updated to as2-lib 4.3.0
     * Moved interface `IRefreshablePartnershipFactory` to project as2-lib
+    * New class `ServerSelfFillingXMLPartnershipFactory` handles dynamic partnerships based on `SelfFillingXMLPartnershipFactory`. See [as2-lib #63](https://github.com/phax/as2-lib/issues/63) and [as2-lib #79](https://github.com/phax/as2-lib/issues/79) 
 * v4.2.2 - 2019-03-21
     * Updated to as2-lib 4.2.2
 * v4.2.1 - 2018-11-22
