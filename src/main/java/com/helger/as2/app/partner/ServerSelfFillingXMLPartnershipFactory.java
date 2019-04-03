@@ -46,20 +46,21 @@ import com.helger.as2.util.IFileMonitorListener;
 import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.exception.WrappedOpenAS2Exception;
 import com.helger.as2lib.params.InvalidParameterException;
-import com.helger.as2lib.partner.xml.XMLPartnershipFactory;
+import com.helger.as2lib.partner.xml.SelfFillingXMLPartnershipFactory;
 import com.helger.commons.string.StringHelper;
 
 /**
- * original author unknown this release added logic to store partnerships and
- * provide methods for partner/partnership command line processor
+ * Same as {@link ServerXMLPartnershipFactory} but based on the
+ * {@link SelfFillingXMLPartnershipFactory}
  *
- * @author joseph mcverry
  * @author Philip Helger
+ * @since 4.3.0
  */
-public class ServerXMLPartnershipFactory extends XMLPartnershipFactory implements IFileMonitorListener
+public class ServerSelfFillingXMLPartnershipFactory extends SelfFillingXMLPartnershipFactory implements
+                                                    IFileMonitorListener
 {
   public static final String ATTR_INTERVAL = "interval";
-  private static final Logger LOGGER = LoggerFactory.getLogger (ServerXMLPartnershipFactory.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (ServerSelfFillingXMLPartnershipFactory.class);
 
   private FileMonitor m_aFileMonitor;
 
