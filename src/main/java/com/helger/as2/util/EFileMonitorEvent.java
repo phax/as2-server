@@ -32,11 +32,9 @@
  */
 package com.helger.as2.util;
 
-import java.io.File;
-
-import javax.annotation.Nonnull;
-
-public interface IFileMonitorListener
+public enum EFileMonitorEvent
 {
-  void onFileMonitorEvent (@Nonnull FileMonitor aMonitor, @Nonnull File aFile, @Nonnull EFileMonitorEvent eEvent);
+  EVENT_UNDEFINED,
+  EVENT_MODIFIED,
+  EVENT_MISSED_TICK
 }

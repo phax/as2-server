@@ -40,7 +40,6 @@ import java.util.TimerTask;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.helger.as2.util.IFileMonitorListener.EEvent;
 import com.helger.commons.collection.impl.CommonsArrayList;
 import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.datetime.PDTFactory;
@@ -177,15 +176,15 @@ public class FileMonitor
     if (isModified ())
     {
       updateModified ();
-      updateListeners (IFileMonitorListener.EEvent.EVENT_MODIFIED);
+      updateListeners (EFileMonitorEvent.EVENT_MODIFIED);
     }
   }
 
-  protected void updateListeners (@Nonnull final EEvent eEvent)
+  protected void updateListeners (@Nonnull final EFileMonitorEvent eEvent)
   {
     final ICommonsList <IFileMonitorListener> aListeners = getListeners ();
     for (final IFileMonitorListener aListener : aListeners)
-      aListener.handle (this, getFile (), eEvent);
+      aListener.onFileMonitorEvent (this, getFile (), eEvent);
   }
 
   protected void updateModified ()
@@ -206,7 +205,7 @@ public class FileMonitor
       }
       else
       {
-        updateListeners (IFileMonitorListener.EEvent.EVENT_MISSED_TICK);
+        updateListeners (EFileMonitorEvent.EVENT_MISSED_TICK);
       }
     }
   }

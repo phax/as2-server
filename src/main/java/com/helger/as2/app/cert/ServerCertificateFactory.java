@@ -40,6 +40,7 @@ import javax.annotation.WillClose;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.helger.as2.util.EFileMonitorEvent;
 import com.helger.as2.util.FileMonitor;
 import com.helger.as2.util.IFileMonitorListener;
 import com.helger.as2lib.cert.CertificateFactory;
@@ -88,7 +89,7 @@ public class ServerCertificateFactory extends CertificateFactory implements IFil
     return m_aFileMonitor;
   }
 
-  public void handle (final FileMonitor monitor, final File file, final EEvent eEvent)
+  public void onFileMonitorEvent (final FileMonitor monitor, final File file, final EFileMonitorEvent eEvent)
   {
     switch (eEvent)
     {
