@@ -52,10 +52,9 @@ import com.helger.as2lib.partner.xml.XMLPartnershipFactory;
  * provide methods for partner/partnership command line processor
  *
  * @author joseph mcverry
+ * @author Philip Helger
  */
-public class ServerXMLPartnershipFactory extends XMLPartnershipFactory implements
-                                         IRefreshablePartnershipFactory,
-                                         IFileMonitorListener
+public class ServerXMLPartnershipFactory extends XMLPartnershipFactory implements IFileMonitorListener
 {
   public static final String ATTR_INTERVAL = "interval";
   private static final Logger LOGGER = LoggerFactory.getLogger (ServerXMLPartnershipFactory.class);
@@ -100,7 +99,7 @@ public class ServerXMLPartnershipFactory extends XMLPartnershipFactory implement
       case EVENT_MODIFIED:
         try
         {
-          refresh ();
+          refreshPartnershipFactory ();
           if (LOGGER.isInfoEnabled ())
             LOGGER.info ("- Partnerships Reloaded -");
         }
@@ -114,9 +113,9 @@ public class ServerXMLPartnershipFactory extends XMLPartnershipFactory implement
   }
 
   @Override
-  public void refresh () throws OpenAS2Exception
+  public void refreshPartnershipFactory () throws OpenAS2Exception
   {
-    super.refresh ();
+    super.refreshPartnershipFactory ();
     try
     {
       getFileMonitor ();

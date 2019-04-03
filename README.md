@@ -12,6 +12,9 @@ This project is licensed under the FreeBSD License.
 
 # News and noteworthy
 
+* v4.3.0 - work in progress
+    * Updated to as2-lib 4.3.0
+    * Moved interface `IRefreshablePartnershipFactory` to project as2-lib
 * v4.2.2 - 2019-03-21
     * Updated to as2-lib 4.2.2
 * v4.2.1 - 2018-11-22
