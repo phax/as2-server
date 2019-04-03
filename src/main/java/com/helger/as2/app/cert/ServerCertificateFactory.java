@@ -88,15 +88,16 @@ public class ServerCertificateFactory extends CertificateFactory implements IFil
     return m_aFileMonitor;
   }
 
-  public void handle (final FileMonitor monitor, final File file, final int eventID)
+  public void handle (final FileMonitor monitor, final File file, final EEvent eEvent)
   {
-    switch (eventID)
+    switch (eEvent)
     {
-      case IFileMonitorListener.EVENT_MODIFIED:
+      case EVENT_MODIFIED:
         try
         {
           load ();
-          LOGGER.info ("- Certificates Reloaded -");
+          if (LOGGER.isInfoEnabled ())
+            LOGGER.info ("- Certificates Reloaded -");
         }
         catch (final OpenAS2Exception oae)
         {

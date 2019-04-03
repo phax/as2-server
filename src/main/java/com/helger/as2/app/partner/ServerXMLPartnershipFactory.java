@@ -34,6 +34,9 @@ package com.helger.as2.app.partner;
 
 import java.io.File;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,9 +62,9 @@ public class ServerXMLPartnershipFactory extends XMLPartnershipFactory implement
 
   private FileMonitor m_aFileMonitor;
 
-  public void setFileMonitor (final FileMonitor fileMonitor)
+  public void setFileMonitor (@Nullable final FileMonitor aFileMonitor)
   {
-    m_aFileMonitor = fileMonitor;
+    m_aFileMonitor = aFileMonitor;
   }
 
   public FileMonitor getFileMonitor () throws InvalidParameterException
@@ -81,24 +84,25 @@ public class ServerXMLPartnershipFactory extends XMLPartnershipFactory implement
       if (m_aFileMonitor != null)
         m_aFileMonitor.stop ();
 
-      final int interval = getAttributeAsIntRequired (ATTR_INTERVAL);
-      final File file = new File (getFilename ());
-      m_aFileMonitor = new FileMonitor (file, interval);
+      final int nInterval = getAttributeAsIntRequired (ATTR_INTERVAL);
+      final File aFile = new File (getFilename ());
+      m_aFileMonitor = new FileMonitor (aFile, nInterval);
       m_aFileMonitor.addListener (this);
     }
 
     return m_aFileMonitor;
   }
 
-  public void handle (final FileMonitor monitor, final File file, final int eventID)
+  public void handle (final FileMonitor monitor, final File file, @Nonnull final EEvent eEvent)
   {
-    switch (eventID)
+    switch (eEvent)
     {
-      case IFileMonitorListener.EVENT_MODIFIED:
+      case EVENT_MODIFIED:
         try
         {
           refresh ();
-          LOGGER.debug ("- Partnerships Reloaded -");
+          if (LOGGER.isInfoEnabled ())
+            LOGGER.info ("- Partnerships Reloaded -");
         }
         catch (final OpenAS2Exception oae)
         {

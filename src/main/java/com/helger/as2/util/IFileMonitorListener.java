@@ -34,11 +34,16 @@ package com.helger.as2.util;
 
 import java.io.File;
 
+import javax.annotation.Nonnull;
+
 public interface IFileMonitorListener
 {
-  int EVENT_UNDEFINED = 0;
-  int EVENT_MODIFIED = 1;
-  int EVENT_MISSED_TICK = -1;
+  public enum EEvent
+  {
+    EVENT_UNDEFINED,
+    EVENT_MODIFIED,
+    EVENT_MISSED_TICK
+  }
 
-  void handle (FileMonitor aMonitor, File aFile, int nEventID);
+  void handle (FileMonitor aMonitor, File aFile, @Nonnull EEvent eEvent);
 }
