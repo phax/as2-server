@@ -12,7 +12,7 @@ This project is licensed under the FreeBSD License.
 
 # News and noteworthy
 
-* v4.3.0 - work in progress
+* v4.3.0 - 2019-05-17
     * Updated to as2-lib 4.3.0
     * Moved interface `IRefreshablePartnershipFactory` to project as2-lib
     * New class `ServerSelfFillingXMLPartnershipFactory` handles dynamic partnerships based on `SelfFillingXMLPartnershipFactory`. See [as2-lib #63](https://github.com/phax/as2-lib/issues/63) and [as2-lib #79](https://github.com/phax/as2-lib/issues/79) 
@@ -73,7 +73,7 @@ Add the following to your pom.xml to use this artifact:
 <dependency>
   <groupId>com.helger</groupId>
   <artifactId>as2-server</artifactId>
-  <version>4.2.2</version>
+  <version>4.3.0</version>
 </dependency>
 ```
 
