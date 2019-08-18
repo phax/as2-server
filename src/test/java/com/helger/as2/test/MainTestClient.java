@@ -35,6 +35,7 @@ package com.helger.as2.test;
 import java.io.File;
 import java.util.Enumeration;
 
+import javax.annotation.Nonnull;
 import javax.mail.Header;
 import javax.mail.internet.MimeBodyPart;
 
@@ -48,7 +49,6 @@ import com.helger.as2lib.client.AS2ClientSettings;
 import com.helger.as2lib.crypto.ECryptoAlgorithmCrypt;
 import com.helger.as2lib.crypto.ECryptoAlgorithmSign;
 import com.helger.as2lib.disposition.DispositionOptions;
-import com.helger.as2lib.exception.OpenAS2Exception;
 import com.helger.as2lib.message.AS2Message;
 import com.helger.as2lib.message.IMessage;
 import com.helger.as2lib.message.IMessageMDN;
@@ -251,7 +251,7 @@ public class MainTestClient
     // logger.info(reply.getData().getRawInputStream().toString());
   }
 
-  protected static void checkRequired (final IMessage aMsg)
+  protected static void checkRequired (@Nonnull final IMessage aMsg) throws InvalidParameterException
   {
     final Partnership aPartnership = aMsg.partnership ();
 
@@ -271,9 +271,10 @@ public class MainTestClient
                                             aPartnership.getSenderEmail ());
       InvalidParameterException.checkValue (aMsg, "Message Data", aMsg.getData ());
     }
-    catch (final InvalidParameterException rpe)
+    catch (final InvalidParameterException ex)
     {
-      rpe.addSource (OpenAS2Exception.SOURCE_MESSAGE, aMsg);
+      ex.setSourceMsg (aMsg);
+      throw ex;
     }
   }
 }
