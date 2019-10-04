@@ -1,3 +1,6 @@
+# This project was integrated into https://github.com/phax/as2-lib as of v4.4.5
+## New versions are going to be maintained there
+
 # as2-server
 
 [![Build Status](https://travis-ci.org/phax/as2-server.svg?branch=master)](https://travis-ci.org/phax/as2-server)
